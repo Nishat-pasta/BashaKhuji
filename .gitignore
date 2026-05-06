@@ -1,0 +1,14 @@
+# Sensitive files (Firebase config is already in code, but avoid uploading local backups)
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# Local config files (if any)
+config.local.js
+.env
