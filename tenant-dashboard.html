@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tenant Dashboard | BashaKhuji</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: #f0f7ff; color: #333; }
+
+    header {
+      background: white;
+      height: 70px;
+      padding: 0 2%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+    }
+    .logo-img { height: 50px; display: block; }
+    .logo-text { font-size: 20px; font-weight: 700; color: rgb(14, 2, 64); }
+    .icon-menu { display: flex; align-items: center; gap: 20px; }
+    .icon-menu a { text-decoration: none; color: #444; font-weight: 500; }
+    .icon-menu a:hover { color: #3f37c9; }
+
+    body { padding-top: 70px; }
+
+    .dashboard { padding: 30px 8%; }
+    .welcome { margin-bottom: 30px; }
+    .welcome h2 { font-size: 28px; }
+    .welcome span { color: #3f37c9; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .stat-card i { font-size: 32px; color: #3f37c9; margin-bottom: 10px; }
+    .stat-card .number { font-size: 28px; font-weight: 700; }
+    .stat-card .label { font-size: 13px; color: #666; }
+
+    .section-title {
+      font-size: 22px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .clear-all-btn {
+      background: #ffe4e6;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      color: #e11d48;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .property-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+    .property-card:hover { transform: translateY(-4px); }
+    .property-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .property-info { padding: 16px; }
+    .property-info h4 { font-size: 16px; margin-bottom: 5px; }
+    .property-location { font-size: 12px; color: #666; margin-bottom: 8px; }
+    .property-price { font-weight: 700; color: #3f37c9; font-size: 18px; margin: 8px 0; }
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .view-btn, .unsave-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .view-btn { background: #3f37c9; color: white; }
+    .unsave-btn { background: #ffe4e6; color: #e11d48; }
+    .empty-state {
+      text-align: center;
+      padding: 60px;
+      background: white;
+      border-radius: 16px;
+    }
+    footer {
+      background: #011239;
+      color: #94a3b8;
+      padding: 20px;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      color: white;
+      z-index: 9999;
+      transform: translateX(400px);
+      transition: transform 0.3s;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast.success { background: #10b981; }
+    .toast.error { background: #ef4444; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo-container">
+    <img src="images/logo.png" alt="Logo" class="logo-img">
+    <span class="logo-text">BashaKhuji</span>
+  </a>
+  <nav class="icon-menu">
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="all-property.html"><i class="fas fa-building"></i> Properties</a>
+    <a href="saved-property.html" style="color:#3f37c9;"><i class="fas fa-heart"></i> Saved</a>
+    <a href="#" id="logoutBtn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </nav>
+</header>
+
+<section class="dashboard">
+  <div class="welcome">
+    <h2>Welcome back, <span id="tenantName">Tenant</span>! 👋</h2>
+    <p>Manage your saved properties here.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <i class="fas fa-heart"></i>
+      <div class="number" id="savedCount">0</div>
+      <div class="label">Saved Properties</div>
+    </div>
+  </div>
+
+  <!-- Payment Notifications Section -->
+  <div class="payment-notifications" style="margin-bottom: 30px;">
+    <h3 style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+      <i class="fas fa-bell" style="color: #f59e0b;"></i> Payment Status
+    </h3>
+    <div id="notificationList">
+      <div style="background:#f0f0f0; padding:15px; border-radius:10px; text-align:center; color:#666;">Loading payment status...</div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <span><i class="fas fa-heart" style="color:#e11d48;"></i> My Saved Properties</span>
+    <button class="clear-all-btn" onclick="clearAllSaved()"><i class="fas fa-trash"></i> Clear All</button>
+  </div>
+
+  <div class="properties-grid" id="savedPropertiesGrid">
+    <div class="empty-state">
+      <i class="fas fa-heart-broken" style="font-size: 48px; color: #ccc;"></i>
+      <h3>No saved properties yet</h3>
+      <p>Go to properties and click ❤️ to save your favorite homes!</p>
+      <a href="all-property.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #3f37c9; color: white; text-decoration: none; border-radius: 8px;">Browse Properties →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 BashaKhuji. All rights reserved.
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, getDocs, collection, deleteDoc, writeBatch, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain: "bashakhuji-503d1.firebaseapp.com",
+    projectId: "bashakhuji-503d1",
+    storageBucket: "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+  let allSavedProperties = [];
+  let unsubscribePayments = null;
+
+  function showToast(msg, type = "success") {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.className = `toast ${type} show`;
+    setTimeout(() => toast.classList.remove("show"), 3000);
+  }
+
+  async function loadTenantName(uid) {
+    try {
+      const userSnap = await getDoc(doc(db, "tenants", uid));
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        const firstName = data.firstname || data.firstName || "";
+        const lastName = data.lastname || data.lastName || "";
+        const fullName = firstName + " " + lastName;
+        document.getElementById("tenantName").textContent = fullName.trim() || "Tenant";
+      }
+    } catch (error) {
+      console.error("Error loading tenant name:", error);
+    }
+  }
+
+  // ========== PAYMENT NOTIFICATIONS ==========
+  function loadPaymentNotifications(uid) {
+    if (unsubscribePayments) unsubscribePayments();
+    
+    console.log("🔔 Loading payments for UID:", uid);
+    
+    const paymentsQuery = query(
+      collection(db, "payments"),
+      where("tenantId", "==", uid),
+      orderBy("createdAt", "desc")
+    );
+    
+    unsubscribePayments = onSnapshot(paymentsQuery, (snapshot) => {
+      console.log("📦 Payments found in snapshot:", snapshot.size);
+      const payments = [];
+      snapshot.forEach(doc => {
+        payments.push({ id: doc.id, ...doc.data() });
+      });
+      console.log("💰 Payment data:", JSON.stringify(payments, null, 2));
+      renderNotifications(payments);
+    }, (error) => {
+      console.error("❌ Error loading payment notifications:", error);
+      document.getElementById('notificationList').innerHTML = '<div style="background:#ffebee; padding:15px; border-radius:10px; text-align:center; color:#c62828;">Error loading payments: ' + error.message + '</div>';
+    });
+  }
+
+  function renderNotifications(payments) {
+    const container = document.getElementById('notificationList');
+    if (!container) {
+      console.error("❌ Notification container not found!");
+      return;
+    }
+    
+    console.log("🎨 Rendering notifications, payments count:", payments.length);
+    
+    if (payments.length === 0) {
+      container.innerHTML = '<div style="background:#f0f0f0; padding:15px; border-radius:10px; text-align:center; color:#666;">No payment records found</div>';
+      return;
+    }
+    
+    let html = '';
+    
+    for (const p of payments) {
+      const status = (p.status || '').toLowerCase();
+      const amount = p.amount || 0;
+      const propertyName = p.propertyName || 'Property';
+      const propertyId = p.propertyId;
+      
+      console.log(`📌 Payment: ${propertyName} - Status: ${status}`);
+      
+      if (status === 'pending') {
+        html += `
+          <div style="background:#fff3e0; border-left:4px solid #f59e0b; padding:12px 15px; border-radius:10px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>⏳ Payment Pending</strong>
+                <div style="font-size:12px; color:#666;">Property: ${escapeHtml(propertyName)} | Amount: ৳${amount}</div>
+                <div style="font-size:11px; color:#f59e0b;">Waiting for admin approval</div>
+              </div>
+              <span style="background:#f59e0b; color:white; padding:2px 8px; border-radius:20px; font-size:11px;">Pending</span>
+            </div>
+          </div>
+        `;
+      } 
+      else if (status === 'approved' || status === 'verified') {
+        html += `
+          <div style="background:#e8f5e9; border-left:4px solid #22c55e; padding:12px 15px; border-radius:10px; margin-bottom:10px; cursor:pointer;" onclick="window.location.href='property-details.html?id=${propertyId}'">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>✅ Payment Approved!</strong>
+                <div style="font-size:12px; color:#666;">Property: ${escapeHtml(propertyName)} | Amount: ৳${amount}</div>
+                <div style="font-size:11px; color:#22c55e;">Click to view owner details & send request</div>
+              </div>
+              <i class="fas fa-chevron-right" style="color:#22c55e;"></i>
+            </div>
+          </div>
+        `;
+      }
+      else if (status === 'rejected') {
+        html += `
+          <div style="background:#ffebee; border-left:4px solid #ef4444; padding:12px 15px; border-radius:10px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>❌ Payment Rejected</strong>
+                <div style="font-size:12px; color:#666;">Property: ${escapeHtml(propertyName)}</div>
+                <div style="font-size:11px; color:#ef4444;">Please try again with correct payment</div>
+              </div>
+              <button style="background:#ef4444; color:white; border:none; padding:4px 12px; border-radius:20px; font-size:11px; cursor:pointer;" onclick="event.stopPropagation(); window.location.href='payment.html?propertyId=${propertyId}'">Retry</button>
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    container.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // ========== SAVED PROPERTIES ==========
+  async function loadSavedProperties(uid) {
+    const grid = document.getElementById("savedPropertiesGrid");
+    grid.innerHTML = `<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>`;
+    
+    try {
+      const savedRef = collection(db, "users", uid, "savedProperties");
+      const savedSnap = await getDocs(savedRef);
+      
+      if (savedSnap.empty) {
+        showEmptyState(grid);
+        document.getElementById("savedCount").textContent = 0;
+        return;
+      }
+      
+      const properties = [];
+      for (const savedDoc of savedSnap.docs) {
+        const propId = savedDoc.id;
+        const propSnap = await getDoc(doc(db, "properties", propId));
+        if (propSnap.exists()) {
+          properties.push({ id: propId, ...propSnap.data() });
+        }
+      }
+      
+      allSavedProperties = properties;
+      document.getElementById("savedCount").textContent = properties.length;
+      
+      if (properties.length === 0) {
+        showEmptyState(grid);
+        return;
+      }
+      
+      renderProperties(properties);
+      
+    } catch (error) {
+      console.error("Error loading saved properties:", error);
+      grid.innerHTML = `<div class="empty-state"><p>❌ Error loading properties</p></div>`;
+    }
+  }
+  
+  function showEmptyState(grid) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-heart-broken" style="font-size: 48px; color: #ccc;"></i>
+        <h3>No saved properties yet</h3>
+        <p>Go to properties and click ❤️ to save your favorite homes!</p>
+        <a href="all-property.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #3f37c9; color: white; text-decoration: none; border-radius: 8px;">Browse Properties →</a>
+      </div>`;
+  }
+  
+  function renderProperties(properties) {
+    const grid = document.getElementById("savedPropertiesGrid");
+    grid.innerHTML = properties.map(prop => `
+      <div class="property-card" data-id="${prop.id}">
+        <img src="${prop.photos?.[0] || 'images/default-property.jpg'}" alt="${prop.title || 'Property'}" onerror="this.src='images/default-property.jpg'">
+        <div class="property-info">
+          <h4>${escapeHtml(prop.title || 'Untitled')}</h4>
+          <div class="property-location"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(prop.area || prop.location || 'N/A')}, ${escapeHtml(prop.district || '')}</div>
+          <div class="property-price">৳ ${(prop.rent || 0).toLocaleString()}<span style="font-size:12px;">/month</span></div>
+          <div class="card-actions">
+            <button class="view-btn" onclick="window.location.href='property-details.html?id=${prop.id}'">View Details</button>
+            <button class="unsave-btn" onclick="unsaveProperty('${prop.id}')">❤️ Unsave</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  window.unsaveProperty = async function(propId) {
+    if (!currentUser) return;
+    
+    try {
+      await deleteDoc(doc(db, "users", currentUser.uid, "savedProperties", propId));
+      const card = document.querySelector(`.property-card[data-id="${propId}"]`);
+      if (card) card.remove();
+      allSavedProperties = allSavedProperties.filter(p => p.id !== propId);
+      document.getElementById("savedCount").textContent = allSavedProperties.length;
+      showToast("✅ Removed from saved properties!", "success");
+      if (allSavedProperties.length === 0) {
+        showEmptyState(document.getElementById("savedPropertiesGrid"));
+      }
+    } catch (error) {
+      console.error("Error unsaving:", error);
+      showToast("❌ Failed to remove!", "error");
+    }
+  };
+  
+  window.clearAllSaved = async function() {
+    if (!currentUser) return;
+    if (!confirm("Are you sure you want to remove ALL saved properties?")) return;
+    
+    try {
+      const savedRef = collection(db, "users", currentUser.uid, "savedProperties");
+      const savedSnap = await getDocs(savedRef);
+      const batch = writeBatch(db);
+      savedSnap.docs.forEach(doc => batch.delete(doc.ref));
+      await batch.commit();
+      allSavedProperties = [];
+      document.getElementById("savedCount").textContent = 0;
+      showEmptyState(document.getElementById("savedPropertiesGrid"));
+      showToast("✅ All saved properties cleared!", "success");
+    } catch (error) {
+      console.error("Error clearing all:", error);
+      showToast("❌ Failed to clear!", "error");
+    }
+  };
+  
+  window.doLogout = async function() {
+    await signOut(auth);
+    window.location.href = "index.html";
+  };
+  
+  // Auth state listener
+  onAuthStateChanged(auth, async (user) => {
+    console.log("🔐 Auth state changed, user:", user?.uid);
+    
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+    
+    currentUser = user;
+    await loadTenantName(user.uid);
+    await loadSavedProperties(user.uid);
+    await loadPaymentNotifications(user.uid);
+  });
+</script>
+</body>
+</html>

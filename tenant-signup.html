@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tenant Sign Up | BashaKhuji</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    :root {
+      --accent: #1a56db;
+      --accent-dark: #1040b0;
+      --accent-light: #e8efff;
+      --pink: #ff2d78;
+      --pink-dark: #e0185e;
+      --text: #1a1f36;
+      --muted: #6b7280;
+      --border: #dde3ee;
+      --bg-input: #f9fafc;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 16px;
+      position: relative;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: url("images/tenant-singupback.jpg") center/cover no-repeat;
+      z-index: 0;
+    }
+
+    .bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(15, 17, 17, 0.72), rgba(90,70,55,.72));
+    }
+
+    /* Card */
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255,255,255,0.97);
+      border-radius: 24px;
+      padding: 40px 38px 36px;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.25),
+        0 0 0 1px rgba(255,255,255,0.4);
+      animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes slideUp {
+      from { opacity:0; transform: translateY(30px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* Brand */
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-bottom: 24px;
+    }
+
+    .brand-logo {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 16px;
+    }
+
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .brand-name span { color: var(--accent); }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 24px;
+    }
+
+    /* Heading */
+    .heading {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .heading h2 {
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .heading p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Steps indicator */
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 30px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .step-circle {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all 0.3s;
+    }
+
+    .step.active .step-circle {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(26,86,219,0.15);
+    }
+
+    .step.done .step-circle {
+      background: #10b981;
+      border-color: #10b981;
+      color: #fff;
+    }
+
+    .step-label {
+      font-size: 10.5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .step.active .step-label { color: var(--accent); font-weight: 600; }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      margin: 0 8px;
+      margin-bottom: 18px;
+      transition: background 0.3s;
+    }
+
+    .step-line.done { background: #10b981; }
+
+    /* Form pages */
+    .form-page { display: none; }
+    .form-page.active { display: block; }
+
+    /* Field */
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 7px;
+      letter-spacing: 0.1px;
+    }
+
+    .required { color: var(--pink); margin-left: 2px; }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap .ico {
+      display: none;
+    }
+
+    input {
+      width: 100%;
+      padding: 11px 38px 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      background: var(--bg-input);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+    }
+
+    input.error {
+      border-color: #3a3838;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+    }
+
+    input::placeholder { color: #c0c8d8; }
+
+    .eye-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b0b8cc;
+      cursor: pointer;
+      font-size: 13px;
+      transition: color 0.15s;
+    }
+    .eye-btn:hover { color: var(--accent); }
+
+    .field-hint {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 5px;
+    }
+
+    .error-msg {
+      font-size: 11px;
+      color: #ef4444;
+      margin-top: 5px;
+      display: none;
+    }
+
+    /* Password strength */
+    .strength-bar {
+      display: flex;
+      gap: 4px;
+      margin-top: 7px;
+    }
+
+    .strength-bar span {
+      flex: 1;
+      height: 3px;
+      border-radius: 3px;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+
+    .strength-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Terms */
+    .terms-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-bottom: 20px;
+    }
+
+    .terms-row input[type="checkbox"] {
+      width: 16px; height: 16px;
+      padding: 0;
+      margin-top: 2px;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .terms-row label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 400;
+      margin: 0;
+    }
+
+    .terms-row a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Buttons */
+    .btn-next, .btn-submit, .btn-back {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 12px;
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .btn-next {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(26,86,219,0.3);
+    }
+
+    .btn-next:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(26,86,219,0.4);
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #ff2d78, #ff6eb4);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(255,45,120,0.4);
+    }
+
+    .btn-submit::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -60%;
+      width: 50%; height: 200%;
+      background: rgba(255,255,255,0.2);
+      transform: skewX(-20deg);
+      animation: shine 2.5s infinite;
+    }
+
+    @keyframes shine {
+      0%   { left: -60%; }
+      100% { left: 130%; }
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255,45,120,0.55);
+    }
+
+    .btn-back {
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+      margin-bottom: 10px;
+    }
+
+    .btn-back:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Success screen */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .success-icon {
+      width: 70px; height: 70px;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(16,185,129,0.35);
+      animation: pop 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .success-screen h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .success-screen p {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .btn-goto-login {
+      display: inline-block;
+      padding: 12px 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-goto-login:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    /* Bottom login link */
+    .login-row {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .login-row a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .login-row a:hover { text-decoration: underline; }
+
+    /* NID info badge */
+    .info-badge {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 9px;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      font-size: 12px;
+      color: #1e40af;
+      line-height: 1.5;
+    }
+
+    .info-badge i { margin-top: 1px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="card">
+  <form id="signupForm">
+ <div class="heading">
+    <h2>Create Your Account</h2>
+    <p style="color:#024e18; font-weight:600; font-size:18px;">As Tenant</p>
+   
+  </div>
+
+  <!-- Step Indicators -->
+  <div class="steps" id="stepsBar">
+    <div class="step active" id="step1Ind">
+      <div class="step-circle">1</div>
+      <div class="step-label">Personal</div>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" id="step2Ind">
+      <div class="step-circle">2</div>
+      <div class="step-label">Verification</div>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" id="step3Ind">
+      <div class="step-circle">3</div>
+      <div class="step-label">Security</div>
+    </div>
+  </div>
+
+  <!-- PAGE 1: Personal Info -->
+  <div class="form-page active" id="page1">
+    <div class="field-row">
+      <div class="field">
+        <label>First Name <span class="required">*</span></label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-user ico"></i>
+          <input type="text" id="firstName" placeholder="Rahim">
+        </div>
+      </div>
+      <div class="field">
+        <label>Last Name <span class="required">*</span></label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-user ico"></i>
+          <input type="text" id="lastName" placeholder="Hossain">
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Email Address <span class="required">*</span></label>
+      <div class="input-wrap">
+        <i class="fa-regular fa-envelope ico"></i>
+        <input type="email" id="email" placeholder="rahim@example.com">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Phone Number <span class="required">*</span></label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-phone ico"></i>
+        <input type="tel" id="phone" placeholder="+8801XXXXXXXXX" required>
+<div class="error-msg" id="phoneErr">Invalid phone number!</div>
+      </div>
+      <div class="field-hint">Bangladesh number preferred (+880)</div>
+    </div>
+
+    <button type="button" class="btn-next" onclick="goToPage(2)">Continue</button>
+
+    <div class="login-row">Already have an account? <a href="tenant-login.html">Log in</a></div>
+  </div>
+
+  <!-- PAGE 2: Verification -->
+  <div class="form-page" id="page2">
+
+    <div class="info-badge">
+      <span>🔒 Your NID information is encrypted and used only for identity verification purposes.</span>
+    </div>
+
+    <div class="field">
+      <label>National ID (NID) Number <span class="required">*</span></label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-id-card ico"></i>
+        <input type="text" id="nid" placeholder="10 or 17 digit NID number" maxlength="17">
+      </div>
+      <div class="field-hint">Enter your Bangladesh National ID card number</div>
+    </div>
+
+    <div class="field">
+      <label>Date of Birth <span class="required">*</span></label>
+      <div class="input-wrap">
+        <i class="fa-regular fa-calendar ico"></i>
+        <input type="date" id="dob">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Present Address</label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-location-dot ico"></i>
+        <input type="text" id="address" placeholder="Dhaka, Bangladesh">
+      </div>
+    </div>
+
+    <button type="button" class="btn-back" onclick="goToPage(1)">Back</button>
+    <button type="button" class="btn-next" onclick="goToPage(3)">Continue</button>
+  </div>
+
+  <!-- PAGE 3: Security -->
+  <div class="form-page" id="page3">
+
+    <div class="field">
+      <label>Create Password <span class="required">*</span></label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-lock ico"></i>
+        <input type="password" id="password" placeholder="Min. 8 characters" oninput="checkStrength(this.value)">
+        <span class="eye-btn" onclick="togglePass('password', this)" data-show="👁" data-hide="🙈">👁</span>
+      </div>
+      <div class="strength-bar">
+        <span id="s1"></span><span id="s2"></span><span id="s3"></span><span id="s4"></span>
+      </div>
+      <div class="strength-label" id="strengthLabel">Enter a strong password</div>
+    </div>
+
+    <div class="field">
+      <label>Confirm Password <span class="required">*</span></label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-lock ico"></i>
+        <input type="password" id="confirmPass" placeholder="Re-enter password">
+        <span class="eye-btn" onclick="togglePass('confirmPass', this)" data-show="👁" data-hide="🙈">👁</span>
+      </div>
+      <div class="error-msg" id="passMatchErr">Passwords do not match!</div>
+    </div>
+
+    <div class="terms-row">
+      <input type="checkbox" id="terms">
+      <label for="terms">
+        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of BashaKhuji
+      </label>
+    </div>
+
+    <button type="button" class="btn-back" onclick="goToPage(2)">Back</button>
+   <button type="button" onclick="submitForm()" class="btn-submit">Create Account</button>
+  
+</div>
+  
+
+
+  <!-- SUCCESS SCREEN -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h3>Account Created! 🎉</h3>
+    <p>Welcome to BashaKhuji!<br>You can now explore and find your dream home.</p>
+    <a href="tenant-dashboard.html" class="btn-goto-login">Go to Dashboard</a>
+  </div>
+</form>
+</div>
+
+<script>
+  let currentPage = 1;
+
+  function goToPage(page) {
+    // Validate before proceeding
+    if (page > currentPage) {
+      if (!validatePage(currentPage)) return;
+    }
+
+    document.getElementById('page' + currentPage).classList.remove('active');
+    document.getElementById('page' + page).classList.add('active');
+
+    // Update steps
+    for (let i = 1; i <= 3; i++) {
+      const ind = document.getElementById('step' + i + 'Ind');
+      ind.classList.remove('active', 'done');
+      if (i < page) ind.classList.add('done');
+      else if (i === page) ind.classList.add('active');
+
+      // Circle icon for done
+      const circle = ind.querySelector('.step-circle');
+      if (i < page) circle.innerHTML = '✓';
+      else circle.innerHTML = i;
+    }
+
+    // Lines
+    if (page > 1) document.getElementById('line1').classList.add('done');
+    else document.getElementById('line1').classList.remove('done');
+    if (page > 2) document.getElementById('line2').classList.add('done');
+    else document.getElementById('line2').classList.remove('done');
+
+    currentPage = page;
+  }
+function validatePage(page) {
+
+  // ✅ PAGE 1 VALIDATION
+  if (page === 1) {
+    const fn = document.getElementById('firstName').value.trim();
+    const ln = document.getElementById('lastName').value.trim();
+    const em = document.getElementById('email').value.trim();
+    const ph = document.getElementById('phone').value.trim();
+
+    const phoneInput = document.getElementById('phone');
+    const phoneErr = document.getElementById('phoneErr');
+
+    if (!fn || !ln || !em || !ph) {
+      alert('Please fill in all required fields.');
+      return false;
+    }
+
+    if (!em.includes('@')) {
+      alert('Please enter a valid email address.');
+      return false;
+    }
+
+    // ✅ STRICT +880 validation
+    const validPhone = /^\+8801[3-9]\d{8}$/.test(ph);
+
+    if (!validPhone) {
+      phoneInput.style.borderColor = '#ef4444';
+      phoneInput.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.15)';
+      phoneErr.style.display = 'block';
+      phoneErr.textContent = '❌ Must be +8801XXXXXXXXX';
+      return false; // ❌ STOP here
+    } else {
+      phoneInput.style.borderColor = '#10b981';
+      phoneInput.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.15)';
+      phoneErr.style.display = 'none';
+    }
+  }
+
+  // ✅ PAGE 2 VALIDATION
+  if (page === 2) {
+    const nid = document.getElementById('nid').value.trim();
+    const dob = document.getElementById('dob').value;
+
+    if (!nid || !dob) {
+      alert('Please fill in NID number and date of birth.');
+      return false;
+    }
+
+    if (nid.length < 10) {
+      alert('NID number must be at least 10 digits.');
+      return false;
+    }
+  }
+
+  return true;
+}
+  async function submitForm() {
+  await window.firebaseSignup();
+}
+  function togglePass(id, btn) {
+    const input = document.getElementById(id);
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      btn.textContent = '👁';
+    }
+  }
+
+  
+    function checkStrength(val) {
+  // ✅ Strength based on LENGTH only (as requested by teacher)
+  // 1-4 chars   → Weak   (red)
+  // 5-7 chars   → Good   (orange)  
+  // 8-11 chars  → Strong (green)
+  // 12+ chars   → Very Strong (dark green)
+
+  let score = 0;
+  let label = '';
+  let color = '';
+
+  if (val.length === 0) {
+    score = 0;
+  } else if (val.length <= 4) {
+    score = 1; label = 'Weak password'; color = '#ef4444'; // red
+  } else if (val.length <= 7) {
+    score = 2; label = 'Good password'; color = '#f97316'; // orange
+  } else if (val.length <= 11) {
+    score = 3; label = 'Strong password'; color = '#10b981'; // green
+  } else {
+    score = 4; label = 'Very Strong password! 💪'; color = '#059669'; // dark green
+  }
+
+  // Update strength bars (4 bars)
+  const bars = ['s1', 's2', 's3', 's4'];
+  bars.forEach((id, i) => {
+    const bar = document.getElementById(id);
+    if (bar) bar.style.background = i < score ? color : 'var(--border)';
+  });
+
+  // Update label text
+  const lbl = document.getElementById('strengthLabel');
+  if (lbl) {
+    lbl.textContent = val.length === 0 ? 'Enter a strong password' : label;
+    lbl.style.color = val.length === 0 ? 'var(--muted)' : color;
+  }
+}
+
+  
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } 
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } 
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain: "bashakhuji-503d1.firebaseapp.com",
+    projectId: "bashakhuji-503d1",
+    storageBucket: "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  window.firebaseSignup = async function() {
+
+
+    const pass  = document.getElementById('password').value;
+    const conf  = document.getElementById('confirmPass').value;
+    const terms = document.getElementById('terms').checked;
+
+    if (!pass || !conf) { alert('Please fill in password fields.'); return; }
+    if (pass !== conf) {
+      document.getElementById('passMatchErr').style.display = 'block'; return;
+    }
+    if (!terms) { alert('Please agree to the Terms of Service.'); return; }
+
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName  = document.getElementById("lastName").value.trim();
+    const email     = document.getElementById("email").value.trim();
+    const phone     = document.getElementById("phone").value.trim();
+    const nid       = document.getElementById("nid").value.trim();
+    const dob       = document.getElementById("dob").value;
+    const address   = document.getElementById("address").value.trim();
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+      const uid = userCredential.user.uid;
+
+      await setDoc(doc(db, "tenants", uid), {
+        uid,
+        firstName,
+        lastName,
+        email,
+        phone,
+        nid,
+        dob,
+        address,
+        role: "tenant",
+        createdAt: serverTimestamp()
+      });
+
+      // Success screen দেখাও
+      document.getElementById('page3').classList.remove('active');
+      document.getElementById('stepsBar').style.display = 'none';
+      document.querySelector('.heading').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        alert('This email is already associated with an account!');
+      } else if (error.code === 'auth/weak-password') {
+        alert('❌ Password must be at least 6 characters long!');
+      } else {
+        alert('❌ Error: ' + error.message);
+      }
+    }
+  };
+</script>
+</body>
+</html>

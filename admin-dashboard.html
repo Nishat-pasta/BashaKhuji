@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | BashaKhuji</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+  --bg:      #aaf3ef;
+  --sidebar: #f2ecf2;
+  --card:    #ffffff;
+  --border:  rgba(0,0,0,0.10);
+  --accent:  #1a56db;
+  --green:   #10b981;
+  --red:     #ef4444;
+  --yellow:  #f59e0b;
+  --text:    #1e293b;
+  --muted:   #64748b;
+}
+   
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 240px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      z-index: 100;
+      padding: 24px 0;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-brand .icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, #1a56db, #3b82f6);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: #fff;
+    }
+   .sidebar-brand span {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+    .sidebar-brand small {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 16px 12px;
+    }
+
+    .nav-section {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      padding: 12px 10px 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: all 0.2s;
+      margin-bottom: 2px;
+      text-decoration: none;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+    .nav-item.active {
+      background: rgba(26,86,219,0.2);
+      color: #60a5fa;
+      border: 1px solid rgba(26,86,219,0.3);
+    }
+    .nav-item i { width: 18px; text-align: center; font-size: 14px; }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+    }
+
+    .sidebar-footer {
+      padding: 16px 12px;
+      border-top: 1px solid var(--border);
+    }
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+    }
+    .admin-avatar {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, #1a56db, #ec4899);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #fff; font-weight: 700;
+    }
+    .admin-info span { font-size: 13px; font-weight: 600; color: var(--text); }
+    .admin-info small { display: block; font-size: 11px; color: var(--muted); }
+    .logout-btn {
+      margin-left: auto;
+      background: none; border: none;
+      color: var(--muted); cursor: pointer;
+      font-size: 14px; transition: color 0.2s;
+    }
+    .logout-btn:hover { color: var(--red); }
+
+    /* ── Main ── */
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      padding: 28px 32px;
+      min-height: 100vh;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .topbar h1 { font-size: 22px; font-weight: 700; }
+    .topbar p  { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .topbar-right { display: flex; gap: 10px; align-items: center; }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      width: 220px;
+    }
+    .search-bar input {
+      background: none; border: none; outline: none;
+      color: var(--text); font-family: 'Poppins', sans-serif;
+      font-size: 13px; width: 100%;
+    }
+    .search-bar input::placeholder { color: var(--muted); }
+
+    /* ── Stat Cards ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      opacity: 0.08;
+      transform: translate(20px,-20px);
+    }
+    .stat-card.blue::before  { background: #1a56db; }
+    .stat-card.green::before { background: #10b981; }
+    .stat-card.red::before   { background: #ef4444; }
+    .stat-card.yellow::before{ background: #f59e0b; }
+
+    .stat-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: 14px;
+    }
+    .stat-card.blue   .stat-icon { background: rgba(26,86,219,0.15); color: #60a5fa; }
+    .stat-card.green  .stat-icon { background: rgba(16,185,129,0.15); color: #34d399; }
+    .stat-card.red    .stat-icon { background: rgba(239,68,68,0.15);  color: #f87171; }
+    .stat-card.yellow .stat-icon { background: rgba(245,158,11,0.15); color: #fbbf24; }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .stat-label { font-size: 12.5px; color: var(--muted); }
+    .stat-change {
+      font-size: 11px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stat-change.up   { color: #34d399; }
+    .stat-change.down { color: #f87171; }
+
+    /* ── Section ── */
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-title .view-all {
+      font-size: 12px;
+      font-weight: 500;
+      color: #60a5fa;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* ── Property Approval Table ── */
+    .table-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+    .table-header h3 { font-size: 15px; font-weight: 600; }
+
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+    }
+    .filter-tab {
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: none;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.2s;
+    }
+    .filter-tab.active, .filter-tab:hover {
+      background: rgba(26,86,219,0.2);
+      border-color: rgba(26,86,219,0.4);
+      color: #60a5fa;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      padding: 12px 22px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 14px 22px;
+      font-size: 13.5px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .prop-info { display: flex; align-items: center; gap: 12px; }
+    .prop-thumb {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: rgba(26,86,219,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .prop-name { font-weight: 600; font-size: 13.5px; }
+    .prop-loc  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* Status badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .badge.pending  { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+    .badge.approved { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+    .badge.rejected { background: rgba(239,68,68,0.15);  color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+
+    /* Action buttons */
+    .action-btns { display: flex; gap: 8px; }
+    .btn-approve, .btn-reject, .btn-view {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-approve {
+      background: rgba(16,185,129,0.15);
+      color: #34d399;
+      border: 1px solid rgba(16,185,129,0.3);
+    }
+    .btn-approve:hover { background: rgba(16,185,129,0.3); }
+    .btn-reject {
+      background: rgba(239,68,68,0.15);
+      color: #f87171;
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+    .btn-reject:hover { background: rgba(239,68,68,0.3); }
+    .btn-view {
+      background: rgba(26,86,219,0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(26,86,219,0.3);
+    }
+    .btn-view:hover { background: rgba(26,86,219,0.3); }
+
+    /* ── Two Column Layout ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    /* ── User List ── */
+    .user-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.2s;
+    }
+    .user-item:hover { background: rgba(255,255,255,0.02); }
+    .user-item:last-child { border-bottom: none; }
+
+    .user-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .user-name  { font-size: 13.5px; font-weight: 600; }
+    .user-email { font-size: 11.5px; color: var(--muted); }
+    .user-role  {
+      margin-left: auto;
+      font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px;
+    }
+    .user-role.tenant { background: rgba(26,86,219,0.15); color: #60a5fa; }
+    .user-role.owner  { background: rgba(245,158,11,0.15); color: #fbbf24; }
+
+    .btn-block {
+      padding: 5px 10px;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 7px;
+      color: #f87171;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      margin-left: 8px;
+      transition: all 0.2s;
+    }
+    .btn-block:hover { background: rgba(239,68,68,0.25); }
+
+    /* ── Activity log ── */
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-top: 5px; flex-shrink: 0;
+    }
+    .activity-text { font-size: 13px; line-height: 1.5; }
+    .activity-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: #1e293b;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 9999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.green { border-left: 4px solid #10b981; }
+    .toast.red   { border-left: 4px solid #ef4444; }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .two-col    { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main    { margin-left: 0; padding: 20px 16px; }
+    }
+  </style>
+  
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain: "bashakhuji-503d1.firebaseapp.com",
+    projectId: "bashakhuji-503d1",
+    storageBucket: "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let allProperties = [];
+  let allTenants = [];
+  let allOwners = [];
+
+  // Login না থাকলে redirect করো
+  onAuthStateChanged(auth, user => {
+    if (!user) window.location.href = 'admin-login.html';
+    else {
+      loadProperties();
+      loadUsers();
+      loadAdminName();
+    }
+  });
+
+  async function loadProperties() {
+    try {
+      const snap = await getDocs(collection(db, "properties"));
+      allProperties = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderProps('all');
+      updateStats();
+    } catch (error) {
+      console.error("Error loading properties:", error);
+    }
+  }
+
+  async function updateStats() {
+    const pending = allProperties.filter(p => p.status === 'pending').length;
+    let totalUsers = allTenants.length + allOwners.length;
+    
+    const statCards = document.querySelectorAll('.stat-card');
+    if (statCards.length >= 3) {
+      statCards[0].querySelector('.stat-value').textContent = allProperties.length;
+      statCards[1].querySelector('.stat-value').textContent = totalUsers;
+      statCards[2].querySelector('.stat-value').textContent = pending;
+    }
+  }
+
+  async function loadUsers() {
+    try {
+      const tenantsSnap = await getDocs(collection(db, "tenants"));
+      allTenants = tenantsSnap.docs.map(d => ({ id: d.id, ...d.data(), userType: 'tenant' }));
+      
+      const ownersSnap = await getDocs(collection(db, "owners"));
+      allOwners = ownersSnap.docs.map(d => ({ id: d.id, ...d.data(), userType: 'owner' }));
+      
+      renderRecentUsers();
+      updateStats();
+    } catch (error) {
+      console.error("Error loading users:", error);
+      const userListDiv = document.getElementById('userList');
+      if (userListDiv) userListDiv.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--muted);">Error loading users</div>';
+    }
+  }
+
+  async function loadAdminName() {
+  const user = auth.currentUser;
+  if (user) {
+    const email = user.email;
+    try {
+      const adminsSnap = await getDocs(query(collection(db, "admins"), where("email", "==", email)));
+      if (!adminsSnap.empty) {
+        const adminData = adminsSnap.docs[0].data();
+        // firstName + lastName দিয়ে নাম তৈরি করো
+        let fullName = adminData.name || adminData.fullName;
+        if (!fullName && adminData.firstName && adminData.lastName) {
+          fullName = `${adminData.firstName} ${adminData.lastName}`;
+        } else if (!fullName && adminData.firstName) {
+          fullName = adminData.firstName;
+        } else if (!fullName) {
+          fullName = 'Admin';
+        }
+        const welcomeP = document.getElementById('welcomeMessage');
+        if (welcomeP) {
+          welcomeP.innerHTML = `Welcome back, ${fullName}! Here's what's happening today.`;
+        }
+        
+        // Sidebar এ নামও দেখানোর জন্য
+        const adminNameSpan = document.querySelector('.admin-info span');
+        if (adminNameSpan) {
+          adminNameSpan.textContent = fullName;
+        }
+      }
+    } catch (error) {
+      console.error("Error loading admin name:", error);
+    }
+  }
+}
+
+  function getFullName(user) {
+    if (user.firstname && user.lastname) {
+      return `${user.firstname} ${user.lastname}`;
+    }
+    return user.name || user.firstname || '';
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  function renderRecentUsers() {
+    let allUsers = [...allTenants, ...allOwners];
+    allUsers.sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt) : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt) : 0;
+      return dateB - dateA;
+    });
+    const recentUsers = allUsers.slice(0, 5);
+    
+    const userListDiv = document.getElementById('userList');
+    if (!userListDiv) return;
+    
+    if (recentUsers.length === 0) {
+      userListDiv.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--muted);">No users found</div>';
+      return;
+    }
+    
+    const avatarColors = ['#0077b6', '#ff85a1', '#ffd166', '#06d6a0', '#8b5cf6'];
+    
+    userListDiv.innerHTML = recentUsers.map((user, index) => {
+      const fullName = getFullName(user);
+      const avatarColor = avatarColors[index % avatarColors.length];
+      const joinedDate = user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Recently';
+      
+      return `
+        <div class="user-item">
+          <div class="user-avatar" style="background: ${avatarColor}">${(fullName || 'U').charAt(0).toUpperCase()}</div>
+          <div>
+            <div class="user-name">${escapeHtml(fullName || 'Unknown')}</div>
+            <div class="user-email">${escapeHtml(user.email || 'No email')}</div>
+            <div style="font-size: 10px; color: var(--muted);">Joined: ${joinedDate}</div>
+          </div>
+          <div class="user-role ${user.userType}">${user.userType === 'owner' ? '🏠 Owner' : '🧑 Tenant'}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.renderProps = function(filter) {
+    const filtered = filter === 'all' ? allProperties : allProperties.filter(p => p.status === filter);
+    const tbody = document.getElementById('propTable');
+    if (!tbody) return;
+    
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;">No properties found</td></tr>`;
+      return;
+    }
+    
+    tbody.innerHTML = filtered.map(p => `
+      <tr id="row-${p.id}">
+        <td>
+          <div class="prop-info">
+            <div class="prop-thumb">🏠</div>
+            <div>
+              <div class="prop-name">${escapeHtml(p.title || p.name || 'N/A')}</div>
+              <div class="prop-loc"><i class="fas fa-map-marker-alt" style="font-size:10px"></i> ${escapeHtml(p.location || p.loc || '')}</div>
+            </div>
+          </div>
+        </td>
+        <td style="color:var(--muted)">${escapeHtml(p.ownerName || p.owner || 'Unknown')}</td>
+        <td><span style="font-size:12px;color:var(--muted)">${escapeHtml(p.type || '')}</span></td>
+        <td style="font-weight:600;color:#34d399">৳ ${(p.rent || p.price || 0).toLocaleString()}</td>
+        <td><span class="badge ${p.status || 'pending'}">
+          ${p.status === 'approved' ? '✅' : p.status === 'rejected' ? '❌' : '⏳'}
+          ${(p.status || 'pending').charAt(0).toUpperCase() + (p.status || 'pending').slice(1)}
+        </span></td>
+        <td>
+          <div class="action-btns">
+            ${p.status !== 'approved' ? `<button class="btn-approve" onclick="window.approveP('${p.id}')">✅ Approve</button>` : ''}
+            ${p.status !== 'rejected' ? `<button class="btn-reject" onclick="window.rejectP('${p.id}')">❌ Reject</button>` : ''}
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  window.filterProps = function(filter, btn) {
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProps(filter);
+  }
+
+  window.approveP = async function(id) {
+    try {
+      await updateDoc(doc(db, "properties", id), { status: 'approved' });
+      const prop = allProperties.find(p => p.id === id);
+      if (prop) prop.status = 'approved';
+      const activeFilter = document.querySelector('.filter-tab.active')?.innerText.toLowerCase() || 'all';
+      renderProps(activeFilter === 'all' ? 'all' : activeFilter);
+      updateStats();
+      window.showToast('✅ Property approved!', 'green');
+    } catch (error) {
+      window.showToast('❌ Failed to approve', 'red');
+    }
+  }
+
+  window.rejectP = async function(id) {
+    try {
+      await updateDoc(doc(db, "properties", id), { status: 'rejected' });
+      const prop = allProperties.find(p => p.id === id);
+      if (prop) prop.status = 'rejected';
+      const activeFilter = document.querySelector('.filter-tab.active')?.innerText.toLowerCase() || 'all';
+      renderProps(activeFilter === 'all' ? 'all' : activeFilter);
+      updateStats();
+      window.showToast('❌ Property rejected!', 'red');
+    } catch (error) {
+      window.showToast('❌ Failed to reject', 'red');
+    }
+  }
+
+  window.showToast = function(msg, type) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = `toast ${type} show`;
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  window.logout = async function() {
+    if (confirm('Logout from admin panel?')) {
+      await signOut(auth);
+      window.location.href = 'admin-login.html';
+    }
+  }
+</script>
+
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <a href="index.html" style="text-decoration: none; color: inherit; display: block;">
+  <div class="sidebar-brand">
+    <img src="images/logo.png" alt="BashaKhuji Logo" style="width: 40px; height: 40px; border-radius: 10px; object-fit: cover;">
+    <div>
+      <span>BashaKhuji</span>
+      <small>Admin Panel</small>
+    </div>
+  </div>
+</a>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a class="nav-item active" href="admin-dashboard.html">
+      <i class="fas fa-chart-pie"></i> Dashboard
+    </a>
+    <a class="nav-item" href="properties.html">
+      <i class="fas fa-building"></i> Properties
+      <span class="nav-badge" id="propertyBadge">0</span>
+    </a>
+    <a class="nav-item" href="users.html">
+      <i class="fas fa-users"></i> Users
+    </a>
+    <div class="nav-section">Management</div>
+    <a class="nav-item" href="payment-approve.html">
+      <i class="fas fa-credit-card"></i> Payments
+    </a>
+    <a class="nav-item" href="reports.html">
+      <i class="fas fa-flag"></i> Reports
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="admin-info">
+      <div class="admin-avatar">A</div>
+      <div>
+        <span>Admin</span>
+        <small>Super Admin</small>
+      </div>
+      <button class="logout-btn" onclick="window.logout()" title="Logout">
+        <i class="fas fa-right-from-bracket"></i>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- ══ MAIN CONTENT ══ -->
+<main class="main">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div>
+      <h1>Dashboard Overview</h1>
+     <p id="welcomeMessage">Welcome back, Admin! Here's what's happening today.</p>
+    </div>
+    <div class="topbar-right">
+      <div class="search-bar">
+        <i class="fas fa-search" style="color:var(--muted)"></i>
+        <input type="text" id="dashboardSearch" placeholder="Search...">
+      </div>
+    </div>
+  </div>
+
+  <!-- Stat Cards -->
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-icon"><i class="fas fa-building"></i></div>
+      <div class="stat-value">0</div>
+      <div class="stat-label">Total Properties</div>
+      <div class="stat-change up"><i class="fas fa-arrow-up"></i> <span id="newPropsCount">0</span> new this week</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon"><i class="fas fa-users"></i></div>
+      <div class="stat-value">0</div>
+      <div class="stat-label">Registered Users</div>
+      <div class="stat-change up"><i class="fas fa-arrow-up"></i> <span id="newUsersCount">0</span> new this week</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-icon"><i class="fas fa-clock"></i></div>
+      <div class="stat-value">0</div>
+      <div class="stat-label">Pending Approvals</div>
+      <div class="stat-change down"><i class="fas fa-exclamation"></i> Needs attention</div>
+    </div>
+    
+  </div>
+
+  <!-- Property Approval Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <h3><i class="fas fa-building" style="color:#60a5fa;margin-right:8px"></i>Property Approvals</h3>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="window.filterProps('all',this)">All</button>
+        <button class="filter-tab" onclick="window.filterProps('pending',this)">Pending</button>
+        <button class="filter-tab" onclick="window.filterProps('approved',this)">Approved</button>
+        <button class="filter-tab" onclick="window.filterProps('rejected',this)">Rejected</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Owner</th>
+          <th>Type</th>
+          <th>Rent</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="propTable">
+        <tr><td colspan="6" style="text-align:center;padding:40px;">Loading properties...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Two Column: Users + Activity -->
+  <div class="two-col">
+
+    <!-- User Management -->
+    <div class="table-card">
+      <div class="table-header">
+        <h3><i class="fas fa-users" style="color:#60a5fa;margin-right:8px"></i>Recent Users</h3>
+        <a href="users.html" style="font-size:12px;color:#60a5fa;text-decoration:none;">View All →</a>
+      </div>
+      <div id="userList">
+        <div style="padding: 40px; text-align: center; color: var(--muted);">Loading users...</div>
+      </div>
+    </div>
+
+    <!-- Activity Log -->
+    <div class="table-card">
+      <div class="table-header">
+        <h3><i class="fas fa-clock" style="color:#60a5fa;margin-right:8px"></i>Recent Activity</h3>
+      </div>
+      <div id="activityLog">
+        <div class="activity-item">
+          <div class="activity-dot" style="background: #10b981;"></div>
+          <div>
+            <div class="activity-text">Admin panel loaded successfully</div>
+            <div class="activity-time">Just now</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+</body>
+</html>

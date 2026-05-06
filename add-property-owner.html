@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Property | BashaKhuji</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: #f4f6f8; color: #333; }
+    .sidebar { width: 240px; height: 100vh; background: #2c2f36; position: fixed; left: 0; top: 0; padding: 30px 20px; }
+    .sidebar h2 { color: #fff; margin-bottom: 40px; text-align: center; }
+    .sidebar a { display: block; color: #ddd; text-decoration: none; margin-bottom: 20px; font-size: 15px; transition: 0.3s; }
+    .sidebar a:hover, .sidebar a.active { color: #fff; padding-left: 8px; }
+    .main { margin-left: 240px; padding: 30px; }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .top-bar h1 { font-size: 24px; font-weight: 600; }
+    .logout-btn { background: #444; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    .form-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); max-width: 600px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 14px; margin-bottom: 6px; color: #555; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 10px 14px; border: 1px solid #ddd;
+      border-radius: 8px; font-size: 14px; font-family: 'Poppins', sans-serif;
+      outline: none; transition: 0.3s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #2c2f36; }
+    .form-group textarea { resize: vertical; height: 100px; }
+
+    /* Photo preview */
+    #photoPreview {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;
+    }
+    #photoPreview img {
+      width: 80px; height: 80px; object-fit: cover;
+      border-radius: 8px; border: 2px solid #ddd;
+    }
+
+    /* Progress bar */
+    #progressWrap {
+      display: none; margin-bottom: 15px;
+    }
+    .progress-bar-bg {
+      background: #e0e0e0; border-radius: 20px; height: 8px; overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: linear-gradient(90deg, #2c2f36, #4a90d9);
+      height: 100%; border-radius: 20px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+    #progressText { font-size: 13px; color: #555; margin-top: 5px; }
+
+    .submit-btn {
+      background: #2c2f36; color: white; border: none;
+      padding: 12px 28px; border-radius: 8px; font-size: 15px;
+      cursor: pointer; transition: 0.3s; width: 100%;
+    }
+    .submit-btn:hover { background: #444; }
+    .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    @media(max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>BashaKhuji</h2>
+    <a href="owner-dashboard.html">Dashboard</a>
+    <a href="my-properties-owner.html">My Properties</a>
+    <a href="add-property-owner.html" class="active">Add Property</a>
+    <a href="owner-requests.html">Requests</a>
+  </div>
+
+  <div class="main">
+    <div class="top-bar">
+      <h1>Add Property</h1>
+      <button class="logout-btn" onclick="window.location.href='owner-login.html'">Logout</button>
+    </div>
+
+    <div class="form-card">
+      <div class="form-group">
+        <label>Property Title</label>
+        <input type="text" id="title" placeholder="e.g. Student Friendly Room">
+      </div>
+      <div class="form-group">
+        <label>Flat Size</label>
+        <select id="flatSize">
+          <option value="">Select size</option>
+          <option value="small">Small</option>
+          <option value="medium">Medium</option>
+          <option value="large">Large</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Property Type</label>
+        <select id="type">
+          <option value="">Select type</option>
+          <option value="Flat">Flat</option>
+          <option value="House">House</option>
+          <option value="Room">Room</option>
+          <option value="Sublet">Sublet</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Rent (৳ per month)</label>
+        <input type="number" id="rent" placeholder="e.g. 6000">
+      </div>
+      <div class="form-group">
+        <label>Rooms (Bed)</label>
+        <input type="number" id="rooms" placeholder="e.g. 2">
+      </div>
+      <div class="form-group">
+        <label>Bathrooms</label>
+        <input type="number" id="bathrooms" placeholder="e.g. 1">
+      </div>
+      <div class="form-group">
+        <label>Size (sqft)</label>
+        <input type="text" id="sqft" placeholder="e.g. 580">
+      </div>
+      <div class="form-group">
+        <label>Floor</label>
+        <input type="text" id="floor" placeholder="e.g. 3">
+      </div>
+      <div class="form-group">
+        <label>Division</label>
+        <input type="text" id="division" placeholder="e.g. Dhaka">
+      </div>
+      <div class="form-group">
+        <label>District</label>
+        <input type="text" id="district" placeholder="e.g. Dhaka">
+      </div>
+      <div class="form-group">
+        <label>Area / Thana</label>
+        <input type="text" id="area" placeholder="e.g. Dhanmondi">
+      </div>
+      <div class="form-group">
+        <label>Furnishing</label>
+        <select id="furnish">
+          <option value="Unfurnished">Unfurnished</option>
+          <option value="Semi Furnished">Semi Furnished</option>
+          <option value="Fully Furnished">Fully Furnished</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Gender</label>
+        <select id="gender">
+          <option value="Any">Any</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Family">Family</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="description" placeholder="Brief description..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Property Photos (একাধিক ছবি select করতে পারবে)</label>
+        <input type="file" id="photos" multiple accept="image/*" onchange="previewPhotos(this)">
+        <div id="photoPreview"></div>
+      </div>
+
+      <!-- Progress -->
+      <div id="progressWrap">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div id="progressText">⏳ Uploading photos... 0%</div>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitProperty()">
+        Add Property
+      </button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // ── Cloudinary config ──
+    const CLOUDINARY_CLOUD = "ddvc0sppd";
+    const CLOUDINARY_PRESET = "ml_bashakhuji";
+    const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`;
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+      authDomain: "bashakhuji-503d1.firebaseapp.com",
+      projectId: "bashakhuji-503d1",
+      storageBucket: "bashakhuji-503d1.firebasestorage.app",
+      messagingSenderId: "697249288857",
+      appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // Auth check
+    onAuthStateChanged(auth, (user) => {
+      if (!user) window.location.href = "owner-login.html";
+    });
+
+    // Photo preview
+    window.previewPhotos = function(input) {
+      const preview = document.getElementById('photoPreview');
+      preview.innerHTML = '';
+      Array.from(input.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+
+    // Upload single photo to Cloudinary
+    async function uploadToCloudinary(file, index, total) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      formData.append('folder', 'bashakhuji/properties');
+
+      const res = await fetch(CLOUDINARY_URL, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error?.message || 'Cloudinary upload failed');
+      }
+
+      const data = await res.json();
+
+      // Progress update
+      const pct = Math.round(((index + 1) / total) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressText').textContent =
+        `⏳ Uploading photos... ${index + 1}/${total} (${pct}%)`;
+
+      return data.secure_url;
+    }
+
+    window.submitProperty = async function() {
+  const title       = document.getElementById('title').value.trim();
+  const flatSize    = document.getElementById('flatSize').value;
+  const type        = document.getElementById('type').value;
+  const rent        = document.getElementById('rent').value;
+  const rooms       = document.getElementById('rooms').value;
+  const bathrooms   = document.getElementById('bathrooms').value;
+  const sqft        = document.getElementById('sqft').value;
+  const floor       = document.getElementById('floor').value;
+  const division    = document.getElementById('division').value.trim();
+  const district    = document.getElementById('district').value.trim();
+  const area        = document.getElementById('area').value.trim();
+  const furnish     = document.getElementById('furnish').value;
+  const gender      = document.getElementById('gender').value;
+  const description = document.getElementById('description').value.trim();
+  const photoFiles  = document.getElementById('photos').files;
+
+  if (!title || !flatSize || !type || !rent || !area) {
+    alert('❌ Title, Flat Size, Type, Rent এবং Area অবশ্যই দিতে হবে।');
+    return;
+  }
+
+  const user = auth.currentUser;
+  if (!user) {
+    alert('❌ আপনি login করেননি।');
+    window.location.href = 'owner-login.html';
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  try {
+    // ── Cloudinary এ photos upload ──
+    const photoUrls = [];
+    if (photoFiles.length > 0) {
+      document.getElementById('progressWrap').style.display = 'block';
+      for (let i = 0; i < photoFiles.length; i++) {
+        const url = await uploadToCloudinary(photoFiles[i], i, photoFiles.length);
+        photoUrls.push(url);
+      }
+      document.getElementById('progressWrap').style.display = 'none';
+    }
+
+    // ── Owner এর নাম ও ফোন বের করো ──
+    let ownerName = "";
+    let ownerPhone = "";
+    
+    try {
+      const ownerDoc = await getDoc(doc(db, "owners", user.uid));
+      if (ownerDoc.exists()) {
+        const ownerData = ownerDoc.data();
+        const firstName = ownerData.firstName || ownerData.firstname || "";
+        const lastName = ownerData.lastName || ownerData.lastname || "";
+        ownerName = (firstName + " " + lastName).trim() || user.email || "";
+        ownerPhone = ownerData.phone || "";
+      }
+    } catch(e) {
+      console.error("Error fetching owner info:", e);
+    }
+
+    // ── Firestore এ save ──
+    await addDoc(collection(db, "properties"), {
+      title, flatSize, type,
+      rent: Number(rent),
+      rooms: Number(rooms),
+      bathrooms: Number(bathrooms),
+      sqft, floor, division, district, area,
+      furnish, gender, description,
+      photos: photoUrls,
+      imageUrl: photoUrls[0] || "",
+      ownerUid: user.uid,
+      ownerEmail: user.email || "",
+      ownerName: ownerName,
+      ownerPhone: ownerPhone,
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+
+    alert('✅ Property সফলভাবে submit হয়েছে! Admin approve করলে দেখা যাবে।');
+    window.location.href = 'my-properties-owner.html';
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById('progressWrap').style.display = 'none';
+    btn.disabled = false;
+    btn.textContent = 'Add Property';
+    alert('❌ Error: ' + err.message);
+  }
+};
+  </script>
+</body>
+</html>

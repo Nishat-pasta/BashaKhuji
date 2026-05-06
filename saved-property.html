@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saved Properties | BashaKhuji</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+    :root {
+      --ocean:  #0ea5e9;
+      --ocean2: #0284c7;
+      --green:  #22c55e;
+      --green2: #16a34a;
+      --pink:   #f472b6;
+      --pink2:  #ec4899;
+      --light:  #f0f9ff;
+      --white:  #ffffff;
+      --black:  #111827;
+      --gray:   #6b7280;
+      --border: #e0f2fe;
+    }
+
+    body { background: var(--light); color: var(--black); min-height: 100vh; }
+
+    /* ===== NAVBAR — index.html এর মতো ===== */
+    header {
+      background: white;
+      height: 95px;
+      padding: 0 1%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      margin-left: -5px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      height: 80px;
+      display: block;
+    }
+
+    .logo-text {
+      font-size: 25px;
+      font-weight: 700;
+      color: rgb(14, 2, 64);
+    }
+
+    .icon-menu { display: flex; align-items: center; }
+
+    .icon-menu a {
+      margin-left: 25px;
+      text-decoration: none;
+      color: #444;
+      font-weight: 500;
+    }
+
+    .icon-menu a:hover { color: #3f37c9; }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown > a { cursor: pointer; }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 40px;
+      left: 0;
+      background: #f1f1f1;
+      min-width: 230px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 10px 0;
+      z-index: 999;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      margin-left: 0;
+      transition: 0.3s;
+    }
+
+    .dropdown-content a:hover {
+      background: #3f37c9;
+      color: #fff;
+    }
+
+    body { padding-top: 95px; }
+
+    /* ===== HERO STRIP ===== */
+    .hero-strip {
+      background: linear-gradient(135deg, var(--ocean) 0%, #38bdf8 50%, var(--green) 100%);
+      padding: 36px 30px;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-strip h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+    .hero-strip p  { font-size: 14px; opacity: 0.9; }
+
+    /* ===== MAIN ===== */
+    .main { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+
+    /* ===== STATS BAR ===== */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--white);
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(14,165,233,0.08);
+      border: 1px solid var(--border);
+    }
+
+    .stats-bar span { font-size: 14px; color: var(--gray); }
+    .stats-bar strong { color: var(--ocean); }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--pink);
+      color: var(--pink2);
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .clear-btn:hover { background: var(--pink); color: white; }
+
+    /* ===== GRID ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 22px;
+    }
+
+    /* ===== PROPERTY CARD ===== */
+    .prop-card {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(14,165,233,0.08);
+      border: 1px solid var(--border);
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative;
+    }
+
+    .prop-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(14,165,233,0.16);
+    }
+
+    .card-img {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+
+    .prop-card:hover .card-img img { transform: scale(1.05); }
+
+    /* Flat size badge */
+    .size-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .size-badge.small  { background: rgba(34,197,94,0.9);  color: white; }
+    .size-badge.medium { background: rgba(14,165,233,0.9); color: white; }
+    .size-badge.large  { background: rgba(244,114,182,0.9);color: white; }
+
+    /* Unsave heart button */
+    .unsave-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--pink2);
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: all 0.2s;
+    }
+
+    .unsave-btn:hover { background: var(--pink); color: white; transform: scale(1.1); }
+
+    .card-body { padding: 18px; }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-location {
+      font-size: 12px;
+      color: var(--gray);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-location i { color: var(--ocean); font-size: 11px; }
+
+    .card-meta {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    .meta-item i { color: var(--ocean); font-size: 11px; }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .rent-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ocean2);
+    }
+
+    .rent-price span { font-size: 12px; font-weight: 400; color: var(--gray); }
+
+    .view-btn {
+      background: linear-gradient(135deg, var(--ocean), var(--ocean2));
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: 'Poppins', sans-serif;
+      transition: opacity 0.2s;
+    }
+
+    .view-btn:hover { opacity: 0.85; }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      grid-column: 1 / -1;
+    }
+
+    .empty-icon {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e0f2fe, #dcfce7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 36px;
+    }
+
+    .empty-state h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--black); }
+    .empty-state p  { font-size: 14px; color: var(--gray); margin-bottom: 20px; }
+
+    .browse-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color: white;
+      text-decoration: none;
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .browse-btn:hover { opacity: 0.85; }
+
+    /* ===== LOADING ===== */
+    .loading-state {
+      text-align: center;
+      padding: 80px 20px;
+      grid-column: 1 / -1;
+      color: var(--gray);
+    }
+
+    .loading-state i { font-size: 36px; color: var(--ocean); margin-bottom: 14px; display: block; }
+
+    /* ===== NOT LOGGED IN ===== */
+    .not-logged {
+      text-align: center;
+      padding: 80px 20px;
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .not-logged i { font-size: 48px; color: var(--pink); margin-bottom: 16px; display: block; }
+    .not-logged h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+    .not-logged p  { font-size: 14px; color: var(--gray); margin-bottom: 20px; }
+
+    .login-link {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--ocean), var(--ocean2));
+      color: white;
+      text-decoration: none;
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--black);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 999;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.green { border-left: 4px solid var(--green); }
+    .toast.pink  { border-left: 4px solid var(--pink);  }
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width: 600px) {
+      nav { padding: 12px 16px; }
+      .nav-links { gap: 12px; }
+      .nav-links a { font-size: 12px; }
+      .hero-strip { padding: 24px 16px; }
+      .hero-strip h1 { font-size: 22px; }
+      .main { padding: 20px 14px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR — index.html এর মতো ===== -->
+<header>
+  <a href="index.html" class="logo-container">
+    <img src="images/logo.png" alt="BashaKhuji Logo" class="logo-img">
+    <span class="logo-text">BashaKhuji</span>
+  </a>
+
+  <nav class="icon-menu">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+
+    <div class="dropdown">
+      <a href="#" onclick="toggleDropdown(event)">
+        <i class="fa-solid fa-building"></i> Property List
+        <i class="fa-solid fa-chevron-down"></i>
+      </a>
+      <div class="dropdown-content" id="propertyDropdown">
+        <a href="all-property.html">🏠 All Properties</a>
+        <a href="small-flat.html">🏡 Small Flat</a>
+        <a href="medium-flat.html">🏢 Medium Flat</a>
+        <a href="large-flat.html">🏰 Large Flat</a>
+      </div>
+    </div>
+
+    <a href="saved-property.html" style="color:#3f37c9;">
+      <i class="fa-solid fa-heart"></i> Saved Property
+    </a>
+
+    <a href="tenant-dashboard.html">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+
+    <!-- Login/Logout — Firebase দেখবে কোনটা দেখাবে -->
+    <a href="#" id="logoutBtn" onclick="doLogout()" style="display:none;">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </a>
+    <a href="tenant-login.html" id="loginBtn">
+      <i class="fa-regular fa-user"></i> Login
+    </a>
+  </nav>
+</header>
+
+<!-- ===== HERO STRIP ===== -->
+<div class="hero-strip">
+  <h1><i class="fas fa-heart" style="margin-right:10px;"></i>Saved Properties</h1>
+  <p>তোমার পছন্দের বাসাগুলো এখানে সংরক্ষিত আছে</p>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+
+  <!-- Not logged in state -->
+  <div class="not-logged" id="notLogged" style="display:none;">
+    <i class="fas fa-lock"></i>
+    <h3>Login করো</h3>
+    <p>Saved properties দেখতে হলে আগে login করতে হবে।</p>
+    <a href="tenant-login.html" class="login-link">Login করো</a>
+  </div>
+
+  <!-- Logged in content -->
+  <div id="loggedContent" style="display:none;">
+    <div class="stats-bar">
+      <span>মোট <strong id="totalCount">0</strong>টি property saved আছে</span>
+      <button class="clear-btn" onclick="clearAll()">
+        <i class="fas fa-trash-alt"></i> সব মুছে ফেলো
+      </button>
+    </div>
+
+    <div class="grid" id="savedGrid">
+      <div class="loading-state">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>লোড হচ্ছে...</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== FIREBASE ===== -->
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDocs, getDoc, deleteDoc, writeBatch }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey:            "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain:        "bashakhuji-503d1.firebaseapp.com",
+    projectId:         "bashakhuji-503d1",
+    storageBucket:     "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId:             "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  let currentUser = null;
+
+  // ── Toast helper ──
+  function showToast(msg, type = 'green') {
+    const t = document.getElementById('toast');
+    t.className = `toast ${type} show`;
+    t.innerHTML = `<i class="fas fa-${type === 'green' ? 'check-circle' : 'heart-broken'}"></i> ${msg}`;
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── Auth state ──
+  // ── Dropdown toggle ──
+  window.toggleDropdown = function(e) {
+    e.preventDefault();
+    const d = document.getElementById('propertyDropdown');
+    d.style.display = d.style.display === 'block' ? 'none' : 'block';
+  };
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown')) {
+      const d = document.getElementById('propertyDropdown');
+      if (d) d.style.display = 'none';
+    }
+  });
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      document.getElementById('notLogged').style.display    = 'none';
+      document.getElementById('loggedContent').style.display = 'block';
+      document.getElementById('loginBtn').style.display     = 'none';
+      document.getElementById('logoutBtn').style.display    = 'inline';
+      loadSavedProperties(user.uid);
+    } else {
+      document.getElementById('notLogged').style.display    = 'block';
+      document.getElementById('loggedContent').style.display = 'none';
+      document.getElementById('loginBtn').style.display     = 'inline';
+      document.getElementById('logoutBtn').style.display    = 'none';
+    }
+  });
+
+  // ── Load saved properties ──
+  async function loadSavedProperties(uid) {
+    const grid = document.getElementById('savedGrid');
+    grid.innerHTML = `
+      <div class="loading-state">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>লোড হচ্ছে...</p>
+      </div>`;
+
+    try {
+      // Firestore: users/{uid}/savedProperties collection
+      const savedSnap = await getDocs(collection(db, 'users', uid, 'savedProperties'));
+
+      if (savedSnap.empty) {
+        showEmpty(grid);
+        document.getElementById('totalCount').textContent = 0;
+        return;
+      }
+
+      // Fetch each property detail
+      const promises = savedSnap.docs.map(async (savedDoc) => {
+        const propId = savedDoc.id;
+        try {
+          const propSnap = await getDoc(doc(db, 'properties', propId));
+          if (propSnap.exists()) {
+            return { id: propId, ...propSnap.data() };
+          }
+          return null;
+        } catch { return null; }
+      });
+
+      const properties = (await Promise.all(promises)).filter(Boolean);
+
+      document.getElementById('totalCount').textContent = properties.length;
+
+      if (properties.length === 0) {
+        showEmpty(grid);
+        return;
+      }
+
+      grid.innerHTML = properties.map(p => createCard(p)).join('');
+
+    } catch (err) {
+      console.error(err);
+      grid.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">⚠️</div>
+          <h3>কিছু একটা সমস্যা হয়েছে</h3>
+          <p>${err.message}</p>
+        </div>`;
+    }
+  }
+
+  function showEmpty(grid) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🏠</div>
+        <h3>কোনো saved property নেই</h3>
+        <p>তোমার পছন্দের বাসায় ❤️ চাপলে এখানে দেখাবে।</p>
+        <a href="all-property.html" class="browse-btn">
+          <i class="fas fa-search" style="margin-right:6px;"></i>Property খোঁজো
+        </a>
+      </div>`;
+  }
+
+  // ── Create card HTML ──
+  function createCard(p) {
+    const img      = (p.photos && p.photos.length > 0)
+                   ? p.photos[0]
+                   : 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400';
+    const location = [p.area, p.district, p.division].filter(Boolean).join(', ');
+    const rent     = Number(p.rent || 0).toLocaleString('en-IN');
+    const size     = p.flatSize || 'small';
+    const sizeLabel = { small: 'Small', medium: 'Medium', large: 'Large' }[size] || 'Flat';
+
+    return `
+      <div class="prop-card" id="card-${p.id}">
+        <div class="card-img">
+          <img src="${img}" alt="${p.title || ''}"
+               onerror="this.src='https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400'">
+          <span class="size-badge ${size}">${sizeLabel}</span>
+          <button class="unsave-btn" onclick="unsaveProperty('${p.id}')" title="Saved থেকে সরাও">
+            <i class="fas fa-heart"></i>
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${p.title || 'Untitled Property'}</div>
+          <div class="card-location">
+            <i class="fas fa-map-marker-alt"></i>
+            ${location || 'Location not specified'}
+          </div>
+          <div class="card-meta">
+            ${p.rooms    ? `<div class="meta-item"><i class="fas fa-bed"></i> ${p.rooms} Bed</div>` : ''}
+            ${p.bathrooms? `<div class="meta-item"><i class="fas fa-bath"></i> ${p.bathrooms} Bath</div>` : ''}
+            ${p.sqft     ? `<div class="meta-item"><i class="fas fa-vector-square"></i> ${p.sqft} sqft</div>` : ''}
+          </div>
+          <div class="card-footer">
+            <div class="rent-price">৳${rent} <span>/month</span></div>
+            <button class="view-btn" onclick="window.location.href='property-details.html?id=${p.id}'">
+              <i class="fas fa-eye" style="margin-right:4px;"></i>Details
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ── Unsave a property ──
+  window.unsaveProperty = async function(propId) {
+    if (!currentUser) return;
+    try {
+      await deleteDoc(doc(db, 'users', currentUser.uid, 'savedProperties', propId));
+      const card = document.getElementById(`card-${propId}`);
+      if (card) {
+        card.style.transition = 'opacity 0.3s, transform 0.3s';
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.9)';
+        setTimeout(() => card.remove(), 300);
+      }
+      const count = document.getElementById('totalCount');
+      count.textContent = Math.max(0, parseInt(count.textContent) - 1);
+      showToast('Property সরিয়ে ফেলা হয়েছে', 'pink');
+
+      // Check if empty after removing
+      setTimeout(() => {
+        const grid = document.getElementById('savedGrid');
+        if (grid.children.length === 0) showEmpty(grid);
+      }, 400);
+    } catch (err) {
+      showToast('সমস্যা হয়েছে, আবার চেষ্টা করো', 'pink');
+    }
+  };
+
+  // ── Clear all saved ──
+  window.clearAll = async function() {
+    if (!currentUser) return;
+    if (!confirm('সব saved property মুছে ফেলবে?')) return;
+    try {
+      const savedSnap = await getDocs(collection(db, 'users', currentUser.uid, 'savedProperties'));
+      const batch = writeBatch(db);
+      savedSnap.docs.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+      document.getElementById('totalCount').textContent = 0;
+      showEmpty(document.getElementById('savedGrid'));
+      showToast('সব property সরিয়ে ফেলা হয়েছে', 'pink');
+    } catch (err) {
+      showToast('সমস্যা হয়েছে', 'pink');
+    }
+  };
+
+  // ── Logout ──
+  window.doLogout = async function() {
+    await signOut(auth);
+    window.location.href = 'tenant-login.html';
+  };
+</script>
+
+</body>
+</html>

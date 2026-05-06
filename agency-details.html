@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Agency Details – BashaKhuji</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --ocean:   #006994;
+    --ocean2:  #0085b6;
+    --ocean3:  #004f70;
+    --ocean-bg:#003d57;
+    --pink:    #ff6eb4;
+    --pink2:   #ff90c8;
+    --green:   #2ecc71;
+    --green2:  #27ae60;
+    --yellow:  #f9d923;
+    --yellow2: #ffe566;
+    --text:    #000000;
+    --text2:   #111111;
+    --card:    rgba(0,105,148,0.18);
+    --card2:   rgba(0,105,148,0.28);
+    --border:  rgba(255,110,180,0.25);
+    --muted:   #1a1a2e;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: linear-gradient(135deg, #006994 0%, #004f70 40%, #003d57 70%, #005a80 100%);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Background decorative mesh ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(255,110,180,.10) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(249,217,35,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(46,204,113,.06) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── Header ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(0,61,87,.92);
+    border-bottom: 2px solid var(--pink);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+  }
+
+  /* ── Logo (image-based like large-flat.html) ── */
+  .logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 8px;
+  }
+  .logo-container img {
+    height: 46px;
+    width: auto;
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--pink), var(--yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+
+  .back-btn {
+    display: flex; align-items: center; gap: 8px;
+    color: #000; font-size: .88rem; font-weight: 600;
+    text-decoration: none; cursor: pointer; background: none; border: none;
+    transition: color .2s;
+  }
+  .back-btn:hover { color: var(--pink); }
+
+  /* ── Main layout ── */
+  main {
+    max-width: 1100px; margin: 0 auto;
+    padding: 40px 5% 80px;
+    position: relative; z-index: 1;
+  }
+
+  /* ── Hero card ── */
+  .agency-hero {
+    background: rgba(255,255,255,0.92);
+    border: 2px solid var(--pink);
+    border-radius: 20px;
+    padding: 36px;
+    display: grid; grid-template-columns: auto 1fr auto;
+    gap: 28px; align-items: center;
+    margin-bottom: 28px;
+    position: relative; overflow: hidden;
+    animation: fadeUp .5s ease both;
+    box-shadow: 0 8px 32px rgba(255,110,180,.18);
+  }
+  .agency-hero::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(249,217,35,.18), transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* ── Agency Avatar (logo placeholder) ── */
+  .agency-avatar {
+    width: 90px; height: 90px; border-radius: 18px;
+    background: linear-gradient(135deg, var(--ocean), var(--ocean3));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; font-weight: 700; color: #fff;
+    font-family: 'Playfair Display', serif;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid var(--pink);
+  }
+  .agency-avatar img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 16px;
+  }
+
+  .agency-info h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; color: #000; margin-bottom: 6px;
+  }
+  .agency-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+  .meta-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(0,105,148,.12); border: 1px solid rgba(0,105,148,.3);
+    border-radius: 100px; padding: 4px 14px;
+    font-size: .8rem; color: #000; font-weight: 500;
+  }
+  .badge-verified {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(46,204,113,.15); border: 1px solid rgba(46,204,113,.4);
+    color: var(--green2); border-radius: 100px;
+    padding: 4px 14px; font-size: .8rem; font-weight: 700;
+  }
+  .rating-big {
+    text-align: center; flex-shrink: 0;
+  }
+  .rating-big .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; font-weight: 700; color: var(--ocean);
+    line-height: 1;
+  }
+  .rating-big .stars { font-size: 1rem; letter-spacing: 2px; margin: 4px 0; color: var(--yellow); }
+  .rating-big .count { font-size: .78rem; color: #333; }
+
+  /* ── Property strip ── */
+  .property-strip {
+    background: rgba(255,255,255,0.90);
+    border: 2px solid var(--green);
+    border-radius: 16px; padding: 22px 28px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    gap: 16px; margin-bottom: 20px;
+    animation: fadeUp .5s .15s ease both;
+    box-shadow: 0 4px 20px rgba(46,204,113,.15);
+  }
+  .prop-info h3 { font-size: 1rem; font-weight: 700; color: #000; }
+  .prop-info p  { font-size: .85rem; color: #222; margin-top: 3px; }
+  .price-tag {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700; color: var(--ocean);
+  }
+  .price-tag span { font-size: .9rem; color: #333; font-family: 'DM Sans', sans-serif; }
+
+  /* ── Single column grid (stats removed) ── */
+  .contact-full {
+    margin-bottom: 20px;
+    animation: fadeUp .5s .1s ease both;
+  }
+
+  /* ── Section cards ── */
+  .section-card {
+    background: rgba(255,255,255,0.91);
+    border: 2px solid var(--pink);
+    border-radius: 18px; padding: 28px;
+    box-shadow: 0 4px 20px rgba(255,110,180,.12);
+  }
+  .section-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--ocean3);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+    font-weight: 700;
+  }
+  .section-card h2::after {
+    content: ''; flex: 1; height: 2px;
+    background: linear-gradient(90deg, var(--pink), transparent);
+  }
+
+  /* ── Contact list ── */
+  .contact-list { display: flex; flex-direction: column; gap: 14px; }
+  .contact-item {
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(0,105,148,.07); border: 1.5px solid rgba(0,105,148,.2);
+    border-radius: 12px; padding: 14px 18px;
+    cursor: pointer; transition: all .2s; text-decoration: none; color: #000;
+  }
+  .contact-item:hover {
+    border-color: var(--pink);
+    background: rgba(255,110,180,.08);
+    transform: translateX(4px);
+  }
+  .contact-icon {
+    width: 44px; height: 44px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .ci-phone    { background: rgba(0,105,148,.15); }
+  .ci-whatsapp { background: rgba(46,204,113,.18); }
+  .ci-email    { background: rgba(249,217,35,.22); }
+  .ci-office   { background: rgba(255,110,180,.15); }
+  .contact-item .label { font-size: .75rem; color: #444; font-weight: 500; }
+  .contact-item .value { font-size: .93rem; font-weight: 700; color: #000; margin-top: 1px; }
+
+  /* ── Property info from Firebase ── */
+  .firebase-info {
+    margin-bottom: 20px;
+    animation: fadeUp .5s .12s ease both;
+  }
+  .info-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px; margin-top: 8px;
+  }
+  .info-box {
+    background: rgba(0,105,148,.08);
+    border: 1.5px solid rgba(0,105,148,.2);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .info-box .ib-label { font-size: .74rem; color: #444; font-weight: 500; }
+  .info-box .ib-value { font-size: .98rem; font-weight: 700; color: #000; margin-top: 3px; }
+
+  /* ── Proceed / booking ── */
+  .proceed-wrap {
+    margin-top: 28px;
+    animation: fadeUp .5s .2s ease both;
+  }
+  .btn-proceed {
+    width: 100%;
+    background: linear-gradient(135deg, var(--pink), #e0006e);
+    color: #fff; border: none; border-radius: 14px;
+    padding: 18px 32px; font-size: 1.05rem; font-weight: 700;
+    cursor: pointer; letter-spacing: .5px;
+    transition: all .25s; display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-family: 'DM Sans', sans-serif;
+    box-shadow: 0 6px 24px rgba(255,110,180,.35);
+  }
+  .btn-proceed:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(255,110,180,.45);
+  }
+  .btn-proceed:active { transform: translateY(0); }
+
+  /* ── Fee summary boxes ── */
+  .fee-box {
+    flex: 1; min-width: 160px;
+    border-radius: 12px; padding: 14px;
+    border: 1.5px solid;
+  }
+  .fee-box.pink-box  { background: rgba(255,110,180,.10); border-color: var(--pink2); }
+  .fee-box.green-box { background: rgba(46,204,113,.10);  border-color: var(--green); }
+  .fee-box.yellow-box{ background: rgba(249,217,35,.15);  border-color: var(--yellow); }
+  .fee-box .fee-label{ font-size: .75rem; color: #333; font-weight: 500; }
+  .fee-box .fee-val  { font-size: 1.3rem; font-weight: 700; font-family: 'Playfair Display', serif; margin-top: 3px; color: #000; }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media(max-width:680px) {
+    .agency-hero { grid-template-columns: 1fr; text-align: center; }
+    .agency-meta { justify-content: center; }
+    .rating-big  { justify-self: center; }
+    .info-grid   { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Logo matching large-flat.html pattern -->
+  <a class="logo-container" href="index.html">
+    <img
+  src="images/logo.png"
+  alt="BashaKhuji"
+  onerror="this.outerHTML='<span style=\'color:#fff;font-family:Playfair Display,serif;font-size:1.6rem;font-weight:700;\'>BK</span>'"
+/>
+
+    <span class="logo-text" id="logoText">BashaKhuji</span>
+  </a>
+  <button class="back-btn" onclick="history.back()">
+    ← Back to Property
+  </button>
+</header>
+
+<main>
+
+  <!-- Agency Hero -->
+  <div class="agency-hero">
+    <div class="agency-avatar">
+      <img
+  src="images/logo.png"
+  alt="BashaKhuji"
+  onerror="this.outerHTML='<span style=\'color:#fff;font-family:Playfair Display,serif;font-size:1.6rem;font-weight:700;\'>BK</span>'"
+/>
+    </div>
+    <div class="agency-info">
+      <h1>BashaKhuji Agency</h1>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px;">
+        <span class="badge-verified">✅ Verified Agency</span>
+        <span class="meta-chip">🏢 Since 2026</span>
+        <span class="meta-chip">📍 Narayanganj, Dhaka</span>
+      </div>
+      <div class="agency-meta">
+        <span class="meta-chip">🏠 Residential</span>
+        <span class="meta-chip">🏗️ Commercial</span>
+        <span class="meta-chip">📑 Rental Expert</span>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- Property Strip — loaded from Firebase via URL param -->
+  <div class="property-strip">
+    <div class="prop-info">
+      <h3 id="propTitle">Loading property...</h3>
+      <p id="propMeta">📍 — &nbsp;•&nbsp; <span id="propBed">—</span> &nbsp;•&nbsp; <span id="propSize">—</span></p>
+    </div>
+    <div class="price-tag" id="propPrice">৳ — <span>/ month</span></div>
+  </div>
+
+  <!-- Firebase Property Details -->
+  <div class="firebase-info section-card" style="margin-bottom:20px;">
+    <h2>🏠 Property Details</h2>
+    <div class="info-grid" id="propInfoGrid">
+      <div class="info-box"><div class="ib-label">Type</div><div class="ib-value" id="detType">—</div></div>
+      <div class="info-box"><div class="ib-label">Flat Size</div><div class="ib-value" id="detSize">—</div></div>
+      <div class="info-box"><div class="ib-label">Floor</div><div class="ib-value" id="detFloor">—</div></div>
+      <div class="info-box"><div class="ib-label">Furnishing</div><div class="ib-value" id="detFurnish">—</div></div>
+      <div class="info-box"><div class="ib-label">Bedrooms</div><div class="ib-value" id="detRooms">—</div></div>
+      <div class="info-box"><div class="ib-label">Bathrooms</div><div class="ib-value" id="detBaths">—</div></div>
+      <div class="info-box"><div class="ib-label">Area (sqft)</div><div class="ib-value" id="detSqft">—</div></div>
+      <div class="info-box"><div class="ib-label">Available From</div><div class="ib-value" id="detAvail">—</div></div>
+    </div>
+  </div>
+
+  <!-- Contact Agency (full width, no stats column) -->
+  <div class="contact-full">
+    <div class="section-card">
+      <h2>📞 Contact Agency</h2>
+      <div class="contact-list">
+        <a class="contact-item" href="tel:+8801733934858">
+          <div class="contact-icon ci-phone">📞</div>
+          <div>
+            <div class="label">Phone</div>
+            <div class="value">01733934858</div>
+          </div>
+        </a>
+        <a class="contact-item" href="https://wa.me/8801733934858" target="_blank">
+          <div class="contact-icon ci-whatsapp">💬</div>
+          <div>
+            <div class="label">WhatsApp</div>
+            <div class="value">01408787701</div>
+          </div>
+        </a>
+        <a class="contact-item" href="mailto:sikderafrida@gmail.com">
+          <div class="contact-icon ci-email">✉️</div>
+          <div>
+            <div class="label">Email</div>
+            <div class="value">sikderafrida@gmail.com</div>
+          </div>
+        </a>
+        <div class="contact-item">
+          <div class="contact-icon ci-office">🏢</div>
+          <div>
+            <div class="label">Office Hours</div>
+            <div class="value">Sat – Thu, 9 AM – 7 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm & Book -->
+  <div class="proceed-wrap">
+    <div class="section-card">
+      <h2>🔒 Confirm &amp; Book</h2>
+      <div style="background:rgba(249,217,35,.12);border:1.5px solid rgba(249,217,35,.35);border-radius:12px;padding:18px;margin-bottom:20px;">
+        <p style="font-size:.85rem;color:#111;line-height:1.7;">
+          By proceeding to payment, you confirm your interest in booking this property.
+          A <strong style="color:var(--ocean);">token advance</strong> will be charged to secure the property.
+          The agency will contact you within 24 hours to finalize details.
+        </p>
+      </div>
+      
+        <div class="fee-box green-box">
+          <div class="fee-label">Monthly Rent</div>
+          <div class="fee-val" id="rentDisplay">৳ —</div>
+        </div>
+        <div class="fee-box yellow-box">
+          <div class="fee-label">Service Fee</div>
+          <div class="fee-val" id="serviceFeeDisplay">৳ —</div>
+        </div>
+      </div>
+      <button class="btn-proceed" onclick="goToPayment()">
+        💳 Proceed to Payment &nbsp;→
+      </button>
+    </div>
+  </div>
+
+</main>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, getDoc }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  /* ── Firebase config (same project as large-flat.html) ── */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain:        "bashakhuji-503d1.firebaseapp.com",
+    projectId:         "bashakhuji-503d1",
+    storageBucket:     "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId:             "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  /* ── Service fee by flat size ── */
+  function getServiceFee(flatSize) {
+    const s = (flatSize || "").toLowerCase();
+    if (s === "small")  return 50;
+    if (s === "large")  return 500;
+    return 200; // medium (default)
+  }
+
+  /* ── Load property from Firestore using URL ?id=... ── */
+  async function loadProperty() {
+    const params = new URLSearchParams(window.location.search);
+        const pid = params.get("propertyId") || params.get("id");
+
+    if (!pid) {
+      setField("propTitle", "Property not found");
+      return;
+    }
+
+    try {
+      const snap = await getDoc(doc(db, "properties", pid));
+      if (!snap.exists()) {
+        setField("propTitle", "Property not found");
+        return;
+      }
+
+      const p        = snap.data();
+      const location = [p.area, p.district, p.division].filter(Boolean).join(", ");
+      const rent     = Number(p.rent || 0).toLocaleString("en-IN");
+      const flatSize = p.flatSize || "medium";
+      const fee      = getServiceFee(flatSize);
+
+      // Header strip
+      setField("propTitle",  p.title || "—");
+      document.getElementById("propMeta").innerHTML =
+        `📍 ${location} &nbsp;•&nbsp; <span id="propBed">${p.rooms ? p.rooms + " Bed" : "—"}</span> &nbsp;•&nbsp; <span id="propSize">${p.sqft ? p.sqft + " sqft" : "—"}</span>`;
+      document.getElementById("propPrice").innerHTML = `৳ ${rent} <span>/ month</span>`;
+
+      // Details grid
+      setField("detType",    p.type      || "Flat");
+      setField("detSize",    capitalize(flatSize) + " Flat");
+      setField("detFloor",   p.floor     || "—");
+      setField("detFurnish", p.furnish   || "—");
+      setField("detRooms",   p.rooms     ? p.rooms + " Bed"  : "—");
+      setField("detBaths",   p.bathrooms ? p.bathrooms + " Bath" : "—");
+      setField("detSqft",    p.sqft      ? p.sqft + " sqft" : "—");
+      setField("detAvail",   p.availableFrom || "Immediately");
+
+      // Booking summary
+      document.getElementById("rentDisplay").textContent    = `৳ ${rent}`;
+      document.getElementById("serviceFeeDisplay").textContent = `৳ ${fee}`;
+
+    } catch (err) {
+      console.error("Firebase error:", err);
+      setField("propTitle", "Could not load property data");
+    }
+  }
+
+  function setField(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  }
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  loadProperty();
+
+  /* ── Payment navigation ── */
+  window.goToPayment = function() {
+    const q = new URLSearchParams(window.location.search);
+    window.location.href = `payment.html?${q.toString()}`;
+  };
+</script>
+
+</body>
+</html>

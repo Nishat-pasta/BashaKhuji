@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Properties | BashaKhuji Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --ocean:   #0077b6;
+      --dark-blue: #023e8a;
+      --sky:     #00b4d8;
+      --light-pink: #ffd6e7;
+      --pink:    #ff85a1;
+      --yellow:  #ffd166;
+      --green:   #06d6a0;
+      --red:     #ef233c;
+      --bg:      #f0f7ff;
+      --white:   #ffffff;
+      --text:    #03045e;
+      --muted:   #6c757d;
+      --sidebar: #023e8a;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(180deg, #023e8a 0%, #0077b6 100%);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      z-index: 100;
+      padding: 24px 0;
+      box-shadow: 4px 0 20px rgba(2,62,138,0.3);
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .sidebar-brand .icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, #ffd166, #ff85a1);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .sidebar-brand span { font-size: 16px; font-weight: 800; color: #fff; font-family: 'Nunito', sans-serif; }
+    .sidebar-brand small { display: block; font-size: 10px; color: rgba(255,255,255,0.6); font-weight: 400; }
+
+    .sidebar-nav { flex: 1; padding: 16px 12px; }
+    .nav-section {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.45); padding: 12px 10px 6px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: 12px; cursor: pointer;
+      font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,0.7);
+      transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .nav-item.active { background: rgba(255,255,255,0.2); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .nav-item i { width: 18px; text-align: center; font-size: 14px; }
+    .nav-badge {
+      margin-left: auto; background: var(--yellow); color: var(--dark-blue);
+      font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 20px;
+    }
+
+    .sidebar-footer { padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.15); }
+    .admin-info {
+      display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+      border-radius: 12px; background: rgba(255,255,255,0.1);
+    }
+    .admin-avatar {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, #ffd166, #ff85a1);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--dark-blue); font-weight: 800;
+    }
+    .admin-info span { font-size: 13px; font-weight: 700; color: #fff; }
+    .admin-info small { display: block; font-size: 11px; color: rgba(255,255,255,0.6); }
+    .logout-btn {
+      margin-left: auto; background: none; border: none;
+      color: rgba(255,255,255,0.5); cursor: pointer; font-size: 14px; transition: color 0.2s;
+    }
+    .logout-btn:hover { color: var(--pink); }
+
+    /* ── Main ── */
+    .main { margin-left: 240px; flex: 1; padding: 28px 32px; min-height: 100vh; }
+
+    /* Topbar */
+    .topbar {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 28px;
+    }
+    .topbar h1 { font-size: 24px; font-weight: 800; font-family: 'Nunito', sans-serif; color: var(--dark-blue); }
+    .topbar p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .topbar-right { display: flex; gap: 10px; align-items: center; }
+
+    .search-bar {
+      display: flex; align-items: center; gap: 8px;
+      background: #fff; border: 2px solid #e0eeff;
+      border-radius: 12px; padding: 9px 14px;
+      font-size: 13px; color: var(--muted); width: 240px;
+      box-shadow: 0 2px 8px rgba(0,119,182,0.08);
+    }
+    .search-bar input {
+      background: none; border: none; outline: none;
+      color: var(--text); font-family: 'Poppins', sans-serif; font-size: 13px; width: 100%;
+    }
+
+    .btn-add {
+      display: flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--ocean), var(--sky));
+      color: #fff; border: none; border-radius: 12px;
+      padding: 10px 18px; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: 'Poppins', sans-serif;
+      box-shadow: 0 4px 15px rgba(0,119,182,0.35);
+      transition: all 0.2s;
+    }
+    .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,119,182,0.4); }
+
+    /* Stats Row */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-bottom: 28px;
+    }
+    .mini-stat {
+      background: #fff; border-radius: 16px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 16px rgba(0,119,182,0.08);
+      border: 1.5px solid #e0eeff;
+      display: flex; align-items: center; gap: 14px;
+      transition: transform 0.2s;
+    }
+    .mini-stat:hover { transform: translateY(-3px); }
+    .mini-icon {
+      width: 46px; height: 46px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .mini-icon.blue  { background: #e0eeff; }
+    .mini-icon.green { background: #d4fdf0; }
+    .mini-icon.yellow{ background: #fff8e1; }
+    .mini-icon.pink  { background: #ffd6e7; }
+    .mini-val { font-size: 26px; font-weight: 800; font-family: 'Nunito', sans-serif; color: var(--dark-blue); }
+    .mini-label { font-size: 12px; color: var(--muted); }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex; align-items: center; gap: 10px;
+      background: #fff; border-radius: 16px; padding: 14px 20px;
+      margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,119,182,0.08);
+      border: 1.5px solid #e0eeff; flex-wrap: wrap;
+    }
+    .filter-label { font-size: 12px; font-weight: 700; color: var(--muted); margin-right: 4px; }
+    .filter-tab {
+      padding: 7px 16px; border-radius: 20px; border: 1.5px solid #e0eeff;
+      background: transparent; font-size: 12.5px; font-weight: 600;
+      color: var(--muted); cursor: pointer; font-family: 'Poppins', sans-serif;
+      transition: all 0.2s;
+    }
+    .filter-tab:hover { border-color: var(--ocean); color: var(--ocean); }
+    .filter-tab.active { background: var(--ocean); color: #fff; border-color: var(--ocean); }
+
+    .filter-right { margin-left: auto; display: flex; gap: 8px; }
+    .sort-select {
+      padding: 7px 14px; border-radius: 10px; border: 1.5px solid #e0eeff;
+      background: #fff; font-size: 12.5px; color: var(--text);
+      font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer;
+    }
+
+    /* Property Cards Grid */
+    .props-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .prop-card {
+      background: #fff; border-radius: 20px;
+      border: 1.5px solid #e0eeff;
+      box-shadow: 0 4px 16px rgba(0,119,182,0.07);
+      overflow: hidden; transition: all 0.25s;
+      animation: fadeUp 0.4s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .prop-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,119,182,0.15); }
+
+    .prop-thumb {
+      height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; position: relative; overflow: hidden;
+    }
+    .prop-thumb.blue   { background: linear-gradient(135deg, #caf0f8, #90e0ef); }
+    .prop-thumb.pink   { background: linear-gradient(135deg, #ffd6e7, #ffb3c6); }
+    .prop-thumb.yellow { background: linear-gradient(135deg, #fff3b0, #ffd166); }
+    .prop-thumb.green  { background: linear-gradient(135deg, #d4fdf0, #a7f3d0); }
+
+    .prop-badge {
+      position: absolute; top: 10px; right: 10px;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 700;
+    }
+    .prop-badge.pending  { background: var(--yellow); color: var(--dark-blue); }
+    .prop-badge.approved { background: var(--green); color: #fff; }
+    .prop-badge.rejected { background: var(--red); color: #fff; }
+
+    .prop-body { padding: 16px; }
+    .prop-name { font-size: 15px; font-weight: 700; color: var(--dark-blue); margin-bottom: 4px; font-family: 'Nunito', sans-serif; }
+    .prop-loc  { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+    .prop-loc i { color: var(--pink); margin-right: 3px; }
+
+    .prop-meta {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .prop-tag {
+      padding: 3px 10px; border-radius: 8px; font-size: 11px; font-weight: 600;
+    }
+    .prop-tag.type  { background: #e0eeff; color: var(--ocean); }
+    .prop-tag.rent  { background: #d4fdf0; color: #059669; }
+    .prop-tag.owner { background: var(--light-pink); color: #be185d; }
+
+    .prop-actions {
+      display: flex; gap: 6px; padding-top: 10px;
+      border-top: 1.5px solid #f0f7ff;
+    }
+    .pa-btn {
+      flex: 1; padding: 8px 6px; border-radius: 10px; border: none;
+      font-size: 11.5px; font-weight: 700; cursor: pointer;
+      font-family: 'Poppins', sans-serif; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+    .pa-btn.approve { background: #d4fdf0; color: #059669; }
+    .pa-btn.approve:hover { background: var(--green); color: #fff; }
+    .pa-btn.reject  { background: #ffe4e6; color: var(--red); }
+    .pa-btn.reject:hover  { background: var(--red); color: #fff; }
+    .pa-btn.view    { background: #e0eeff; color: var(--ocean); }
+    .pa-btn.view:hover    { background: var(--ocean); color: #fff; }
+
+    /* Empty state */
+    .empty-state {
+      grid-column: 1/-1; text-align: center; padding: 60px 20px;
+      color: var(--muted);
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(2,62,138,0.3); backdrop-filter: blur(4px);
+      z-index: 200; align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: #fff; border-radius: 24px; width: 480px;
+      padding: 28px; box-shadow: 0 20px 60px rgba(2,62,138,0.2);
+      animation: popIn 0.3s ease;
+    }
+    @keyframes popIn {
+      from { opacity:0; transform: scale(0.9); }
+      to   { opacity:1; transform: scale(1); }
+    }
+    .modal h3 { font-size: 18px; font-weight: 800; color: var(--dark-blue); margin-bottom: 18px; font-family: 'Nunito', sans-serif; }
+    .modal-field { margin-bottom: 14px; }
+    .modal-field label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .modal-field input, .modal-field select, .modal-field textarea {
+      width: 100%; padding: 10px 14px; border-radius: 10px;
+      border: 1.5px solid #e0eeff; font-family: 'Poppins', sans-serif;
+      font-size: 13px; color: var(--text); outline: none; transition: border 0.2s;
+    }
+    .modal-field input:focus, .modal-field select:focus { border-color: var(--ocean); }
+    .modal-field textarea { resize: vertical; height: 80px; }
+    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .modal-btn {
+      flex: 1; padding: 12px; border-radius: 12px; border: none;
+      font-size: 13.5px; font-weight: 700; cursor: pointer;
+      font-family: 'Poppins', sans-serif; transition: all 0.2s;
+    }
+    .modal-btn.primary { background: linear-gradient(135deg, var(--ocean), var(--sky)); color: #fff; }
+    .modal-btn.secondary { background: #f0f7ff; color: var(--muted); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      padding: 12px 22px; border-radius: 14px; font-size: 13.5px;
+      font-weight: 600; color: #fff; z-index: 999;
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.35s cubic-bezier(.68,-0.55,.27,1.55);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.green  { background: linear-gradient(135deg, #059669, var(--green)); }
+    .toast.red    { background: linear-gradient(135deg, #dc2626, var(--red)); }
+    .toast.blue   { background: linear-gradient(135deg, var(--dark-blue), var(--ocean)); }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="icon">🏠</div>
+    <div>
+      <span>BashaKhuji</span>
+      <small>Admin Panel</small>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="admin-dashboard.html" class="nav-item">
+      <i class="fas fa-chart-pie"></i> Dashboard
+    </a>
+    <a href="properties.html" class="nav-item active">
+      <i class="fas fa-building"></i> Properties
+      <span class="nav-badge">0</span>
+    </a>
+    <a href="users.html" class="nav-item">
+      <i class="fas fa-users"></i> Users
+    </a>
+    <div class="nav-section">Management</div>
+    <a href="payment-approve.html" class="nav-item">
+      <i class="fas fa-money-bill-wave"></i> Payments
+    </a>
+    <a href="reports.html" class="nav-item">
+      <i class="fas fa-flag"></i> Reports
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-info">
+      <div class="admin-avatar">A</div>
+      <div>
+        <span>Admin</span>
+        <small>Super Admin</small>
+      </div>
+      <button class="logout-btn" onclick="window.logout()"><i class="fas fa-sign-out-alt"></i></button>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+  <div class="topbar">
+    <div>
+      <h1>🏠 Properties</h1>
+      <p>Manage and approve all rental property listings</p>
+    </div>
+    <div class="topbar-right">
+      <div class="search-bar">
+        <i class="fas fa-search" style="color:#94a3b8"></i>
+        <input type="text" id="searchInput" placeholder="Search properties..." oninput="window.searchProps()">
+      </div>
+      <button class="btn-add" onclick="window.openModal()">
+        <i class="fas fa-plus"></i> Add Property
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="mini-stat">
+      <div class="mini-icon blue">🏢</div>
+      <div>
+        <div class="mini-val" id="totalCount">0</div>
+        <div class="mini-label">Total Properties</div>
+      </div>
+    </div>
+    <div class="mini-stat">
+      <div class="mini-icon yellow">⏳</div>
+      <div>
+        <div class="mini-val" id="pendingCount">0</div>
+        <div class="mini-label">Pending Approval</div>
+      </div>
+    </div>
+    <div class="mini-stat">
+      <div class="mini-icon green">✅</div>
+      <div>
+        <div class="mini-val" id="approvedCount">0</div>
+        <div class="mini-label">Approved</div>
+      </div>
+    </div>
+    <div class="mini-stat">
+      <div class="mini-icon pink">❌</div>
+      <div>
+        <div class="mini-val" id="rejectedCount">0</div>
+        <div class="mini-label">Rejected</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-tab active" onclick="window.filterProps('all',this)">All</button>
+    <button class="filter-tab pending" onclick="window.filterProps('pending',this)">⏳ Pending</button>
+    <button class="filter-tab approved" onclick="window.filterProps('approved',this)">✅ Approved</button>
+    <button class="filter-tab rejected" onclick="window.filterProps('rejected',this)">❌ Rejected</button>
+    <div class="filter-right">
+      <select class="sort-select" onchange="window.sortProps(this.value)">
+        <option value="default">Sort by Default</option>
+        <option value="rent-high">Rent: High to Low</option>
+        <option value="rent-low">Rent: Low to High</option>
+        <option value="name">Name A-Z</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Property Cards -->
+  <div class="props-grid" id="propsGrid">
+    <div class="empty-state">
+      <div class="icon">🏚️</div>
+      <p>Loading properties...</p>
+    </div>
+  </div>
+</main>
+
+<!-- Add Property Modal -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h3>➕ Add New Property</h3>
+    <div class="modal-field">
+      <label>Property Name</label>
+      <input type="text" id="newName" placeholder="e.g. Modern 3BHK Apartment">
+    </div>
+    <div class="modal-grid">
+      <div class="modal-field">
+        <label>Location</label>
+        <input type="text" id="newLoc" placeholder="e.g. Dhanmondi, Dhaka">
+      </div>
+      <div class="modal-field">
+        <label>Owner Name</label>
+        <input type="text" id="newOwner" placeholder="e.g. Karim H.">
+      </div>
+    </div>
+    <div class="modal-grid">
+      <div class="modal-field">
+        <label>Type</label>
+        <select id="newType">
+          <option>Small</option>
+          <option>Medium</option>
+          <option>Large</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Monthly Rent (৳)</label>
+        <input type="number" id="newRent" placeholder="e.g. 15000">
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>Description</label>
+      <textarea id="newDesc" placeholder="Brief description..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="window.closeModal()">Cancel</button>
+      <button class="modal-btn primary" onclick="window.addProperty()">Add Property</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, collection, doc, updateDoc, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain: "bashakhuji-503d1.firebaseapp.com",
+    projectId: "bashakhuji-503d1",
+    storageBucket: "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let properties = [];
+  let unsubscribe = null;
+  let currentFilter = 'all';
+  let currentSearch = '';
+
+  const thumbColors = ['blue', 'pink', 'yellow', 'green'];
+  const thumbEmojis = ['🏠', '🏢', '🏡', '🏗️', '🛏️', '🏘️'];
+
+  // Authentication check
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "admin-login.html";
+    } else {
+      loadPropertiesFromFirebase();
+    }
+  });
+
+  function loadPropertiesFromFirebase() {
+    if (unsubscribe) unsubscribe();
+    const q = collection(db, "properties");
+    unsubscribe = onSnapshot(q, (snapshot) => {
+      properties = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      updateCounts();
+      renderProps();
+      updateSidebarBadge();
+    }, (error) => {
+      console.error("Error loading properties:", error);
+      showToast("Failed to load properties!", "red");
+    });
+  }
+
+  function updateCounts() {
+    const total = properties.length;
+    const pending = properties.filter(p => p.status === 'pending').length;
+    const approved = properties.filter(p => p.status === 'approved').length;
+    const rejected = properties.filter(p => p.status === 'rejected').length;
+    
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('pendingCount').textContent = pending;
+    document.getElementById('approvedCount').textContent = approved;
+    document.getElementById('rejectedCount').textContent = rejected;
+  }
+
+  function updateSidebarBadge() {
+    const pendingCount = properties.filter(p => p.status === 'pending').length;
+    const badge = document.querySelector('.nav-badge');
+    if (badge) {
+      badge.textContent = pendingCount;
+      badge.style.display = pendingCount === 0 ? 'none' : 'inline-block';
+    }
+  }
+
+  function renderProps() {
+    let list = [...properties];
+    
+    if (currentFilter !== 'all') {
+      list = list.filter(p => p.status === currentFilter);
+    }
+    
+    if (currentSearch) {
+      list = list.filter(p => 
+        (p.name || '').toLowerCase().includes(currentSearch) ||
+        (p.location || '').toLowerCase().includes(currentSearch) ||
+        (p.ownerName || '').toLowerCase().includes(currentSearch)
+      );
+    }
+
+    const grid = document.getElementById('propsGrid');
+    if (list.length === 0) {
+      grid.innerHTML = `<div class="empty-state"><div class="icon">🏚️</div><p>No properties found</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map((p, i) => `
+      <div class="prop-card" style="animation-delay:${i * 0.06}s">
+        <div class="prop-thumb ${thumbColors[i % 4]}">
+          ${thumbEmojis[i % thumbEmojis.length]}
+          <div class="prop-badge ${p.status || 'pending'}">
+            ${p.status === 'pending' ? '⏳ Pending' : p.status === 'approved' ? '✅ Approved' : '❌ Rejected'}
+          </div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-name">${escapeHtml(p.name || 'Unnamed')}</div>
+          <div class="prop-loc"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(p.location || 'N/A')}</div>
+          <div class="prop-meta">
+            <span class="prop-tag type">${escapeHtml(p.type || 'Standard')}</span>
+            <span class="prop-tag rent">৳ ${(p.rent || 0).toLocaleString()}/mo</span>
+            <span class="prop-tag owner">👤 ${escapeHtml(p.ownerName || 'Unknown')}</span>
+          </div>
+          <div class="prop-actions">
+            ${p.status !== 'approved' ? `<button class="pa-btn approve" onclick="window.approveP('${p.id}')">✅ Approve</button>` : ''}
+            ${p.status !== 'rejected' ? `<button class="pa-btn reject" onclick="window.rejectP('${p.id}')">❌ Reject</button>` : ''}
+            <button class="pa-btn view" onclick="showToast('👁 Viewing ${escapeHtml(p.name)}','blue')">👁 View</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  window.filterProps = function(f, btn) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProps();
+  };
+
+  window.sortProps = function(val) {
+    let sorted = [...properties];
+    if (val === 'rent-high') {
+      sorted.sort((a, b) => (b.rent || 0) - (a.rent || 0));
+    } else if (val === 'rent-low') {
+      sorted.sort((a, b) => (a.rent || 0) - (b.rent || 0));
+    } else if (val === 'name') {
+      sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    }
+    properties = sorted;
+    renderProps();
+  };
+
+  window.searchProps = function() {
+    currentSearch = document.getElementById('searchInput').value.toLowerCase();
+    renderProps();
+  };
+
+  window.approveP = async function(id) {
+    try {
+      const propRef = doc(db, "properties", id);
+      await updateDoc(propRef, {
+        status: 'approved',
+        approvedAt: new Date().toISOString()
+      });
+      showToast('✅ Property approved successfully!', 'green');
+    } catch (error) {
+      console.error("Approve error:", error);
+      showToast('❌ Failed to approve property', 'red');
+    }
+  };
+
+  window.rejectP = async function(id) {
+    try {
+      const propRef = doc(db, "properties", id);
+      await updateDoc(propRef, {
+        status: 'rejected',
+        rejectedAt: new Date().toISOString()
+      });
+      showToast('❌ Property rejected!', 'red');
+    } catch (error) {
+      console.error("Reject error:", error);
+      showToast('❌ Failed to reject property', 'red');
+    }
+  };
+
+  window.addProperty = async function() {
+    const name = document.getElementById('newName').value.trim();
+    const loc = document.getElementById('newLoc').value.trim();
+    const owner = document.getElementById('newOwner').value.trim();
+    const type = document.getElementById('newType').value;
+    const rent = parseInt(document.getElementById('newRent').value) || 0;
+    const desc = document.getElementById('newDesc').value.trim();
+    
+    if (!name || !loc || !owner) {
+      showToast('⚠️ Fill all required fields', 'red');
+      return;
+    }
+    
+    try {
+      await addDoc(collection(db, "properties"), {
+        name: name,
+        location: loc,
+        ownerName: owner,
+        type: type,
+        rent: rent,
+        description: desc,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      });
+      
+      showToast('🏠 Property added successfully!', 'green');
+      closeModal();
+      
+      document.getElementById('newName').value = '';
+      document.getElementById('newLoc').value = '';
+      document.getElementById('newOwner').value = '';
+      document.getElementById('newRent').value = '';
+      document.getElementById('newDesc').value = '';
+      
+    } catch (error) {
+      console.error("Add property error:", error);
+      showToast('❌ Failed to add property', 'red');
+    }
+  };
+
+  window.openModal = function() {
+    document.getElementById('addModal').classList.add('show');
+  };
+
+  window.closeModal = function() {
+    document.getElementById('addModal').classList.remove('show');
+  };
+
+  window.showToast = function(msg, type) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = `toast ${type} show`;
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  };
+
+  window.logout = async function() {
+    if (confirm('Are you sure you want to logout?')) {
+      try {
+        await signOut(auth);
+        window.location.href = 'admin-login.html';
+      } catch (error) {
+        console.error("Logout error:", error);
+        showToast('Logout failed', 'red');
+      }
+    }
+  };
+</script>
+
+</body>
+</html>

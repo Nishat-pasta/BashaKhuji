@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reports | BashaKhuji Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --ocean:      #0077b6;
+      --dark-blue:  #023e8a;
+      --sky:        #00b4d8;
+      --light-pink: #ffd6e7;
+      --pink:       #ff85a1;
+      --yellow:     #ffd166;
+      --green:      #06d6a0;
+      --red:        #ef233c;
+      --bg:         #f0f7ff;
+      --white:      #ffffff;
+      --text:       #03045e;
+      --muted:      #6c757d;
+    }
+    body { font-family:'Poppins',sans-serif; background:var(--bg); color:var(--text); display:flex; min-height:100vh; }
+
+    /* Sidebar */
+    .sidebar { width:240px; background:linear-gradient(180deg,#023e8a 0%,#0077b6 100%); display:flex; flex-direction:column; position:fixed; top:0; left:0; height:100vh; z-index:100; padding:24px 0; box-shadow:4px 0 20px rgba(2,62,138,0.3); }
+    .sidebar-brand { display:flex; align-items:center; gap:10px; padding:0 20px 24px; border-bottom:1px solid rgba(255,255,255,0.15); }
+    .sidebar-brand .icon { width:40px; height:40px; background:linear-gradient(135deg,#ffd166,#ff85a1); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+    .sidebar-brand span { font-size:16px; font-weight:800; color:#fff; font-family:'Nunito',sans-serif; }
+    .sidebar-brand small { display:block; font-size:10px; color:rgba(255,255,255,0.6); }
+    .sidebar-nav { flex:1; padding:16px 12px; }
+    .nav-section { font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,0.45); padding:12px 10px 6px; }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:12px; cursor:pointer; font-size:13.5px; font-weight:600; color:rgba(255,255,255,0.7); transition:all 0.2s; margin-bottom:4px; text-decoration:none; }
+    .nav-item:hover { background:rgba(255,255,255,0.12); color:#fff; }
+    .nav-item.active { background:rgba(255,255,255,0.2); color:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.15); }
+    .nav-item i { width:18px; text-align:center; font-size:14px; }
+    .nav-badge { margin-left:auto; background:var(--yellow); color:var(--dark-blue); font-size:10px; font-weight:800; padding:2px 7px; border-radius:20px; }
+    .sidebar-footer { padding:16px 12px; border-top:1px solid rgba(255,255,255,0.15); }
+    .admin-info { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.1); }
+    .admin-avatar { width:34px; height:34px; background:linear-gradient(135deg,#ffd166,#ff85a1); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; color:var(--dark-blue); font-weight:800; }
+    .admin-info span { font-size:13px; font-weight:700; color:#fff; }
+    .admin-info small { display:block; font-size:11px; color:rgba(255,255,255,0.6); }
+    .logout-btn { margin-left:auto; background:none; border:none; color:rgba(255,255,255,0.5); cursor:pointer; font-size:14px; transition:color 0.2s; }
+    .logout-btn:hover { color:var(--pink); }
+
+    /* Main */
+    .main { margin-left:240px; flex:1; padding:28px 32px; min-height:100vh; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; }
+    .topbar h1 { font-size:24px; font-weight:800; font-family:'Nunito',sans-serif; color:var(--dark-blue); }
+    .topbar p { font-size:13px; color:var(--muted); margin-top:2px; }
+    .export-btn { display:flex; align-items:center; gap:8px; background:linear-gradient(135deg,var(--green),#059669); color:#fff; border:none; border-radius:12px; padding:10px 18px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Poppins',sans-serif; box-shadow:0 4px 15px rgba(6,214,160,0.35); transition:all 0.2s; }
+    .export-btn:hover { transform:translateY(-2px); }
+
+    /* Summary Stats */
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+    .stat-card { background:#fff; border-radius:20px; padding:22px; box-shadow:0 4px 16px rgba(0,119,182,0.08); border:1.5px solid #e0eeff; position:relative; overflow:hidden; transition:transform 0.2s; }
+    .stat-card:hover { transform:translateY(-4px); }
+    .stat-glow { position:absolute; top:-20px; right:-20px; width:80px; height:80px; border-radius:50%; opacity:0.12; }
+    .stat-glow.blue   { background:var(--ocean); }
+    .stat-glow.green  { background:var(--green); }
+    .stat-glow.yellow { background:var(--yellow); }
+    .stat-glow.pink   { background:var(--pink); }
+    .stat-icon { width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px; }
+    .stat-icon.blue   { background:#e0eeff; }
+    .stat-icon.green  { background:#d4fdf0; }
+    .stat-icon.yellow { background:#fff8e1; }
+    .stat-icon.pink   { background:var(--light-pink); }
+    .stat-value { font-size:30px; font-weight:900; color:var(--dark-blue); font-family:'Nunito',sans-serif; }
+    .stat-label { font-size:12.5px; color:var(--muted); margin-top:2px; }
+    .stat-trend { font-size:11.5px; margin-top:8px; font-weight:600; }
+    .stat-trend.up   { color:#059669; }
+    .stat-trend.down { color:var(--red); }
+
+    /* Two col layout */
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px; }
+    .one-col { margin-bottom:24px; }
+
+    /* Chart Card */
+    .chart-card { background:#fff; border-radius:20px; padding:22px; box-shadow:0 4px 16px rgba(0,119,182,0.08); border:1.5px solid #e0eeff; }
+    .chart-card h3 { font-size:16px; font-weight:800; color:var(--dark-blue); font-family:'Nunito',sans-serif; margin-bottom:18px; }
+    .chart-subtitle { font-size:12px; color:var(--muted); font-weight:400; }
+
+    /* Bar Chart */
+    .bar-chart { display:flex; align-items:flex-end; gap:10px; height:160px; padding:0 4px; }
+    .bar-group { display:flex; flex-direction:column; align-items:center; gap:6px; flex:1; }
+    .bar { width:100%; border-radius:8px 8px 0 0; position:relative; transition:all 0.3s ease; cursor:pointer; min-width:28px; }
+    .bar:hover { filter:brightness(1.1); }
+    .bar-val { font-size:10px; font-weight:700; color:var(--dark-blue); text-align:center; }
+    .bar-lbl { font-size:10px; color:var(--muted); font-weight:600; text-align:center; }
+
+    /* Pie-like donut */
+    .donut-wrap { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+    .donut-svg { flex-shrink:0; }
+    .donut-legend { display:flex; flex-direction:column; gap:10px; }
+    .legend-item { display:flex; align-items:center; gap:8px; font-size:12.5px; }
+    .legend-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+    .legend-val { font-weight:700; color:var(--dark-blue); margin-left:auto; padding-left:12px; }
+
+    /* Toast */
+    .toast { position:fixed; bottom:24px; right:24px; padding:12px 22px; border-radius:14px; font-size:13.5px; font-weight:600; color:#fff; z-index:999; transform:translateY(80px); opacity:0; transition:all 0.35s cubic-bezier(.68,-0.55,.27,1.55); box-shadow:0 8px 24px rgba(0,0,0,0.15); }
+    .toast.show { transform:translateY(0); opacity:1; }
+    .toast.green { background:linear-gradient(135deg,#059669,var(--green)); }
+    .toast.red   { background:linear-gradient(135deg,#dc2626,var(--red)); }
+    .toast.blue  { background:linear-gradient(135deg,var(--dark-blue),var(--ocean)); }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="icon">🏠</div>
+    <div><span>BashaKhuji</span><small>Admin Panel</small></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="admin-dashboard.html" class="nav-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
+    <a href="properties.html" class="nav-item"><i class="fas fa-building"></i> Properties <span class="nav-badge" id="propertyBadge">0</span></a>
+    <a href="users.html" class="nav-item"><i class="fas fa-users"></i> Users</a>
+    <div class="nav-section">Management</div>
+    <a href="payment-approve.html" class="nav-item"><i class="fas fa-money-bill-wave"></i> Payments</a>
+    <a href="reports.html" class="nav-item active"><i class="fas fa-flag"></i> Reports</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-info">
+      <div class="admin-avatar">A</div>
+      <div><span>Admin</span><small>Super Admin</small></div>
+      <button class="logout-btn" onclick="window.logout()"><i class="fas fa-sign-out-alt"></i></button>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div>
+      <h1>📊 Reports</h1>
+      <p>Property, user and revenue analytics</p>
+    </div>
+    <button class="export-btn" onclick="showToast('📥 Report exported!','green')">
+      <i class="fas fa-download"></i> Export Report
+    </button>
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-glow blue"></div>
+      <div class="stat-icon blue">🏠</div>
+      <div class="stat-value" id="totalProperties">0</div>
+      <div class="stat-label">Total Properties</div>
+      <div class="stat-trend up" id="propertyTrend">↑ 0 new this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-glow green"></div>
+      <div class="stat-icon green">👥</div>
+      <div class="stat-value" id="totalUsers">0</div>
+      <div class="stat-label">Total Users</div>
+      <div class="stat-trend up" id="userTrend">↑ 0 new this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-glow yellow"></div>
+      <div class="stat-icon yellow">💰</div>
+      <div class="stat-value" id="totalRevenue">৳ 0</div>
+      <div class="stat-label">Total Revenue</div>
+      <div class="stat-trend up" id="revenueTrend">↑ 0% this month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-glow pink"></div>
+      <div class="stat-icon pink">✅</div>
+      <div class="stat-value" id="paidPayments">0</div>
+      <div class="stat-label">Successful Payments</div>
+      <div class="stat-trend up" id="paymentTrend">↑ 0 this month</div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="two-col">
+    <!-- Bar Chart: Monthly Listings -->
+    <div class="chart-card">
+      <h3>📈 Monthly Property Listings <span class="chart-subtitle">— Last 6 months</span></h3>
+      <div class="bar-chart" id="barChart">
+        <div style="text-align:center;width:100%;color:var(--muted);padding:40px;">Loading chart...</div>
+      </div>
+    </div>
+
+    <!-- Donut: User Types -->
+    <div class="chart-card">
+      <h3>🧑 User Breakdown <span class="chart-subtitle">— By role</span></h3>
+      <div class="donut-wrap" id="userDonut">
+        <div style="text-align:center;width:100%;color:var(--muted);padding:40px;">Loading data...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Property Status Breakdown & Revenue Overview -->
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>🏢 Property Status <span class="chart-subtitle">— Current</span></h3>
+      <div class="donut-wrap" id="propertyStatusDonut">
+        <div style="text-align:center;width:100%;color:var(--muted);padding:40px;">Loading data...</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>💰 Payment Status Overview <span class="chart-subtitle">— All time</span></h3>
+      <div class="donut-wrap" id="paymentDonut">
+        <div style="text-align:center;width:100%;color:var(--muted);padding:40px;">Loading data...</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain: "bashakhuji-503d1.firebaseapp.com",
+    projectId: "bashakhuji-503d1",
+    storageBucket: "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let allProperties = [];
+  let allUsers = [];
+  let allPayments = [];
+  let unsubscribeProperties = null;
+  let unsubscribeUsers = null;
+  let unsubscribePayments = null;
+
+  // Authentication check
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "admin-login.html";
+    } else {
+      loadData();
+    }
+  });
+
+  function loadData() {
+    // Load properties
+    const propertiesQuery = collection(db, "properties");
+    unsubscribeProperties = onSnapshot(propertiesQuery, (snapshot) => {
+      allProperties = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      updateDashboard();
+    });
+
+    // Load users from tenants AND owners collections
+    let tenantsList = [];
+    let ownersList = [];
+    
+    // Load tenants
+    const tenantsQuery = collection(db, "tenants");
+    const tenantsUnsub = onSnapshot(tenantsQuery, (snapshot) => {
+      tenantsList = snapshot.docs.map(doc => ({ 
+        id: doc.id, 
+        ...doc.data(),
+        role: 'tenant'
+      }));
+      combineAndUpdateUsers(tenantsList, ownersList);
+    });
+    
+    // Load owners
+    const ownersQuery = collection(db, "owners");
+    const ownersUnsub = onSnapshot(ownersQuery, (snapshot) => {
+      ownersList = snapshot.docs.map(doc => ({ 
+        id: doc.id, 
+        ...doc.data(),
+        role: 'owner'
+      }));
+      combineAndUpdateUsers(tenantsList, ownersList);
+    });
+    
+    // Store unsubscribes for cleanup
+    unsubscribeUsers = () => {
+      tenantsUnsub();
+      ownersUnsub();
+    };
+
+    // Load payments
+    const paymentsQuery = collection(db, "payments");
+    unsubscribePayments = onSnapshot(paymentsQuery, (snapshot) => {
+      allPayments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      updateDashboard();
+    });
+  }
+  
+  function combineAndUpdateUsers(tenants, owners) {
+    allUsers = [...tenants, ...owners];
+    updateDashboard();
+  }
+
+  function updateDashboard() {
+    updateStatsCards();
+    updateBarChart();
+    updateUserDonut();
+    updatePropertyStatusDonut();
+    updatePaymentDonut();
+    updateSidebarBadges();
+  }
+
+  function updateStatsCards() {
+    // Total Properties
+    const totalProps = allProperties.length;
+    document.getElementById('totalProperties').textContent = totalProps;
+    
+    // New properties this week
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    const newProps = allProperties.filter(p => {
+      const createdAt = p.createdAt ? new Date(p.createdAt) : null;
+      return createdAt && createdAt >= oneWeekAgo;
+    }).length;
+    document.getElementById('propertyTrend').innerHTML = `↑ ${newProps} new this week`;
+
+    // Total Users (tenants + owners combined)
+    const totalUsers = allUsers.length;
+    document.getElementById('totalUsers').textContent = totalUsers;
+    
+    // New users this week
+    const newUsers = allUsers.filter(u => {
+      const createdAt = u.createdAt ? new Date(u.createdAt) : null;
+      return createdAt && createdAt >= oneWeekAgo;
+    }).length;
+    document.getElementById('userTrend').innerHTML = `↑ ${newUsers} new this week`;
+
+    // Total Revenue (from verified/paid payments)
+    let totalRevenue = 0;
+    let paidCount = 0;
+    let monthlyRevenue = 0;
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    
+    allPayments.forEach(p => {
+      const amount = typeof p.amount === 'number' ? p.amount : (parseFloat(p.amount) || 0);
+      const status = p.status || 'Pending';
+      const paymentDate = p.paymentDate ? new Date(p.paymentDate) : null;
+      
+      if (status === 'Verified' || status === 'Paid') {
+        totalRevenue += amount;
+        paidCount++;
+        if (paymentDate && paymentDate >= oneMonthAgo) {
+          monthlyRevenue += amount;
+        }
+      }
+    });
+    
+    document.getElementById('totalRevenue').textContent = `৳ ${totalRevenue.toLocaleString()}`;
+    document.getElementById('paidPayments').textContent = paidCount;
+    
+    // Calculate monthly revenue percentage change (simplified)
+    const lastMonthRevenue = totalRevenue > 0 ? Math.round((monthlyRevenue / totalRevenue) * 100) : 0;
+    document.getElementById('revenueTrend').innerHTML = `↑ ${lastMonthRevenue}% this month`;
+    document.getElementById('paymentTrend').innerHTML = `↑ ${paidCount} total paid`;
+  }
+
+  function updateBarChart() {
+    // Group properties by month for last 6 months
+    const months = [];
+    const monthNames = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date();
+      d.setMonth(d.getMonth() - i);
+      monthNames.push(d.toLocaleString('default', { month: 'short' }));
+      const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+      const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+      const count = allProperties.filter(p => {
+        const createdAt = p.createdAt ? new Date(p.createdAt) : null;
+        return createdAt && createdAt >= startOfMonth && createdAt <= endOfMonth;
+      }).length;
+      months.push(count);
+    }
+    
+    const maxVal = Math.max(...months, 1);
+    const barColors = ['#0077b6', '#00b4d8', '#ff85a1', '#ffd166', '#06d6a0', '#0077b6'];
+    
+    const barChartHtml = months.map((v, i) => `
+      <div class="bar-group">
+        <div class="bar-val">${v}</div>
+        <div class="bar" style="height:${(v/maxVal)*120}px;background:${barColors[i]};opacity:0.85;" title="${monthNames[i]}: ${v} properties"></div>
+        <div class="bar-lbl">${monthNames[i]}</div>
+      </div>
+    `).join('');
+    
+    document.getElementById('barChart').innerHTML = barChartHtml;
+  }
+
+  function updateUserDonut() {
+    // Get users from tenants and owners
+    const tenants = allUsers.filter(u => u.role === 'tenant' && u.status !== 'blocked').length;
+    const owners = allUsers.filter(u => u.role === 'owner' && u.status !== 'blocked').length;
+    const blocked = allUsers.filter(u => u.status === 'blocked').length;
+    const total = allUsers.length || 1;
+    
+    const tenantsPercent = (tenants / total) * 339.3;
+    const ownersPercent = (owners / total) * 339.3;
+    const blockedPercent = (blocked / total) * 339.3;
+    
+    let tenantsOffset = 0;
+    let ownersOffset = -tenantsPercent;
+    let blockedOffset = -(tenantsPercent + ownersPercent);
+    
+    const donutHtml = `
+      <svg class="donut-svg" width="140" height="140" viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#f0f7ff" stroke-width="20"/>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#ff85a1" stroke-width="20"
+          stroke-dasharray="${tenantsPercent} 339.3" stroke-dashoffset="0" transform="rotate(-90 70 70)"/>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#0077b6" stroke-width="20"
+          stroke-dasharray="${ownersPercent} 339.3" stroke-dashoffset="${ownersOffset}" transform="rotate(-90 70 70)"/>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#ffd166" stroke-width="20"
+          stroke-dasharray="${blockedPercent} 339.3" stroke-dashoffset="${blockedOffset}" transform="rotate(-90 70 70)"/>
+        <text x="70" y="66" text-anchor="middle" font-size="20" font-weight="900" fill="#023e8a" font-family="Nunito">${total}</text>
+        <text x="70" y="82" text-anchor="middle" font-size="10" fill="#6c757d" font-family="Poppins">total</text>
+      </svg>
+      <div class="donut-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#ff85a1"></div>Tenants<span class="legend-val">${tenants}</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#0077b6"></div>Owners<span class="legend-val">${owners}</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ffd166"></div>Blocked<span class="legend-val">${blocked}</span></div>
+      </div>
+    `;
+    
+    document.getElementById('userDonut').innerHTML = donutHtml;
+  }
+
+  function updatePropertyStatusDonut() {
+    const approved = allProperties.filter(p => p.status === 'approved').length;
+    const pending = allProperties.filter(p => p.status === 'pending').length;
+    const rejected = allProperties.filter(p => p.status === 'rejected').length;
+    const total = allProperties.length || 1;
+    
+    const approvedPercent = (approved / total) * 339.3;
+    const pendingPercent = (pending / total) * 339.3;
+    const rejectedPercent = (rejected / total) * 339.3;
+    
+    let approvedOffset = 0;
+    let pendingOffset = -approvedPercent;
+    let rejectedOffset = -(approvedPercent + pendingPercent);
+    
+    const donutHtml = `
+      <svg class="donut-svg" width="140" height="140" viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#f0f7ff" stroke-width="20"/>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#06d6a0" stroke-width="20"
+          stroke-dasharray="${approvedPercent} 339.3" stroke-dashoffset="0" transform="rotate(-90 70 70)"/>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#ffd166" stroke-width="20"
+          stroke-dasharray="${pendingPercent} 339.3" stroke-dashoffset="${pendingOffset}" transform="rotate(-90 70 70)"/>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#ef233c" stroke-width="20"
+          stroke-dasharray="${rejectedPercent} 339.3" stroke-dashoffset="${rejectedOffset}" transform="rotate(-90 70 70)"/>
+        <text x="70" y="66" text-anchor="middle" font-size="20" font-weight="900" fill="#023e8a" font-family="Nunito">${total}</text>
+        <text x="70" y="82" text-anchor="middle" font-size="10" fill="#6c757d" font-family="Poppins">total</text>
+      </svg>
+      <div class="donut-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#06d6a0"></div>Approved<span class="legend-val">${approved}</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ffd166"></div>Pending<span class="legend-val">${pending}</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ef233c"></div>Rejected<span class="legend-val">${rejected}</span></div>
+      </div>
+    `;
+    
+    document.getElementById('propertyStatusDonut').innerHTML = donutHtml;
+  }
+
+  function updatePaymentDonut() {
+    const paid = allPayments.filter(p => p.status === 'Verified' || p.status === 'Paid').length;
+    const pending = allPayments.filter(p => p.status === 'Pending').length;
+    const failed = allPayments.filter(p => p.status === 'Failed').length;
+    const total = allPayments.length || 1;
+    
+    const paidPercent = (paid / total) * 339.3;
+    const pendingPercent = (pending / total) * 339.3;
+    const failedPercent = (failed / total) * 339.3;
+    
+    let paidOffset = 0;
+    let pendingOffset = -paidPercent;
+    let failedOffset = -(paidPercent + pendingPercent);
+    
+    const donutHtml = `
+      <svg class="donut-svg" width="140" height="140" viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#f0f7ff" stroke-width="20"/>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#06d6a0" stroke-width="20"
+          stroke-dasharray="${paidPercent} 339.3" stroke-dashoffset="0" transform="rotate(-90 70 70)"/>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#ffd166" stroke-width="20"
+          stroke-dasharray="${pendingPercent} 339.3" stroke-dashoffset="${pendingOffset}" transform="rotate(-90 70 70)"/>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#ef233c" stroke-width="20"
+          stroke-dasharray="${failedPercent} 339.3" stroke-dashoffset="${failedOffset}" transform="rotate(-90 70 70)"/>
+        <text x="70" y="66" text-anchor="middle" font-size="20" font-weight="900" fill="#023e8a" font-family="Nunito">${total}</text>
+        <text x="70" y="82" text-anchor="middle" font-size="10" fill="#6c757d" font-family="Poppins">total</text>
+      </svg>
+      <div class="donut-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#06d6a0"></div>Paid<span class="legend-val">${paid}</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ffd166"></div>Pending<span class="legend-val">${pending}</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ef233c"></div>Failed<span class="legend-val">${failed}</span></div>
+      </div>
+    `;
+    
+    document.getElementById('paymentDonut').innerHTML = donutHtml;
+  }
+
+  function updateSidebarBadges() {
+    const pendingProps = allProperties.filter(p => p.status === 'pending').length;
+    const badge = document.getElementById('propertyBadge');
+    if (badge) {
+      badge.textContent = pendingProps;
+      badge.style.display = pendingProps === 0 ? 'none' : 'inline-block';
+    }
+  }
+
+  function showToast(msg, type) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = `toast ${type} show`;
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  window.showToast = showToast;
+  
+  window.logout = async function() {
+    if (confirm('Are you sure you want to logout?')) {
+      try {
+        if (unsubscribeProperties) unsubscribeProperties();
+        if (unsubscribeUsers) unsubscribeUsers();
+        if (unsubscribePayments) unsubscribePayments();
+        await signOut(auth);
+        window.location.href = 'admin-login.html';
+      } catch (error) {
+        console.error("Logout error:", error);
+        showToast('Logout failed', 'red');
+      }
+    }
+  };
+</script>
+
+</body>
+</html>

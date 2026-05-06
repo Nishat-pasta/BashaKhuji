@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Privacy Policy | BashaKhuji</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue-dark:  #0f172a;
+      --blue-mid:   #1e3a8a;
+      --blue:       #3b82f6;
+      --blue-light: #93c5fd;
+      --pink:       #ec4899;
+      --pink-light: #f9a8d4;
+      --white:      #ffffff;
+      --bg:         #f0f4ff;
+      --text:       #1e293b;
+      --muted:      #64748b;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--white);
+      padding: 14px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 20px rgba(59,130,246,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-container { display: flex; align-items: center; text-decoration: none; gap: 8px; }
+    .logo-container img { height: 46px; }
+    .logo-text { font-size: 22px; font-weight: 700; color: var(--blue-mid); }
+    nav { display: flex; gap: 25px; align-items: center; }
+    nav a { text-decoration: none; color: var(--muted); font-weight: 500; font-size: 15px; transition: color 0.3s; }
+    nav a:hover { color: var(--blue); }
+
+    .hero {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, #1e3a8a 50%, #6d28d9 100%);
+      padding: 70px 8% 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 450px; height: 450px;
+      background: radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 65%);
+      top: -120px; right: -60px;
+      border-radius: 50%;
+      animation: blob 10s ease-in-out infinite;
+    }
+    @keyframes blob {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.1) translate(20px,-20px); }
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(236,72,153,0.2);
+      border: 1px solid rgba(236,72,153,0.4);
+      color: var(--pink-light);
+      padding: 6px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      position: relative; z-index: 2;
+    }
+    .hero h1 {
+      font-size: 44px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 14px;
+      position: relative; z-index: 2;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--pink-light), var(--blue-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.7);
+      max-width: 550px;
+      margin: 0 auto;
+      line-height: 1.7;
+      position: relative; z-index: 2;
+    }
+    .update-tag {
+      display: inline-block;
+      margin-top: 20px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.8);
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 12px;
+      position: relative; z-index: 2;
+    }
+
+    .content-wrap {
+      max-width: 1100px;
+      margin: -40px auto 0;
+      padding: 0 8% 80px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 35px;
+      align-items: start;
+    }
+
+    .toc {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 8px 30px rgba(59,130,246,0.1);
+      position: sticky;
+      top: 90px;
+      border: 1px solid rgba(59,130,246,0.1);
+    }
+    .toc h4 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .toc a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 9px 12px;
+      border-radius: 8px;
+      transition: all 0.25s;
+      margin-bottom: 4px;
+    }
+    .toc a:hover {
+      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(236,72,153,0.08));
+      color: var(--blue-mid);
+      padding-left: 16px;
+    }
+    .toc a i { color: var(--pink); font-size: 12px; }
+
+    .policy-card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 35px 40px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 24px rgba(59,130,246,0.07);
+      border: 1px solid rgba(59,130,246,0.08);
+      scroll-margin-top: 90px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 2px solid var(--bg);
+    }
+    .card-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--blue), var(--pink));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .card-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--blue-mid);
+    }
+    .policy-card p {
+      font-size: 14.5px;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+    .policy-card p:last-child { margin-bottom: 0; }
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(59,130,246,0.07), rgba(236,72,153,0.05));
+      border-left: 4px solid var(--blue);
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px;
+      margin: 18px 0;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .list-item i { color: var(--pink); margin-top: 3px; flex-shrink: 0; }
+
+    .contact-box {
+      background: linear-gradient(135deg, var(--blue-mid), var(--pink));
+      border-radius: 18px;
+      padding: 35px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .contact-box h3 { font-size: 22px; margin-bottom: 10px; }
+    .contact-box p { font-size: 14px; opacity: 0.85; margin-bottom: 20px; }
+    .contact-box a {
+      display: inline-block;
+      padding: 12px 28px;
+      background: white;
+      color: var(--blue-mid);
+      border-radius: 50px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .contact-box a:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+
+    .page-footer {
+      background: var(--blue-dark);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 25px;
+      font-size: 14px;
+    }
+    .page-footer a { color: var(--blue-light); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .content-wrap { grid-template-columns: 1fr; }
+      .toc { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header>
+  <a href="index.html" class="logo-container">
+    <img src="images/logo.png" alt="BashaKhuji Logo">
+    <span class="logo-text">BashaKhuji</span>
+  </a>
+  <nav>
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="faq.html">FAQ</a>
+    <a href="privacy-policy.html" style="color: var(--blue);">Privacy Policy</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">Legal</div>
+  <h1>Privacy <span>Policy</span></h1>
+  <p>Your privacy is our top priority. Learn how we collect, use, and protect your information on BashaKhuji.</p>
+  <div class="update-tag">📅 Last Updated: March 2026</div>
+</section>
+
+<!-- Content -->
+<div class="content-wrap">
+
+  <!-- TOC Sidebar -->
+  <aside class="toc">
+    <h4>Contents</h4>
+    <a href="#collect"><i class="fas fa-chevron-right"></i> What We Collect</a>
+    <a href="#use"><i class="fas fa-chevron-right"></i> How We Use It</a>
+    <a href="#share"><i class="fas fa-chevron-right"></i> Sharing Information</a>
+    <a href="#security"><i class="fas fa-chevron-right"></i> Security</a>
+    <a href="#rights"><i class="fas fa-chevron-right"></i> Your Rights</a>
+    <a href="#contact"><i class="fas fa-chevron-right"></i> Contact Us</a>
+  </aside>
+
+  <!-- Policy Content -->
+  <main>
+
+    <div class="policy-card" id="collect">
+      <div class="card-header">
+        <div class="card-icon"><i class="fas fa-database"></i></div>
+        <h2>What Information Do We Collect?</h2>
+      </div>
+      <p>When you create an account and use our services on BashaKhuji, we collect the following information:</p>
+
+      <div class="list-item"><i class="fas fa-circle"></i><span><strong>Personal Information:</strong> Name, email address, and phone number that you provide during registration.</span></div>
+      <div class="list-item"><i class="fas fa-circle"></i><span><strong>Property Information:</strong> Address, photos, and other details of properties provided by owners.</span></div>
+      <div class="list-item"><i class="fas fa-circle"></i><span><strong>Usage Information:</strong> Anonymous data about which pages you visit and how long you stay — this helps us improve our service.</span></div>
+      <div class="list-item"><i class="fas fa-circle"></i><span><strong>Device Information:</strong> Browser type, IP address, and device information.</span></div>
+
+      <div class="highlight-box">
+        <i class="fas fa-info-circle" style="color: #3b82f6; margin-right: 8px;"></i>
+        We only collect information that is necessary to provide you with our services. We do not ask for any unnecessary data.
+      </div>
+    </div>
+
+    <div class="policy-card" id="use">
+      <div class="card-header">
+        <div class="card-icon"><i class="fas fa-cogs"></i></div>
+        <h2>How Do We Use Your Information?</h2>
+      </div>
+      <p>We use the collected information for the following purposes:</p>
+      <div class="list-item"><i class="fas fa-check-circle"></i><span>To create and manage your account.</span></div>
+      <div class="list-item"><i class="fas fa-check-circle"></i><span>To facilitate property search and owner-tenant connections.</span></div>
+      <div class="list-item"><i class="fas fa-check-circle"></i><span>To improve our services and develop new features.</span></div>
+      <div class="list-item"><i class="fas fa-check-circle"></i><span>To send important updates and notifications.</span></div>
+      <div class="list-item"><i class="fas fa-check-circle"></i><span>To prevent fraud and illegal activities.</span></div>
+    </div>
+
+    <div class="policy-card" id="share">
+      <div class="card-header">
+        <div class="card-icon"><i class="fas fa-share-alt"></i></div>
+        <h2>Is Your Information Shared With Others?</h2>
+      </div>
+      <p>We never sell your personal information or use it for advertising. However, limited information may be shared in the following cases:</p>
+      <div class="list-item"><i class="fas fa-chevron-right"></i><span><strong>Owner-Tenant Communication:</strong> When you click the "Contact Owner" button, your basic contact information will be shared with the owner.</span></div>
+      <div class="list-item"><i class="fas fa-chevron-right"></i><span><strong>Legal Obligations:</strong> We may be required to provide information under a court order or government directive.</span></div>
+      <div class="list-item"><i class="fas fa-chevron-right"></i><span><strong>Payment Processor:</strong> When making a payment, necessary information is shared with the payment gateway (SSLCommerz).</span></div>
+
+      <div class="highlight-box" style="border-left-color: #ec4899;">
+        <i class="fas fa-heart" style="color: #ec4899; margin-right: 8px;"></i>
+        We never sell or provide your information to third-party advertisers. This is our promise to you.
+      </div>
+    </div>
+
+    <div class="policy-card" id="security">
+      <div class="card-header">
+        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+        <h2>Information Security</h2>
+      </div>
+      <p>We take the following steps to ensure the security of your information:</p>
+      <div class="list-item"><i class="fas fa-lock"></i><span><strong>SSL Encryption:</strong> All data transfers are secured with SSL/TLS encryption.</span></div>
+      <div class="list-item"><i class="fas fa-lock"></i><span><strong>Password Hashing:</strong> Your password is never stored in plain text.</span></div>
+      <div class="list-item"><i class="fas fa-lock"></i><span><strong>Secure Servers:</strong> Our servers follow industry-standard security practices.</span></div>
+      <div class="list-item"><i class="fas fa-lock"></i><span><strong>Regular Audits:</strong> We conduct regular security audits to keep your data safe.</span></div>
+    </div>
+
+    <div class="policy-card" id="rights">
+      <div class="card-header">
+        <div class="card-icon"><i class="fas fa-user-shield"></i></div>
+        <h2>Your Rights</h2>
+      </div>
+      <p>As a BashaKhuji user, you have the following rights:</p>
+      <div class="list-item"><i class="fas fa-eye"></i><span><strong>Right to Access:</strong> You can view all the information we have stored about you.</span></div>
+      <div class="list-item"><i class="fas fa-edit"></i><span><strong>Right to Correct:</strong> You can correct any incorrect information.</span></div>
+      <div class="list-item"><i class="fas fa-trash"></i><span><strong>Right to Delete:</strong> You can delete your account and all associated data.</span></div>
+      <div class="list-item"><i class="fas fa-ban"></i><span><strong>Right to Opt Out:</strong> You can unsubscribe from any marketing emails at any time.</span></div>
+    </div>
+
+    <div class="contact-box" id="contact">
+      <h3>📬 Privacy Questions?</h3>
+      <p>For any questions or requests related to your privacy, feel free to contact us anytime.</p>
+      <a href="mailto:sikderafrida@gmail.com">
+        <i class="fas fa-envelope"></i> sikderafrida@gmail.com
+      </a>
+    </div>
+
+  </main>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer">
+  © 2026 <a href="index.html">BashaKhuji</a>. All rights reserved. |
+  <a href="faq.html">FAQ</a> |
+  <a href="terms.html">Terms of Service</a>
+</footer>
+
+</body>
+</html>

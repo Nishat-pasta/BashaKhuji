@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Payment – BashaKhuji</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+  --bg: #c2ceec;
+--card: #f0c4ee;
+--card2: #b6ebed;
+    --gold: #f0b429;
+    --teal: #d881dd;
+    --text: #20c822;
+    --muted: #090a0a;
+    --border: rgba(15, 16, 16, 0.998);
+    --green: #22c55e;
+    --red: #ef4444;
+    --bkash: #e2136e;
+    --nagad: #f05a27;
+    --rocket: #8b2fc9;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text); min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 5% 10%, rgba(226,19,110,.06) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 50% at 95% 90%, rgba(240,180,41,.05) 0%, transparent 55%);
+    pointer-events: none; z-index: 0;
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(248, 248, 249, 0.88);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--gold), var(--teal));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .secure-tag {
+    display: flex; align-items: center; gap: 6px;
+    font-size: .8rem; color: var(--green);
+    background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.25);
+    border-radius: 100px; padding: 5px 14px;
+  }
+
+  main {
+    max-width: 560px; margin: 0 auto;
+    padding: 36px 5% 80px;
+    position: relative; z-index: 1;
+  }
+
+  .page-title {
+    text-align: center; margin-bottom: 32px;
+    animation: fadeUp .4s ease both;
+  }
+  .page-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem; font-weight: 700;
+  }
+  .page-title p { color: var(--muted); font-size: .9rem; margin-top: 6px; }
+
+  .steps {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 24px;
+    animation: fadeUp .4s .08s ease both;
+  }
+  .step {
+    flex: 1; text-align: center;
+    font-size: .78rem; font-weight: 600;
+    color: var(--muted);
+    position: relative;
+  }
+  .step .circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--card2); border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 6px; font-size: .8rem;
+    transition: all .3s;
+  }
+  .step.active .circle {
+    background: var(--gold); border-color: var(--gold); color: #0d0f14; font-weight: 700;
+  }
+  .step.done .circle {
+    background: var(--green); border-color: var(--green); color: #fff;
+  }
+  .step.active { color: var(--gold); }
+  .step.done { color: var(--green); }
+  .step-line {
+    flex: 1; height: 2px;
+    background: var(--border); margin-bottom: 22px;
+  }
+  .step-line.done { background: var(--green); }
+
+  /* Order Summary Card */
+  .order-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 20px;
+    animation: fadeUp .4s .05s ease both;
+  }
+  .order-card h2 {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .order-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: .9rem;
+  }
+  .order-row:last-child { border-bottom: none; }
+  .order-row .label { color: var(--muted); }
+  .order-row .val { font-weight: 600; }
+  .order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(240,180,41,.1), rgba(225, 229, 228, 0.961));
+    border: 1px solid rgba(240,180,41,.2);
+    border-radius: 12px;
+  }
+  .order-total .tl { font-size: .9rem; color: var(--muted); }
+  .order-total .tv {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .method-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 18px; padding: 24px;
+    margin-bottom: 20px;
+    animation: fadeUp .4s .1s ease both;
+  }
+  .method-card h2 {
+    font-size: .85rem; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;
+  }
+
+  .wallet-section { margin-bottom: 20px; }
+  .wallet-section .ws-label {
+    font-size: .78rem; color: var(--muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: .8px;
+    margin-bottom: 10px;
+  }
+  .wallet-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  }
+  .wallet-btn {
+    background: var(--card2); border: 2px solid var(--border);
+    border-radius: 14px; padding: 16px 10px;
+    cursor: pointer; transition: all .22s;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    position: relative; overflow: hidden;
+  }
+  .wallet-btn:hover { transform: translateY(-2px); }
+  .wallet-btn.selected { border-color: var(--current-color, var(--gold)); }
+  .wallet-btn.selected::before {
+    content: '✓';
+    position: absolute; top: 6px; right: 8px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--current-color, var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: .65rem; font-weight: 700; color: #fff;
+    line-height: 18px; text-align: center;
+  }
+  .wallet-btn .wicon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; }
+  .wallet-btn .wname { font-size: .82rem; font-weight: 600; }
+  .wallet-btn .wtype { font-size: .7rem; color: var(--muted); }
+
+  .wb-bkash { --current-color: var(--bkash); }
+  .wb-bkash .wicon { background: rgba(226,19,110,.15); color: var(--bkash); }
+  .wb-bkash:hover { border-color: rgba(226,19,110,.5); }
+  .wb-bkash.selected { background: rgba(226,19,110,.05); }
+
+  .wb-nagad { --current-color: var(--nagad); }
+  .wb-nagad .wicon { background: rgba(240,90,39,.15); color: var(--nagad); }
+  .wb-nagad:hover { border-color: rgba(240,90,39,.5); }
+  .wb-nagad.selected { background: rgba(240,90,39,.05); }
+
+  .wb-rocket { --current-color: var(--rocket); }
+  .wb-rocket .wicon { background: rgba(139,47,201,.15); color: var(--rocket); }
+  .wb-rocket:hover { border-color: rgba(139,47,201,.5); }
+  .wb-rocket.selected { background: rgba(139,47,201,.05); }
+
+  .input-panel {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 18px; padding: 24px;
+    margin-bottom: 20px;
+    animation: fadeUp .4s .15s ease both;
+  }
+  .input-panel h2 {
+    font-size: .85rem; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;
+  }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: .8rem; font-weight: 600; color: var(--muted);
+    margin-bottom: 7px; text-transform: uppercase; letter-spacing: .5px;
+  }
+  .form-input {
+    width: 100%; background: var(--card2);
+    border: 1.5px solid var(--border); border-radius: 11px;
+    padding: 13px 16px; font-size: .95rem; color: var(--text);
+    font-family: 'DM Sans', sans-serif; outline: none;
+    transition: border-color .2s;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: var(--muted); font-size: .88rem; }
+
+  .wallet-hint {
+    background: rgba(240,180,41,.07); border: 1px solid rgba(240,180,41,.2);
+    border-radius: 10px; padding: 12px 16px;
+    font-size: .82rem; color: var(--muted); margin-bottom: 16px;
+    display: none;
+  }
+  .wallet-hint.show { display: block; }
+  .wallet-hint strong { color: var(--gold); }
+
+  .btn-pay {
+    width: 100%; border: none; border-radius: 14px;
+    padding: 18px 32px; font-size: 1.05rem; font-weight: 700;
+    cursor: pointer; letter-spacing: .5px;
+    transition: all .25s; display: flex; align-items: center;
+    justify-content: center; gap: 10px;
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, var(--gold), #e8a000);
+    color: #0d0f14;
+    animation: fadeUp .4s .2s ease both;
+  }
+  .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(240,180,41,.35); }
+  .btn-pay:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.75); backdrop-filter: blur(8px);
+    z-index: 999; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 24px; padding: 40px 32px;
+    max-width: 440px; width: 100%; text-align: center;
+    animation: popIn .35s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .success-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(34,197,94,.2), rgba(6,182,164,.2));
+    border: 2px solid var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem; margin: 0 auto 20px;
+    animation: pulse 1.5s ease infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,.3); }
+    50% { box-shadow: 0 0 0 14px rgba(34,197,94,0); }
+  }
+  .modal-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; margin-bottom: 10px; color: var(--text);
+  }
+  .modal-box p { color: var(--muted); font-size: .9rem; line-height: 1.7; margin-bottom: 8px; }
+  .txn-id {
+    display: inline-block;
+    background: var(--card2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 18px;
+    font-size: .82rem; color: var(--gold); font-family: monospace;
+    margin: 10px 0 24px;
+  }
+  .btn-done {
+    width: 100%;
+    background: linear-gradient(135deg, var(--green), #16a34a);
+    color: #fff; border: none; border-radius: 12px;
+    padding: 14px; font-size: 1rem; font-weight: 700;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all .2s;
+  }
+  .btn-done:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(34,197,94,.25); }
+
+  .security-note {
+    display: flex; align-items: center; gap: 8px; justify-content: center;
+    font-size: .78rem; color: var(--muted); margin-top: 16px;
+    animation: fadeUp .4s .25s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo" style="display:flex;align-items:center;gap:8px;">
+  <img src="images/logo.png" alt="Logo" style="height:60px;width:auto;">
+  <span>BashaKhuji</span>
+</div>
+  <div class="secure-tag"> Secure Payment</div>
+</header>
+
+<main>
+
+  <div class="page-title">
+    <h1>Complete Payment</h1>
+    <p>Secure your property booking in minutes</p>
+  </div>
+
+  <div class="steps">
+    <div class="step done"><div class="circle">✓</div><div>Property</div></div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="circle">✓</div><div>Agency</div></div>
+    <div class="step-line done"></div>
+    <div class="step active"><div class="circle">3</div><div>Payment</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="circle">4</div><div>Confirm</div></div>
+  </div>
+
+  <!-- Order Summary - Amount dynamically loaded -->
+  <div class="order-card">
+    <h2>Order Summary</h2>
+    <div class="order-row">
+      <span class="label">Service Fee</span>
+      <span class="val" id="serviceFeeAmount">৳ —</span>
+    </div>
+    <div class="order-total">
+      <span class="tl">Total to Pay Now</span>
+      <span class="tv" id="totalAmount">৳ —</span>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <h2>Select Payment Method</h2>
+    <div class="wallet-section">
+      <div class="ws-label">📱 Mobile Wallet</div>
+      <div class="wallet-grid">
+        <div class="wallet-btn wb-bkash" data-method="bkash">
+          <div class="wicon"><img src="images/bkash.png" style="width:40px;height:40px;object-fit:contain;border-radius:8px;"></div>
+          <div class="wname">bKash</div>
+          <div class="wtype">Mobile Wallet</div>
+        </div>
+        <div class="wallet-btn wb-nagad" data-method="nagad">
+          <div class="wicon"><img src="images/Nagad.png" style="width:40px;height:40px;object-fit:contain;border-radius:8px;"></div>
+          <div class="wname">Nagad</div>
+          <div class="wtype">Mobile Wallet</div>
+        </div>
+        <div class="wallet-btn wb-rocket" data-method="rocket">
+          <div class="wicon"><img src="images/Rocket.jpeg" style="width:40px;height:40px;object-fit:contain;border-radius:8px;"></div>
+          <div class="wname">Rocket</div>
+          <div class="wtype">Mobile Wallet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-panel" id="inputPanel">
+    <h2 id="inputTitle">Payment Details</h2>
+
+    <div class="wallet-hint" id="walletHint">
+      Send <strong id="amountHint">৳ 0</strong> to <strong id="merchantNum">01XXXXXXXXX</strong> and enter your transaction ID below.
+    </div>
+
+    <div class="form-group">
+      <label>Your Full Name</label>
+      <input class="form-input" type="text" placeholder="e.g. Mohammad Rahim" id="nameInput"/>
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input class="form-input" type="tel" placeholder="01XXXXXXXXX" id="phoneInput"/>
+    </div>
+
+    <div id="walletFields">
+      <div class="form-group">
+        <label id="txnLabel">Transaction ID (TrxID)</label>
+        <input class="form-input" type="text" placeholder="e.g. 8A1B2C3D4E" id="trxInput"/>
+      </div>
+      <div class="form-group">
+        <label>Sender Number</label>
+        <input class="form-input" type="tel" placeholder="Number used to send payment" id="senderInput"/>
+      </div>
+    </div>
+
+    <div id="cardFields" style="display:none;">
+      <div class="form-group">
+        <label>Card Number</label>
+        <input class="form-input" type="text" placeholder="XXXX XXXX XXXX XXXX" id="cardNum" maxlength="19"/>
+      </div>
+      <div class="grid-2f">
+        <div class="form-group"><label>Expiry Date</label><input class="form-input" type="text" placeholder="MM / YY" id="cardExp" maxlength="7"/></div>
+        <div class="form-group"><label>CVV</label><input class="form-input" type="password" placeholder="•••" maxlength="4"/></div>
+      </div>
+      <div class="form-group"><label>Cardholder Name</label><input class="form-input" type="text" placeholder="Name on card"/></div>
+    </div>
+  </div>
+
+  <button class="btn-pay" id="payBtn" disabled>🔒 Pay</button>
+
+  <div class="security-note">🔐 256-bit SSL encrypted &nbsp;•&nbsp; Your data is safe &nbsp;•&nbsp; PCI DSS compliant</div>
+</main>
+
+<div class="modal-overlay" id="successModal">
+  <div class="modal-box">
+    <div class="success-icon">✅</div>
+    <h2>⏳ Waiting for Approval</h2>
+    <p>Your payment request has been sent. Once the admin approves it, the payment will be successful.</p>
+    <p>You can check the status on your <strong>Tenant Dashboard</strong>.</p>
+    <p>Transaction Reference:</p>
+    <div class="txn-id" id="txnIdDisplay">BK-2026-XXXXXX</div>
+    <button class="btn-done" onclick="window.location.href='tenant-dashboard.html'">📊 Go to My Dashboard</button>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain: "bashakhuji-503d1.firebaseapp.com",
+    projectId: "bashakhuji-503d1",
+    storageBucket: "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let selectedMethod = null;
+  let currentUser = null;
+  let propertyId = null;
+  let currentAmount = 0;
+  let flatSize = "medium";
+
+  // Get fee based on flat size
+  function getServiceFee(flatSize) {
+    const s = (flatSize || "").toLowerCase();
+    if (s === "small") return 50;
+    if (s === "large") return 500;
+    return 200; // medium (default)
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  propertyId = params.get('propertyId') || params.get('id');
+
+  const merchantNumbers = {
+    bkash: '01712-345678',
+    nagad: '01812-345678',
+    rocket: '01912-345678'
+  };
+
+  // Load property details to get flatSize and calculate amount
+  async function loadPropertyDetails() {
+    if (!propertyId) return;
+    
+    try {
+      const propSnap = await getDoc(doc(db, "properties", propertyId));
+      if (propSnap.exists()) {
+        const p = propSnap.data();
+        flatSize = p.flatSize || p.size || "medium";
+        currentAmount = getServiceFee(flatSize);
+        
+        // Update UI with amount
+        const sizeLabel = flatSize === 'small' ? 'Small Flat' : flatSize === 'large' ? 'Large Flat' : 'Medium Flat';
+        document.getElementById('serviceFeeAmount').innerHTML = `৳ ${currentAmount.toLocaleString()}`;
+        document.getElementById('totalAmount').innerHTML = `৳ ${currentAmount.toLocaleString()}`;
+        document.getElementById('amountHint').innerHTML = `৳ ${currentAmount.toLocaleString()}`;
+      }
+    } catch(e) {
+      console.error("Error loading property:", e);
+    }
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (!user) {
+      alert('Please login first to make payment!');
+      window.location.href = 'tenant-login.html';
+      return;
+    }
+    await loadPropertyDetails();
+  });
+
+  // Payment method selection
+  document.querySelectorAll('.wallet-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.wallet-btn').forEach(b => b.classList.remove('selected'));
+      this.classList.add('selected');
+      selectedMethod = this.getAttribute('data-method');
+      
+      const hint = document.getElementById('walletHint');
+      const walletF = document.getElementById('walletFields');
+      const title = document.getElementById('inputTitle');
+      
+      const label = selectedMethod === 'bkash' ? 'bKash' : selectedMethod === 'nagad' ? 'Nagad' : 'Rocket';
+      hint.innerHTML = `Send <strong>৳ ${currentAmount.toLocaleString()}</strong> to <strong>${merchantNumbers[selectedMethod]}</strong> (${label} Merchant) then enter your Transaction ID below.`;
+      hint.classList.add('show');
+      walletF.style.display = 'block';
+      document.getElementById('cardFields').style.display = 'none';
+      title.textContent = `${label} Payment Details`;
+      
+      const payBtn = document.getElementById('payBtn');
+      payBtn.disabled = false;
+      payBtn.innerHTML = `🔒 Pay ৳ ${currentAmount.toLocaleString()} via ${label}`;
+    });
+  });
+
+  // Submit payment
+  document.getElementById('payBtn').addEventListener('click', async function() {
+    if (!currentUser) {
+      alert('Please login first!');
+      window.location.href = 'tenant-login.html';
+      return;
+    }
+
+    const name = document.getElementById('nameInput').value.trim();
+    const phone = document.getElementById('phoneInput').value.trim();
+    const trxId = document.getElementById('trxInput')?.value.trim() || 'MANUAL-' + Date.now();
+    
+    if (!name || !phone) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    if (!selectedMethod) {
+      alert('Please select a payment method.');
+      return;
+    }
+
+    if (!propertyId) {
+      alert('Property information missing. Please go back and try again.');
+      return;
+    }
+
+    const btn = this;
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Processing...';
+
+    try {
+      let propertyName = "Property";
+      try {
+        const propSnap = await getDoc(doc(db, "properties", propertyId));
+        if (propSnap.exists()) {
+          propertyName = propSnap.data().title || "Property";
+        }
+      } catch(e) {}
+
+      const paymentId = `${currentUser.uid}_${propertyId}`;
+      
+      await setDoc(doc(db, "payments", paymentId), {
+        tenantId: currentUser.uid,
+        tenantName: name,
+        tenantPhone: phone,
+        propertyId: propertyId,
+        propertyName: propertyName,
+        flatSize: flatSize,
+        amount: currentAmount,
+        method: selectedMethod,
+        transactionId: trxId,
+        status: "pending",
+        createdAt: new Date().toISOString()
+      });
+
+      document.getElementById('txnIdDisplay').textContent = trxId;
+      document.getElementById('successModal').classList.add('show');
+      
+    } catch (error) {
+      console.error("Payment error:", error);
+      alert("Payment failed! Please try again. Error: " + error.message);
+      btn.disabled = false;
+      btn.innerHTML = `🔒 Pay ৳ ${currentAmount.toLocaleString()} via ${selectedMethod === 'bkash' ? 'bKash' : selectedMethod === 'nagad' ? 'Nagad' : 'Rocket'}`;
+    }
+  });
+</script>
+</body>
+</html>

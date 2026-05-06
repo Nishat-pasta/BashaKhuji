@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Owner Registration | BashaKhuji</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --accent:  #1a56db;
+      --accent2: #1e3a5f;
+      --blue:    #1a56db;
+      --pink:    #ff2d78;
+      --green:   #10b981;
+      --text:    #1a1f36;
+      --muted:   #6b7280;
+      --border:  #dde3ee;
+      --input-bg:#f9fafc;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
+      position: relative;
+    }
+
+    .bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: url("https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80")
+                  center/cover no-repeat;
+    }
+    .bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(15,23,42,.72), rgba(30,58,95,.72));
+    }
+
+    .card {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 540px;
+      background: rgba(255,255,255,.97);
+      border-radius: 24px;
+      padding: 38px 40px 36px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.3);
+      animation: slideUp .5s cubic-bezier(.16,1,.3,1) both;
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .brand {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; margin-bottom: 22px;
+    }
+    .brand img { height: 55px; width: auto; }
+    .brand-fallback {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; color: var(--accent);
+    }
+    .brand-fallback span { color: var(--blue); }
+
+    .divider { height:1px; background:var(--border); margin-bottom:22px; }
+
+    .heading { text-align:center; margin-bottom:26px; }
+    .heading h2 { font-size:20px; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .heading p  { font-size:13px; color:var(--muted); }
+
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .step-circle {
+      width: 36px !important;
+      height: 36px !important;
+      min-width: 36px !important;
+      min-height: 36px !important;
+      border-radius: 50% !important;
+      border: 2px solid #dde3ee;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #6b7280;
+      transition: all 0.3s;
+      box-sizing: border-box !important;
+    }
+    .step.active .step-circle {
+      background: #1a56db !important;
+      border-color: #1a56db !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.15);
+    }
+    .steps * { box-sizing: border-box !important; }
+    .step { background: none !important; }
+    .step-label {
+      font-size: 10px;
+      color: #6b7280;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .step.active .step-label { color: #1a56db; font-weight: 700; }
+    .step.done  .step-label  { color: #03010e; }
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: #dde3ee;
+      margin: 0 6px;
+      margin-bottom: 16px;
+      transition: background 0.3s;
+      min-width: 30px;
+    }
+    .step-line.done { background: #10b981; }
+
+    .section-title {
+      font-size:13px; font-weight:700; color:var(--accent);
+      text-transform:uppercase; letter-spacing:.6px;
+      margin-bottom:16px; padding-bottom:8px;
+      border-bottom:2px solid var(--border);
+    }
+
+    .form-page { display:none; }
+    .form-page.active { display:block; }
+
+    .field { margin-bottom:16px; }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .field-row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+
+    label {
+      display:block; font-size:12.5px; font-weight:600;
+      color:var(--text); margin-bottom:6px;
+    }
+    .req { color:var(--pink); margin-left:2px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="date"],
+    input[type="number"],
+    select, textarea {
+      width:100%;
+      padding:11px 14px;
+      border:1.5px solid var(--border);
+      border-radius:10px;
+      font-size:13.5px;
+      font-family:'Poppins',sans-serif;
+      color:var(--text);
+      background:var(--input-bg);
+      outline:none;
+      transition:border-color .2s, box-shadow .2s, background .2s;
+      appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color:var(--accent);
+      background:#fff;
+      box-shadow:0 0 0 3px rgba(15,23,42,.08);
+    }
+    input::placeholder, textarea::placeholder { color:#c0c8d8; }
+
+    .pw-wrap { position:relative; }
+    .pw-wrap input { padding-right:40px; }
+    .eye-btn {
+      position:absolute; right:12px; top:50%;
+      transform:translateY(-50%);
+      cursor:pointer; font-size:14px; user-select:none;
+    }
+
+    .select-wrap { position:relative; }
+    .select-wrap::after {
+      content:'▾'; position:absolute; right:14px; top:50%;
+      transform:translateY(-50%); pointer-events:none;
+      color:var(--muted); font-size:13px;
+    }
+    select { cursor:pointer; }
+
+    textarea { resize:vertical; min-height:100px; line-height:1.6; }
+
+    .field-hint { font-size:11px; color:#9ca3af; margin-top:5px; }
+    .error-msg  { font-size:11px; color:#ef4444; margin-top:5px; display:none; }
+
+    .check-group { display:flex; gap:20px; flex-wrap:wrap; margin-top:4px; }
+    .check-item  { display:flex; align-items:center; gap:7px; font-size:13px; color:var(--text); cursor:pointer; }
+    .check-item input[type="checkbox"] {
+      width:16px; height:16px; padding:0;
+      accent-color:var(--accent); cursor:pointer;
+      border:none; box-shadow:none;
+    }
+    .check-item input[type="checkbox"]:focus { box-shadow:none; border-color:transparent; }
+
+    .radio-group { display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; }
+    .radio-item {
+      flex:1; min-width:100px;
+      border:1.5px solid var(--border); border-radius:10px;
+      padding:10px 8px; text-align:center;
+      font-size:12.5px; font-weight:600; color:var(--muted);
+      cursor:pointer; transition:all .2s;
+    }
+    .radio-item:hover { border-color:var(--accent); color:var(--accent); }
+    .radio-item.selected { background:var(--accent); border-color:var(--accent); color:#fff; }
+    .radio-item .radio-icon { font-size:18px; display:block; margin-bottom:4px; }
+
+    .furnish-group { display:flex; gap:10px; margin-top:4px; }
+    .furnish-item {
+      flex:1; border:1.5px solid var(--border); border-radius:10px;
+      padding:9px 6px; text-align:center;
+      font-size:12px; font-weight:600; color:var(--muted);
+      cursor:pointer; transition:all .2s;
+    }
+    .furnish-item:hover { border-color:var(--accent); color:var(--accent); }
+    .furnish-item.selected { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+    /* ── Photo upload ── */
+    .upload-area {
+      border:2px dashed var(--border); border-radius:12px;
+      padding:28px 20px; text-align:center;
+      cursor:pointer; transition:border-color .2s, background .2s;
+      background:var(--input-bg);
+      display: block;
+    }
+    .upload-area:hover { border-color:var(--accent); background:#f0f4ff; }
+    .upload-area input[type="file"] { display:none; }
+    .upload-icon { font-size:32px; margin-bottom:8px; }
+    .upload-area p  { font-size:13px; color:var(--muted); }
+    .upload-area span { font-size:12px; color:#9ca3af; }
+    .upload-preview { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; justify-content: center; }
+    .preview-img {
+      width:70px; height:70px; border-radius:8px;
+      object-fit:cover; border:2px solid var(--border);
+    }
+
+    .info-badge {
+      display:flex; align-items:flex-start; gap:9px;
+      background:#eff6ff; border:1px solid #bfdbfe;
+      border-radius:9px; padding:10px 13px;
+      margin-bottom:18px; font-size:12px; color:#1e40af; line-height:1.5;
+    }
+
+    .taka-wrap { position:relative; }
+    .taka-wrap input { padding-left:32px; }
+    .taka-sym {
+      position:absolute; left:12px; top:50%;
+      transform:translateY(-50%);
+      font-size:14px; font-weight:700; color:var(--muted);
+      pointer-events:none;
+    }
+
+    .strength-bar { display:flex; gap:4px; margin-top:7px; }
+    .strength-bar span {
+      flex:1; height:3px; border-radius:3px;
+      background:var(--border); transition:background .3s;
+    }
+    .strength-label { font-size:11px; color:var(--muted); margin-top:4px; }
+
+    .terms-row { display:flex; align-items:flex-start; gap:9px; margin-bottom:18px; }
+    .terms-row input[type="checkbox"] {
+      width:16px; height:16px; padding:0; margin-top:2px;
+      accent-color:var(--accent); flex-shrink:0;
+    }
+    .terms-row label { font-size:12px; color:var(--muted); font-weight:400; margin:0; }
+    .terms-row a { color:var(--blue); text-decoration:none; }
+
+    .btn-next, .btn-submit, .btn-back {
+      font-family:'Poppins',sans-serif;
+      font-size:14px; font-weight:600;
+      border:none; border-radius:10px;
+      cursor:pointer; padding:12px;
+      transition:all .2s; width:100%;
+    }
+    .btn-next {
+      background:linear-gradient(135deg, #0f172a, #1e3a5f);
+      color:#fff;
+      box-shadow:0 4px 16px rgba(15,23,42,.35);
+      position:relative; overflow:hidden;
+    }
+    .btn-next::after {
+      content:''; position:absolute;
+      top:-50%; left:-60%; width:45%; height:200%;
+      background:rgba(255,255,255,.15);
+      transform:skewX(-20deg);
+      animation:shine 2.2s infinite;
+    }
+    @keyframes shine { 0%{left:-60%} 100%{left:130%} }
+    .btn-next:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(15,23,42,.45); }
+    .btn-next:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
+    .btn-submit {
+      background:linear-gradient(135deg, #ff2d78, #ff6eb4);
+      color:#fff; position:relative; overflow:hidden;
+      box-shadow:0 4px 18px rgba(255,45,120,.4);
+    }
+    .btn-submit::after {
+      content:''; position:absolute;
+      top:-50%; left:-60%; width:45%; height:200%;
+      background:rgba(255,255,255,.18);
+      transform:skewX(-20deg);
+      animation:shine 2.2s infinite;
+    }
+    .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 26px rgba(255,45,120,.55); }
+    .btn-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
+    .btn-back {
+      background:transparent; color:var(--muted);
+      border:1.5px solid var(--border); margin-bottom:10px;
+    }
+    .btn-back:hover { border-color:var(--accent); color:var(--accent); }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .success-screen { display:none; text-align:center; padding:10px 0; }
+    .success-icon {
+      width:72px; height:72px;
+      background:linear-gradient(135deg,#10b981,#34d399);
+      border-radius:50%; display:flex; align-items:center;
+      justify-content:center; margin:0 auto 20px;
+      font-size:30px; color:#fff;
+      box-shadow:0 8px 24px rgba(16,185,129,.35);
+      animation:pop .4s cubic-bezier(.16,1,.3,1);
+    }
+    @keyframes pop { from{transform:scale(.5);opacity:0} to{transform:scale(1);opacity:1} }
+    .success-screen h3 { font-size:20px; font-weight:700; color:var(--text); margin-bottom:8px; }
+    .success-screen p  { font-size:13.5px; color:var(--muted); margin-bottom:24px; line-height:1.6; }
+    .btn-goto {
+      display:inline-block; padding:12px 32px;
+      background:linear-gradient(135deg,#0f172a,#1e3a5f);
+      color:#fff; border-radius:10px; font-size:14px;
+      font-weight:600; text-decoration:none;
+      font-family:'Poppins',sans-serif;
+      transition:transform .15s;
+    }
+    .btn-goto:hover { transform:translateY(-1px); }
+
+    .bottom-link { text-align:center; margin-top:18px; font-size:13px; color:var(--muted); }
+    .bottom-link a { color:var(--blue); font-weight:600; text-decoration:none; }
+    .bottom-link a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="card">
+
+  <!-- Brand -->
+  <div class="brand">
+    <img src="images/logo.png" alt="BashaKhuji"
+         onerror="this.style.display='none'; document.getElementById('brandFallback').style.display='block'">
+    <div class="brand-fallback" id="brandFallback" style="display:none">
+      Basha<span>Khuji</span>
+    </div>
+  </div>
+
+  <!-- Heading -->
+  <div class="heading" id="mainHeading">
+    <h2>Owner Registration</h2>
+    <p style="color:#0f172a; font-weight:600; font-size:14px;">Register & List Your Property</p>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps" id="stepsBar">
+    <div class="step active" id="s1">
+      <div class="step-circle">1</div>
+      <div class="step-label">Owner Info</div>
+    </div>
+    <div class="step-line" id="l1"></div>
+    <div class="step" id="s2">
+      <div class="step-circle">2</div>
+      <div class="step-label">Property</div>
+    </div>
+    <div class="step-line" id="l2"></div>
+    <div class="step" id="s3">
+      <div class="step-circle">3</div>
+      <div class="step-label">Rent</div>
+    </div>
+    <div class="step-line" id="l3"></div>
+    <div class="step" id="s4">
+      <div class="step-circle">4</div>
+      <div class="step-label">Photos</div>
+    </div>
+  </div>
+
+  <!-- PAGE 1: Owner Info -->
+  <div class="form-page active" id="page1">
+    <div class="section-title">Personal Information</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>First Name <span class="req">*</span></label>
+        <input type="text" id="firstName" placeholder="Karim">
+      </div>
+      <div class="field">
+        <label>Last Name <span class="req">*</span></label>
+        <input type="text" id="lastName" placeholder="Hossain">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Email Address <span class="req">*</span></label>
+      <input type="email" id="email" placeholder="karim@example.com">
+    </div>
+
+    <div class="field">
+      <label>Phone Number <span class="req">*</span></label>
+      <input type="tel" id="phone" placeholder="+880 1X XX XXX XXX">
+      <div class="field-hint">Bangladesh number preferred (+880)</div>
+    </div>
+
+    <div class="field">
+      <label>NID Card Number <span class="req">*</span></label>
+      <input type="text" id="nid" placeholder="10 or 17 digit NID number" maxlength="17">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Date of Birth <span class="req">*</span></label>
+        <input type="date" id="dob">
+      </div>
+      <div class="field">
+        <label>Present Address</label>
+        <input type="text" id="address" placeholder="Dhaka, Bangladesh">
+      </div>
+    </div>
+
+    <div class="divider" style="margin:20px 0 16px"></div>
+    <div class="section-title">Account Security</div>
+
+    <div class="field">
+      <label>Create Password <span class="req">*</span></label>
+      <div class="pw-wrap">
+        <input type="password" id="password" placeholder="Min. 8 characters" oninput="checkStrength(this.value)">
+        <span class="eye-btn" onclick="togglePass('password',this)">👁</span>
+      </div>
+      <div class="strength-bar">
+        <span id="pw1"></span><span id="pw2"></span><span id="pw3"></span><span id="pw4"></span>
+      </div>
+      <div class="strength-label" id="strengthLabel">Enter a strong password</div>
+    </div>
+
+    <div class="field">
+      <label>Confirm Password <span class="req">*</span></label>
+      <div class="pw-wrap">
+        <input type="password" id="confirmPass" placeholder="Re-enter password">
+        <span class="eye-btn" onclick="togglePass('confirmPass',this)">👁</span>
+      </div>
+      <div class="error-msg" id="passErr">Passwords do not match!</div>
+    </div>
+
+    <div class="terms-row">
+      <input type="checkbox" id="terms">
+      <label for="terms">
+        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of BashaKhuji
+      </label>
+    </div>
+
+    <button class="btn-next" onclick="go(2)">Continue</button>
+    <div class="bottom-link">Already have an account? <a href="owner-login.html">Log in</a></div>
+  </div>
+
+  <!-- PAGE 2: Property Info -->
+  <div class="form-page" id="page2">
+    <div class="section-title">Property Information</div>
+
+    <div class="field">
+      <label>Property Title <span class="req">*</span></label>
+      <input type="text" id="propTitle" placeholder="e.g. Spacious 3-Bed Apartment in Dhanmondi">
+    </div>
+
+    <div class="field">
+      <label>Property Type <span class="req">*</span></label>
+      <div class="radio-group" id="propTypeGroup">
+        <div class="radio-item" onclick="selectType(this,'Apartment')">
+          <span class="radio-icon">🏢</span>Apartment
+        </div>
+        <div class="radio-item" onclick="selectType(this,'House')">
+          <span class="radio-icon">🏠</span>House
+        </div>
+        <div class="radio-item" onclick="selectType(this,'Room')">
+          <span class="radio-icon">🛏</span>Room
+        </div>
+        <div class="radio-item" onclick="selectType(this,'Sublet')">
+          <span class="radio-icon">🔑</span>Sublet
+        </div>
+      </div>
+      <input type="hidden" id="propType">
+    </div>
+
+    <!-- Flat Size Category -->
+    <div class="field">
+      <label>Flat Size Category <span class="req">*</span></label>
+      <div class="radio-group" id="flatSizeGroup">
+        <div class="radio-item" onclick="selectFlatSize(this,'small')">
+          <span class="radio-icon">🏠</span>Small Flat<br><span style="font-size:10px;font-weight:400">(1-2 rooms)</span>
+        </div>
+        <div class="radio-item" onclick="selectFlatSize(this,'medium')">
+          <span class="radio-icon">🏡</span>Medium Flat<br><span style="font-size:10px;font-weight:400">(3-4 rooms)</span>
+        </div>
+        <div class="radio-item" onclick="selectFlatSize(this,'large')">
+          <span class="radio-icon">🏘️</span>Large Flat<br><span style="font-size:10px;font-weight:400">(5+ rooms)</span>
+        </div>
+      </div>
+      <input type="hidden" id="flatSize">
+    </div>
+
+    <div class="field-row3">
+      <div class="field">
+        <label>Division <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="division" onchange="loadDistrict()">
+            <option value="">Select</option>
+            <option>Dhaka</option>
+            <option>Chittagong</option>
+            <option>Rajshahi</option>
+            <option>Khulna</option>
+            <option>Barisal</option>
+            <option>Sylhet</option>
+            <option>Rangpur</option>
+            <option>Mymensingh</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>District <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="district" onchange="loadArea()">
+            <option value="">Select</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Area / Thana <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="area">
+            <option value="">Select</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider" style="margin:16px 0"></div>
+    <div class="section-title">Property Details</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Total Rooms <span class="req">*</span></label>
+        <input type="number" id="rooms" placeholder="e.g. 3" min="1">
+      </div>
+      <div class="field">
+        <label>Bathrooms <span class="req">*</span></label>
+        <input type="number" id="bathrooms" placeholder="e.g. 2" min="1">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Floor Number</label>
+        <input type="number" id="floor" placeholder="e.g. 4" min="0">
+      </div>
+      <div class="field">
+        <label>Square Footage (sqft)</label>
+        <input type="number" id="sqft" placeholder="e.g. 1200" min="1">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Furnishing Status <span class="req">*</span></label>
+      <div class="furnish-group" id="furnishGroup">
+        <div class="furnish-item" onclick="selectFurnish(this,'Furnished')">Furnished</div>
+        <div class="furnish-item" onclick="selectFurnish(this,'Semi-Furnished')">Semi-Furnished</div>
+        <div class="furnish-item" onclick="selectFurnish(this,'Unfurnished')">Unfurnished</div>
+      </div>
+      <input type="hidden" id="furnish">
+    </div>
+
+    <button class="btn-back" onclick="go(1)">Back</button>
+    <button class="btn-next" onclick="go(3)">Continue</button>
+  </div>
+
+  <!-- PAGE 3: Rent & Availability -->
+  <div class="form-page" id="page3">
+    <div class="section-title">Rent & Availability</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Monthly Rent <span class="req">*</span></label>
+        <div class="taka-wrap">
+          <span class="taka-sym">৳</span>
+          <input type="number" id="rent" placeholder="15000" min="0">
+        </div>
+      </div>
+      <div class="field">
+        <label>Advance Deposit</label>
+        <div class="taka-wrap">
+          <span class="taka-sym">৳</span>
+          <input type="number" id="deposit" placeholder="30000" min="0">
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Available From <span class="req">*</span></label>
+      <input type="date" id="availDate">
+    </div>
+
+    <div class="field">
+      <label>Utilities Included</label>
+      <div class="check-group">
+        <label class="check-item">
+          <input type="checkbox" id="gas"> Gas
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="water"> Water
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="electricity"> Electricity
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="internet"> Internet
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-back" onclick="go(2)">Back</button>
+    <button class="btn-next" onclick="go(4)">Continue</button>
+  </div>
+
+  <!-- PAGE 4: Description & Photos -->
+  <div class="form-page" id="page4">
+    <div class="section-title">Description & Photos</div>
+
+    <div class="field">
+      <label>Property Description <span class="req">*</span></label>
+      <textarea id="description" placeholder="Describe your property — location highlights, nearby amenities, special features..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Property Photos</label>
+      <div class="info-badge">
+        📷 Upload clear photos to attract more tenants. Max 6 photos, JPG/PNG.
+      </div>
+      <label class="upload-area" for="photoInput" id="uploadArea">
+        <div class="upload-icon">🖼️</div>
+        <p>Click to upload photos</p>
+        <span>JPG, PNG — up to 6 images</span>
+        <input type="file" id="photoInput" accept="image/*" multiple onchange="previewPhotos(this)">
+        <div class="upload-preview" id="preview"></div>
+      </label>
+    </div>
+
+    <button class="btn-back" onclick="go(3)">Back</button>
+    <button class="btn-submit" id="submitBtn" onclick="submitForm()">Submit & List Property</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h3>Property Listed! 🎉</h3>
+    <p>Your account has been created and property submitted successfully.<br>Our team will review and publish it shortly.</p>
+    <a href="owner-dashboard.html" class="btn-goto">Go to Owner Dashboard</a>
+  </div>
+
+</div>
+
+<!-- ════════════ NON-MODULE HELPERS ════════════ -->
+<script>
+  let cur = 1;
+  let propTypeVal = '';
+  let furnishVal  = '';
+  let flatSizeVal = '';
+  window.selectedFiles = [];
+
+  function go(page) {
+    if (page > cur && !validate(cur)) return;
+    document.getElementById('page' + cur).classList.remove('active');
+    document.getElementById('page' + page).classList.add('active');
+    updateSteps(page);
+    cur = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateSteps(page) {
+    for (let i = 1; i <= 4; i++) {
+      const el = document.getElementById('s' + i);
+      const c  = el.querySelector('.step-circle');
+      el.classList.remove('active', 'done');
+      if (i < page)       { el.classList.add('done');   c.innerHTML = '✓'; }
+      else if (i === page) { el.classList.add('active'); c.innerHTML = i; }
+      else                 { c.innerHTML = i; }
+    }
+    for (let i = 1; i <= 3; i++) {
+      document.getElementById('l' + i).classList.toggle('done', i < page);
+    }
+  }
+
+  function validate(page) {
+    if (page === 1) {
+      const fn = v('firstName'), ln = v('lastName');
+      const em = v('email'),     ph = v('phone');
+      const nid= v('nid'),       dob= v('dob');
+      const pass = v('password'), cp = v('confirmPass');
+      if (!fn||!ln||!em||!ph||!nid||!dob||!pass||!cp) { alert('Please fill in all required fields.'); return false; }
+      if (!em.includes('@')) { alert('Enter a valid email address.'); return false; }
+      const phoneClean = ph.replace(/\s/g, '');
+      const validPhone = /^01[3-9]\d{8}$/.test(phoneClean) || /^\+8801[3-9]\d{8}$/.test(phoneClean);
+      if (!validPhone) {
+        document.getElementById('phone').style.borderColor = '#ef4444';
+        alert('❌ Phone must be 11 digits (01XXXXXXXXX) or with +88 prefix');
+        return false;
+      }
+      if (pass.length < 8) { alert('Password must be at least 8 characters.'); return false; }
+      if (pass !== cp) {
+        document.getElementById('passErr').style.display = 'block';
+        return false;
+      } else { document.getElementById('passErr').style.display = 'none'; }
+      if (!document.getElementById('terms').checked) { alert('Please agree to the Terms of Service.'); return false; }
+    }
+    if (page === 2) {
+      if (!v('propTitle'))    { alert('Enter a property title.'); return false; }
+      if (!propTypeVal)       { alert('Select a property type.'); return false; }
+      if (!flatSizeVal)       { alert('Select a flat size category.'); return false; }
+      if (!v('division')||!v('district')||!v('area')) { alert('Select Division, District and Area.'); return false; }
+      if (!v('rooms')||!v('bathrooms')) { alert('Enter total rooms and bathrooms.'); return false; }
+      if (!furnishVal) { alert('Select furnishing status.'); return false; }
+    }
+    if (page === 3) {
+      if (!v('rent'))      { alert('Enter monthly rent.'); return false; }
+      if (!v('availDate')) { alert('Select available from date.'); return false; }
+    }
+    if (page === 4) {
+      if (!v('description')) { alert('Please add a property description.'); return false; }
+    }
+    return true;
+  }
+
+  function v(id) { return document.getElementById(id).value.trim(); }
+
+  function selectType(el, val) {
+    document.querySelectorAll('#propTypeGroup .radio-item').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected');
+    propTypeVal = val;
+    document.getElementById('propType').value = val;
+  }
+
+  function selectFlatSize(el, val) {
+    document.querySelectorAll('#flatSizeGroup .radio-item').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected');
+    flatSizeVal = val;
+    document.getElementById('flatSize').value = val;
+  }
+
+  function selectFurnish(el, val) {
+    document.querySelectorAll('#furnishGroup .furnish-item').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected');
+    furnishVal = val;
+    document.getElementById('furnish').value = val;
+  }
+
+  function togglePass(id, btn) {
+    const inp = document.getElementById(id);
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+  }
+
+  function checkStrength(val) {
+    let score = 0, label = '', color = '';
+    if (val.length === 0)       { score = 0; }
+    else if (val.length <= 4)   { score = 1; label = 'Weak password';        color = '#ef4444'; }
+    else if (val.length <= 7)   { score = 2; label = 'Good password';        color = '#f97316'; }
+    else if (val.length <= 11)  { score = 3; label = 'Strong password';      color = '#10b981'; }
+    else                        { score = 4; label = 'Very Strong password! 💪'; color = '#059669'; }
+    ['pw1','pw2','pw3','pw4'].forEach((id, i) => {
+      const bar = document.getElementById(id);
+      if (bar) bar.style.background = i < score ? color : 'var(--border)';
+    });
+    const lbl = document.getElementById('strengthLabel');
+    if (lbl) {
+      lbl.textContent = val.length === 0 ? 'Enter a strong password' : label;
+      lbl.style.color = val.length === 0 ? 'var(--muted)' : color;
+    }
+  }
+
+  function previewPhotos(input) {
+    const prev = document.getElementById('preview');
+    prev.innerHTML = '';
+    window.selectedFiles = Array.from(input.files).slice(0, 6);
+    window.selectedFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'preview-img';
+        prev.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* District / Area dropdowns */
+  const districtData = {
+    Dhaka:      { districts: ['Dhaka','Gazipur','Narayanganj','Manikganj','Munshiganj','Narsingdi','Tangail','Kishoreganj','Faridpur','Gopalganj','Madaripur','Rajbari','Shariatpur'],
+                  areas: {
+                    Dhaka:       ['Dhanmondi','Gulshan','Banani','Mirpur','Uttara','Motijheel','Wari','Mohammadpur','Badda','Rampura','Tejgaon','Khilgaon'],
+                    Gazipur:     ['Gazipur Sadar','Kaliakair','Kapasia','Sreepur','Kaliganj'],
+                    Narayanganj: ['Narayanganj Sadar','Araihazar','Bandar','Rupganj','Sonargaon'],
+                  }},
+    Chittagong: { districts: ["Chittagong","Cox's Bazar",'Rangamati','Bandarban','Khagrachhari','Feni','Comilla','Noakhali','Lakshmipur','Chandpur','Brahmanbaria'],
+                  areas: { Chittagong: ['Agrabad','Halishahar','Panchlaish','Pahartali','Kotwali','Bayazid','Chandgaon'] }},
+    Rajshahi:   { districts: ['Rajshahi','Bogra','Pabna','Sirajganj','Natore','Naogaon','Chapainawabganj','Joypurhat'], areas: {} },
+    Khulna:     { districts: ['Khulna','Jessore','Satkhira','Bagerhat','Narail','Magura','Jhenaidah','Kushtia','Chuadanga','Meherpur'], areas: {} },
+    Barisal:    { districts: ['Barisal','Patuakhali','Bhola','Jhalokati','Pirojpur','Barguna'], areas: {} },
+    Sylhet:     { districts: ['Sylhet','Moulvibazar','Habiganj','Sunamganj'], areas: {} },
+    Rangpur:    { districts: ['Rangpur','Dinajpur','Thakurgaon','Panchagarh','Nilphamari','Lalmonirhat','Kurigram','Gaibandha'], areas: {} },
+    Mymensingh: { districts: ['Mymensingh','Netrokona','Sherpur','Jamalpur'], areas: {} },
+  };
+
+  function loadDistrict() {
+    const div = document.getElementById('division').value;
+    const distSel = document.getElementById('district');
+    const areaSel = document.getElementById('area');
+    distSel.innerHTML = '<option value="">Select</option>';
+    areaSel.innerHTML = '<option value="">Select</option>';
+    if (!div || !districtData[div]) return;
+    districtData[div].districts.forEach(d => { distSel.innerHTML += `<option>${d}</option>`; });
+  }
+
+  function loadArea() {
+    const div = document.getElementById('division').value;
+    const dist = document.getElementById('district').value;
+    const areaSel = document.getElementById('area');
+    areaSel.innerHTML = '<option value="">Select</option>';
+    const areas = districtData[div]?.areas[dist] || [];
+    if (areas.length === 0) { areaSel.innerHTML += '<option value="Other">Other</option>'; return; }
+    areas.forEach(a => { areaSel.innerHTML += `<option>${a}</option>`; });
+  }
+</script>
+
+<!-- ════════════ FIREBASE BACKEND (module) ════════════ -->
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, doc, setDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain: "bashakhuji-503d1.firebaseapp.com",
+    projectId: "bashakhuji-503d1",
+    storageBucket: "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app     = initializeApp(firebaseConfig);
+  const auth    = getAuth(app);
+  const db      = getFirestore(app);
+  
+
+async function uploadPhotos(uid, files) {
+    const urls = [];
+    const CLOUD_NAME   = 'ddvc0sppd';
+    const UPLOAD_PRESET = 'ml_bashakhuji';
+
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append('file', files[i]);
+      formData.append('upload_preset', UPLOAD_PRESET);
+      formData.append('folder', `property-photos/${uid}`);
+
+      const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+
+      if (data.secure_url) {
+        urls.push(data.secure_url);
+      } else {
+        console.error('Cloudinary error:', data);
+      }
+    }
+    return urls;
+  }
+
+  /* ── Determine card page from flatSize ── */
+  function getCardPage(flatSize) {
+    if (flatSize === 'small')  return 'small-flat.html';
+    if (flatSize === 'medium') return 'medium-flat.html';
+    if (flatSize === 'large')  return 'large-flat.html';
+    return 'properties.html';
+  }
+
+  /* ── Main submit function ── */
+  window.submitForm = async function () {
+    if (!window.validate(4)) return;
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span>Submitting...';
+
+    try {
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      // ── Step 1: Firebase Auth - Account তৈরি ──
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
+
+      // ── Step 2: Photos upload to Storage ──
+      let photoURLs = [];
+      if (window.selectedFiles && window.selectedFiles.length > 0) {
+        photoURLs = await uploadPhotos(uid, window.selectedFiles);
+      }
+
+      // ── Step 3: Flat size & card page determine ──
+      const flatSize = document.getElementById('flatSize').value;
+      const cardPage = getCardPage(flatSize);
+
+      // ── Step 4: Utilities collect ──
+      const utilities = [];
+      ['gas','water','electricity','internet'].forEach(id => {
+        if (document.getElementById(id).checked) utilities.push(id);
+      });
+
+      // ── Step 5: Owner data → Firestore "owners" collection ──
+      await setDoc(doc(db, 'owners', uid), {
+        uid,
+        role:      'owner',
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName:  document.getElementById('lastName').value.trim(),
+        email,
+        phone:     document.getElementById('phone').value.trim(),
+        nid:       document.getElementById('nid').value.trim(),
+        dob:       document.getElementById('dob').value,
+        address:   document.getElementById('address').value.trim(),
+        createdAt: serverTimestamp()
+      });
+
+      // ── Step 6: Property data → Firestore "properties" collection ──
+      await addDoc(collection(db, 'properties'), {
+        ownerUid:    uid,
+        ownerName:   document.getElementById('firstName').value.trim() + ' ' +
+                     document.getElementById('lastName').value.trim(),
+        ownerEmail:  email,
+        ownerPhone:  document.getElementById('phone').value.trim(),
+
+        // Property Info
+        title:       document.getElementById('propTitle').value.trim(),
+        type:        document.getElementById('propType').value,
+        flatSize,                          // "small" | "medium" | "large"
+        cardPage,                          // কোন page এ card যাবে
+
+        division:    document.getElementById('division').value,
+        district:    document.getElementById('district').value,
+        area:        document.getElementById('area').value,
+
+        rooms:       Number(document.getElementById('rooms').value),
+        bathrooms:   Number(document.getElementById('bathrooms').value),
+        floor:       document.getElementById('floor').value || 'N/A',
+        sqft:        document.getElementById('sqft').value || 'N/A',
+        furnish:     document.getElementById('furnish').value,
+
+        // Rent Info
+        rent:        Number(document.getElementById('rent').value),
+        deposit:     document.getElementById('deposit').value || '0',
+        availDate:   document.getElementById('availDate').value,
+        utilities,
+
+        // Description & Photos
+        description: document.getElementById('description').value.trim(),
+        photos:      photoURLs,
+
+        // Status
+        status:      'pending',   // admin approve করবে
+        createdAt:   serverTimestamp()
+      });
+
+      // ── Step 7: Success screen দেখাও ──
+      document.getElementById('page4').classList.remove('active');
+      document.getElementById('stepsBar').style.display    = 'none';
+      document.getElementById('mainHeading').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+
+    } catch (error) {
+      console.error(error);
+
+      if (error.code === 'auth/email-already-in-use') {
+        alert('❌ এই email দিয়ে আগেই account আছে! Owner Login করুন।');
+      } else if (error.code === 'auth/weak-password') {
+        alert('❌ Password কমপক্ষে 8 character হতে হবে!');
+      } else if (error.code === 'auth/invalid-email') {
+        alert('❌ Valid email address দিন!');
+      } else {
+        alert('❌ সমস্যা হয়েছে: ' + error.message);
+
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Submit & List Property';
+    }
+  };
+</script>
+
+</body>
+</html>

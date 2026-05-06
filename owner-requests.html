@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Requests | BashaKhuji</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: #f4f6f8; color: #333; }
+    .sidebar { width: 240px; height: 100vh; background: #2c2f36; position: fixed; left: 0; top: 0; padding: 30px 20px; }
+    .sidebar h2 { color: #fff; margin-bottom: 40px; text-align: center; }
+    .sidebar a { display: block; color: #ddd; text-decoration: none; margin-bottom: 20px; font-size: 15px; transition: 0.3s; }
+    .sidebar a:hover, .sidebar a.active { color: #fff; padding-left: 8px; }
+    .main { margin-left: 240px; padding: 30px; }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .top-bar h1 { font-size: 24px; font-weight: 600; }
+    .logout-btn { background: #444; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    table { width: 100%; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+    th, td { padding: 14px 16px; text-align: left; font-size: 14px; }
+    th { background: #f1f1f1; font-weight: 500; }
+    tr:not(:last-child) { border-bottom: 1px solid #eee; }
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+    .badge.pending { background: #fff8e1; color: #f57f17; }
+    .badge.approved { background: #e0f7ea; color: #2e7d32; }
+    .badge.rejected { background: #fce4ec; color: #c62828; }
+    .action-btns { display: flex; gap: 8px; }
+    .btn-approve { background: #2e7d32; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .btn-reject { background: #c62828; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .btn-approve:hover { background: #1b5e20; }
+    .btn-reject:hover { background: #b71c1c; }
+    .empty-row td { text-align: center; padding: 40px; color: #999; }
+    @media(max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>BashaKhuji</h2>
+    <a href="owner-dashboard.html">Dashboard</a>
+    <a href="my-properties-owner.html">My Properties</a>
+    <a href="add-property-owner.html">Add Property</a>
+    <a href="owner-requests.html" class="active">Requests</a>
+  </div>
+  <div class="main">
+    <div class="top-bar">
+      <h1>📋 Rental Requests</h1>
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Tenant Name</th>
+            <th>Property</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="requestsTableBody">
+          <tr class="empty-row"><td colspan="5">Loading requests...<\/td><\/tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs, getDoc, updateDoc, doc, orderBy } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+      authDomain: "bashakhuji-503d1.firebaseapp.com",
+      projectId: "bashakhuji-503d1",
+      storageBucket: "bashakhuji-503d1.firebasestorage.app",
+      messagingSenderId: "697249288857",
+      appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentOwnerUid = null;
+
+    async function loadRequests() {
+      if (!currentOwnerUid) {
+        console.log("No owner UID");
+        return;
+      }
+
+      const tbody = document.getElementById("requestsTableBody");
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="5">Loading requests...<\/td><\/tr>`;
+
+      try {
+        console.log("Loading requests for owner:", currentOwnerUid);
+        
+        const requestsQuery = query(
+          collection(db, "requests"),
+          where("ownerId", "==", currentOwnerUid),
+          orderBy("createdAt", "desc")
+        );
+        
+        const requestsSnap = await getDocs(requestsQuery);
+        console.log("Requests found:", requestsSnap.size);
+
+        if (requestsSnap.empty) {
+          tbody.innerHTML = `<tr class="empty-row"><td colspan="5">📭 No rental requests yet<\/td><\/tr>`;
+          return;
+        }
+
+        let tableHTML = "";
+        
+        for (const requestDoc of requestsSnap.docs) {
+          const request = requestDoc.data();
+          const requestId = requestDoc.id;
+          
+          let propertyTitle = "Unknown Property";
+          if (request.propertyId) {
+            try {
+              const propSnap = await getDoc(doc(db, "properties", request.propertyId));
+              if (propSnap.exists()) {
+                propertyTitle = propSnap.data().title || "Untitled";
+              }
+            } catch(e) {
+              console.error("Error loading property:", e);
+            }
+          }
+          
+          let dateStr = "Recently";
+          if (request.createdAt && request.createdAt.toDate) {
+            dateStr = request.createdAt.toDate().toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+          }
+          
+          let statusClass = "pending";
+          let statusText = "Pending";
+          if (request.status === "accepted") {
+            statusClass = "approved";
+            statusText = "Accepted";
+          } else if (request.status === "rejected") {
+            statusClass = "rejected";
+            statusText = "Rejected";
+          }
+          
+          const showActions = request.status === "pending";
+          
+          tableHTML += `
+            <tr data-request-id="${requestId}">
+              <td><strong>${escapeHtml(request.tenantName || request.tenantEmail || 'Unknown')}</strong><br>
+                  <span style="font-size:11px;color:#888;">📞 ${escapeHtml(request.tenantPhone || 'N/A')}</span>
+               </td>
+              <td>${escapeHtml(propertyTitle)}</td>
+              <td>${dateStr}</td>
+              <td><span class="badge ${statusClass}">${statusText}</span></td>
+              <td>
+                ${showActions ? `
+                  <div class="action-btns">
+                    <button class="btn-approve" onclick="window.acceptRequest('${requestId}', '${request.propertyId}')">✅ Accept</button>
+                    <button class="btn-reject" onclick="window.rejectRequest('${requestId}')">❌ Reject</button>
+                  </div>
+                ` : `
+                  <span style="font-size:12px;color:#666;">Processed</span>
+                `}
+               </td>
+             </tr>
+          `;
+        }
+        
+        tbody.innerHTML = tableHTML;
+        
+      } catch (error) {
+        console.error("Error loading requests:", error);
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="5">❌ Error loading requests: ${error.message}<\/td><\/tr>`;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    window.acceptRequest = async function(requestId, propertyId) {
+      if (!confirm("Accept this rental request? The property will become unavailable.")) return;
+      
+      try {
+        await updateDoc(doc(db, "requests", requestId), {
+          status: "accepted",
+          respondedAt: new Date().toISOString()
+        });
+        
+        if (propertyId) {
+          await updateDoc(doc(db, "properties", propertyId), {
+            status: "unavailable",
+            rentedAt: new Date().toISOString()
+          });
+        }
+        
+        alert("✅ Request accepted! Property is now marked as unavailable.");
+        await loadRequests();
+        
+      } catch (error) {
+        console.error("Error accepting request:", error);
+        alert("❌ Failed to accept request: " + error.message);
+      }
+    };
+
+    window.rejectRequest = async function(requestId) {
+      if (!confirm("Reject this rental request?")) return;
+      
+      try {
+        await updateDoc(doc(db, "requests", requestId), {
+          status: "rejected",
+          respondedAt: new Date().toISOString()
+        });
+        
+        alert("❌ Request rejected.");
+        await loadRequests();
+        
+      } catch (error) {
+        console.error("Error rejecting request:", error);
+        alert("❌ Failed to reject request: " + error.message);
+      }
+    };
+
+    // Auth state
+    onAuthStateChanged(auth, async (user) => {
+      console.log("Auth changed, user:", user?.uid);
+      
+      if (!user) {
+        window.location.href = "owner-login.html";
+        return;
+      }
+      
+      currentOwnerUid = user.uid;
+      
+      const ownerDoc = await getDoc(doc(db, "owners", user.uid));
+      if (!ownerDoc.exists()) {
+        console.log("Not an owner, redirecting");
+        window.location.href = "owner-login.html";
+        return;
+      }
+      
+      console.log("Owner verified, loading requests");
+      await loadRequests();
+    });
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      if (confirm("Are you sure you want to logout?")) {
+        await signOut(auth);
+        window.location.href = "owner-login.html";
+      }
+    });
+  </script>
+</body>
+</html>

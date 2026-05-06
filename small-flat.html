@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Small Flats | BashaKhuji - Perfect for Students & Small Families</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse verified small flats and apartments ideal for students and small families. Find affordable rentals with trusted owners on BashaKhuji.">
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    .bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 8%;
+}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #eceaee;
+      color: #333;
+      min-height: 60vh; /*change video shape */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content {
+      flex: 1;
+    }
+
+    /* Navbar */
+    header {
+      background: #ffffff;
+      padding: 10px 5%;  /*gap er jonno */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .logo-container img {
+      height: 50px;
+      width: auto;
+      margin-right: 5px;
+    }
+
+    .logo-text {
+      color: #3f37c9;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: -0.5px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #444;
+      font-weight: 500;
+      transition: color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    nav a:hover {
+      color: #0f682a;
+    }
+
+    nav a i {
+      font-size: 16px;
+    }
+
+    /* Dropdown Styles */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown > a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 220px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      border-radius: 10px;
+      z-index: 1000;
+      top: 100%;
+      left: 0;
+      overflow: hidden;
+      padding-top: 10px;     
+  margin-top: -5px;
+    }
+
+    .dropdown-content a {
+      color: #333;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: all 0.3s;
+    }
+
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #3f37c9;
+      color: white;
+      padding-left: 20px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Login Modal */
+    .login-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 14px;
+      width: 320px;
+      text-align: center;
+      position: relative;
+    }
+
+    .login-box h3 {
+      margin-bottom: 25px;
+      color: #3f37c9;
+    }
+
+    .login-option {
+      display: block;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      border: 1px solid #ddd;
+      transition: 0.3s;
+    }
+
+    .login-option i {
+      margin-right: 8px;
+      color: #3f37c9;
+    }
+
+    .login-option:hover {
+      background: #3f37c9;
+      color: #fff;
+    }
+
+    .login-option:hover i {
+      color: #fff;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .close-btn:hover {
+      color: #3f37c9;
+    }
+
+    /* Page Header */
+    .page-header {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+
+    .page-header h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .page-header p {
+      font-size: 18px;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    .breadcrumb {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      margin-top: 30px;
+    }
+
+    .breadcrumb a {
+      color: #e2e8f0;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .breadcrumb a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    .breadcrumb i {
+      margin: 0 12px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .breadcrumb span {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* Filter Section */
+    .filter-section {
+      background: white;
+      padding: 30px 8%;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+      margin-bottom: 50px;
+    }
+
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      flex: 1;
+    }
+
+    .filter-select {
+      padding: 14px 20px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      background: white;
+      font-size: 15px;
+      min-width: 180px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #444;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: #3f37c9;
+      box-shadow: 0 0 0 3px rgba(63, 55, 201, 0.1);
+    }
+
+    .filter-btn {
+      background: #952475;
+      color: rgb(2, 2, 2);
+      border: none;
+      padding: 14px 30px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+    }
+
+    .filter-btn:hover {
+      background: #23788d;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(63, 55, 201, 0.2);
+    }
+
+    .result-count {
+      color: #666;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .result-count strong {
+      color: #3f37c9;
+    }
+
+    /* Properties Section */
+    .section {
+      padding: 70px 8% 90px;
+    }
+
+    .section-title {
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .section-title h3 {
+      font-size: 36px;
+      color: #222;
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h3:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: #3f37c9;
+      border-radius: 2px;
+    }
+
+    .section-title p {
+      color: #666;
+      font-size: 18px;
+      max-width: 700px;
+      margin: 25px auto 0;
+      line-height: 1.6;
+    }
+
+    /* Properties Grid */
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 35px;
+    }
+
+    /* Property Card - Clickable */
+    .property-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: all 0.4s ease;
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .property-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .property-badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #3f37c9;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 2;
+      letter-spacing: 0.5px;
+    }
+
+    .property-badge.featured {
+      background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    }
+
+    .property-badge.student {
+      background: linear-gradient(135deg, #4cd964, #5ac8fa);
+    }
+
+    .property-img-container {
+      position: relative;
+      overflow: hidden;
+      height: 240px;
+    }
+
+    .property-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s;
+    }
+
+    .property-card:hover .property-img {
+      transform: scale(1.05);
+    }
+
+    .property-info {
+      padding: 25px;
+    }
+
+    .property-info h4 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #222;
+      line-height: 1.3;
+    }
+
+    .property-location {
+      display: flex;
+      align-items: center;
+      color: #666;
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .property-location i {
+      margin-right: 10px;
+      color: #3f37c9;
+      font-size: 16px;
+    }
+
+    .property-features {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .feature {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .feature i {
+      font-size: 20px;
+      color: #3f37c9;
+      margin-bottom: 8px;
+    }
+
+    .feature span {
+      font-size: 14px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .property-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .price {
+      font-size: 24px;
+      font-weight: 700;
+      color: #3f37c9;
+    }
+
+    .price span {
+      font-size: 14px;
+      font-weight: 400;
+      color: #888;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .view-btn {
+      background: #b637a3;
+      color: rgb(10, 9, 9);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    .view-btn:hover {
+      background: #ed0585;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(96, 95, 113, 0.2);
+    }
+
+    /* Features Section */
+    .features-section {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e6ebff 100%);
+      padding: 90px 8%;
+    }
+
+    .features-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .features-title h3 {
+      font-size: 36px;
+      color: #222;
+      margin-bottom: 20px;
+    }
+
+    .features-title p {
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 35px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    }
+
+    .feature-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #3f37c9, #5a54d6);
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      background: #eef1ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 25px;
+      color: #3f37c9;
+      font-size: 32px;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover .feature-icon {
+      background: #3f37c9;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .feature-card h4 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #222;
+    }
+
+    .feature-card p {
+      color: #666;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* Why Small Flat Section */
+    .why-small-flat {
+      padding: 90px 8%;
+      background: white;
+    }
+
+    .why-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .why-content h3 {
+      font-size: 36px;
+      color: #222;
+      margin-bottom: 25px;
+      line-height: 1.3;
+    }
+
+    .why-content p {
+      color: #666;
+      line-height: 1.7;
+      margin-bottom: 25px;
+      font-size: 17px;
+    }
+
+    .benefits-list {
+      list-style: none;
+      margin-top: 30px;
+    }
+
+    .benefits-list li {
+      margin-bottom: 18px;
+      display: flex;
+      align-items: flex-start;
+      font-size: 16px;
+    }
+
+    .benefits-list i {
+      color: #3f37c9;
+      margin-right: 15px;
+      margin-top: 3px;
+      font-size: 18px;
+    }
+
+    .why-image {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+      height: 500px;
+    }
+
+    .why-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s;
+    }
+
+    .why-image:hover img {
+      transform: scale(1.03);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, #3f37c9, #5a54d6);
+      padding: 80px 8%;
+      text-align: center;
+      color: white;
+    }
+
+    .cta-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-container h3 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .cta-container p {
+      font-size: 18px;
+      margin-bottom: 35px;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      padding: 16px 35px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .cta-btn.primary {
+      background: white;
+      color: #3f37c9;
+      border: none;
+    }
+
+    .cta-btn.primary:hover {
+      background: #f0f0f0;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .cta-btn.secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+      transform: translateY(-3px);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 60px;
+      gap: 10px;
+    }
+
+    .pagination a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+      background: white;
+      color: #444;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: 1px solid #e0e0e0;
+    }
+
+    .pagination a:hover, .pagination a.active {
+      background: #3f37c9;
+      color: white;
+      border-color: #3f37c9;
+    }
+
+    .pagination a i {
+      font-size: 14px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .properties-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      }
+    }
+
+    @media (max-width: 992px) {
+      .why-container {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+      
+      .why-image {
+        order: -1;
+        height: 400px;
+      }
+      
+      .page-header {
+        padding: 80px 8%;
+      }
+      
+      .page-header h1 {
+        font-size: 42px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 5%;
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .logo-container {
+        align-self: flex-start;
+      }
+      
+      nav {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .dropdown-content {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      
+      .page-header h1 {
+        font-size: 36px;
+      }
+      
+      .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 25px;
+      }
+      
+      .filter-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .filter-select {
+        flex: 1;
+        min-width: 0;
+      }
+      
+      .properties-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+      
+      .section-title h3 {
+        font-size: 32px;
+      }
+      
+      .features-title h3, .why-content h3, .cta-container h3 {
+        font-size: 32px;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .cta-btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .page-header {
+        padding: 60px 5%;
+      }
+      
+      .section {
+        padding: 50px 5% 70px;
+      }
+      
+      .filter-group {
+        flex-direction: column;
+      }
+      
+      .filter-select {
+        width: 100%;
+      }
+      
+      .properties-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .property-features {
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      
+      .features-section, .why-small-flat, .cta-section {
+        padding: 60px 5%;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .page-header h1 {
+        font-size: 32px;
+      }
+      
+      .section-title h3 {
+        font-size: 28px;
+      }
+      
+      .features-title h3, .why-content h3, .cta-container h3 {
+        font-size: 28px;
+      }
+    }
+    .page-header {
+  height: 550px;  /* video height    */
+}
+.login-box {
+  background: linear-gradient(160deg, #eef1ff 0%, #e0e7ff 100%);
+  padding: 35px 30px;
+  border-radius: 20px;
+  width: 350px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(63,55,201,0.2);
+  border: 1px solid rgba(63,55,201,0.15);
+  animation: loginPop 0.35s ease;
+}
+@keyframes loginPop {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.login-logo-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #3f37c9;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  box-shadow: 0 4px 15px rgba(63,55,201,0.25);
+  animation: spinLogo 6s ease-in-out infinite;
+}
+@keyframes spinLogo {
+  0%   { transform: rotate(0deg) scale(1); }
+  25%  { transform: rotate(10deg) scale(1.08); }
+  50%  { transform: rotate(0deg) scale(1); }
+  75%  { transform: rotate(-10deg) scale(1.08); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+.login-logo-wrap img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+}
+.login-box h3 {
+  margin-bottom: 6px;
+  color: #3f37c9;
+  font-size: 20px;
+}
+.login-tagline {
+  font-size: 12px;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+.login-option {
+  display: block;
+  padding: 13px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.login-option.tenant {
+  background: linear-gradient(135deg, #3f37c9, #6366f1);
+  color: #0a0a0a;
+  box-shadow: 0 5px 18px rgba(63,55,201,0.35);
+}
+.login-option.owner {
+  background: linear-gradient(135deg, #0891b2, #06b6d4);
+  color: #0a0a0a;
+  box-shadow: 0 5px 18px rgba(8,145,178,0.35);
+}
+.login-option.admin {
+  background: linear-gradient(135deg, #de24ad, #a954a1);
+  box-shadow: 0 5px 18px rgba(220,38,38,0.35);
+  color: #fff;
+}
+.login-option::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: skewX(-20deg);
+  animation: shine 2.5s ease-in-out infinite;
+}
+@keyframes shine {
+  0% { left: -75%; }
+  100% { left: 125%; }
+}
+.login-option:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+}
+.login-option i { margin-right: 8px; color: #fff; }
+.close-btn {
+  position: absolute;
+  top: 12px; right: 16px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: color 0.2s;
+  z-index: 10;
+}
+.close-btn:hover { color: #3f37c9; }
+  </style>
+</head>
+
+<body>
+  <div class="main-content">
+    <!-- Header with Logo & Navigation -->
+    <header>
+      <a href="index.html" class="logo-container">
+        <img src="images/logo.png" alt="BashaKhuji Logo">
+        <span class="logo-text">BashaKhuji</span>
+      </a>
+
+      <nav>
+  <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+  <div class="dropdown">
+    <a href="#" onclick="return false;">
+      <i class="fa-solid fa-building"></i> Property List 
+      <i class="fa-solid fa-chevron-down"></i>
+    </a>
+    <div class="dropdown-content">
+      <a href="all-property.html">🏠 All Properties</a>
+      <a href="small-flat.html">🏡 Small Flat</a>
+      <a href="medium-flat.html">🏢 Medium Flat</a>
+      <a href="large-flat.html">🏰 Large Flat</a>
+    </div>
+  </div>
+</nav>
+    </header>
+
+    
+    <!-- Page Header -->
+    <section class="page-header">
+
+  <video autoplay muted loop playsinline class="bg-video">
+    <source src="images/Background.mp4" type="video/mp4">
+  </video>
+
+  <div class="overlay"></div>
+
+  <div class="header-content">
+    <h1>Small Flats & Apartments</h1>
+    <p>
+      Perfect for students, young professionals, and small families.
+      Find affordable, compact living spaces with all essential amenities,
+      verified by BashaKhuji for your safety and peace of mind.
+    </p>
+
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Small Flats</span>
+    </div>
+  </div>
+
+</section>
+
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+  <div class="filter-container">
+    
+    <div class="filter-group">
+      
+      <select id="locationFilter" class="filter-select">
+        <option value="">Select Location</option>
+        <option value="Gulistan">Gulistan</option>
+        <option value="Gulshan">Gulshan</option>
+        <option value="Nilkhet">Nilkhet</option>
+        <option value="Uttara">Uttara</option>
+        <option value="Mohammadpur">Mohammadpur</option>
+        <option value="Mirpur">Mirpur</option>
+        <option value="Dhanmondi">Dhanmondi</option>
+        <option value="Banani">Banani</option>
+      </select>
+
+      <select id="budgetFilter" class="filter-select">
+        <option value="">Max Budget</option>
+        <option value="8000">৳ 5,000 - ৳ 8,000</option>
+        <option value="12000">৳ 8,000 - ৳ 12,000</option>
+        <option value="15000">৳ 12,000 - ৳ 15,000</option>
+        <option value="20000">৳ 15,000 - ৳ 20,000</option>
+        <option value="999999">৳ 20,000+</option>
+      </select>
+
+      <select id="bedFilter" class="filter-select">
+        <option value="">Bedrooms</option>
+        <option value="Studio">Studio</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+      </select>
+
+      <button class="filter-btn" onclick="applyFilters()">
+        <i class="fas fa-filter"></i> Apply Filters
+      </button>
+
+    </div>
+
+    <div class="result-count">
+      Showing <strong>12 small flats</strong> available
+    </div>
+
+  </div>
+</section>
+
+     
+
+    <!-- Properties Section -->
+    <section class="section">
+      <div class="section-title">
+        <h3>Available Small Flats</h3>
+        <p>Browse through our verified collection of small flats suitable for students and small families.</p>
+      </div>
+      
+      <div class="properties-grid" id="propertiesContainer">
+</div>
+      
+      <div class="pagination"></div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="features-title">
+        <h3>Why Choose Small Flats?</h3>
+        <p>Small flats offer affordability and efficiency for those seeking compact living solutions without compromising on quality.</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <h4>Budget-Friendly</h4>
+          <p>Lower rent and utility costs make small flats perfect for students and young professionals on a tight budget.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-broom"></i>
+          </div>
+          <h4>Easy Maintenance</h4>
+          <p>Less space means less cleaning and maintenance time, giving you more freedom to focus on studies or work.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h4>Energy Efficient</h4>
+          <p>Smaller spaces require less energy for heating, cooling, and lighting, reducing your carbon footprint and bills.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <h4>Prime Locations</h4>
+          <p>Often located in central areas with easy access to universities, offices, markets, and public transportation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Small Flat Section -->
+    <section class="why-small-flat">
+      <div class="why-container">
+        <div class="why-content">
+          <h3>Perfect Solution for Students & Young Professionals</h3>
+          <p>Small flats provide an ideal living solution for those starting their independent lives. With affordable pricing and essential amenities, they offer the perfect balance of comfort and practicality.</p>
+          <p>At BashaKhuji, we carefully verify all small flat listings to ensure they meet safety standards and provide value for money. Our platform connects you directly with verified owners, eliminating broker fees and hidden charges.</p>
+          
+          <ul class="benefits-list">
+            <li><i class="fas fa-check-circle"></i> Direct contact with verified owners - No brokers!</li>
+            <li><i class="fas fa-check-circle"></i> Transparent pricing with no hidden charges</li>
+            <li><i class="fas fa-check-circle"></i> Flexible lease terms (3, 6, or 12 months)</li>
+            <li><i class="fas fa-check-circle"></i> Basic furniture often included (bed, table, chair)</li>
+            <li><i class="fas fa-check-circle"></i> Quick move-in process with minimal paperwork</li>
+            <li><i class="fas fa-check-circle"></i> 24/7 customer support for any issues</li>
+          </ul>
+        </div>
+        
+        <div class="why-image">
+          <img src="images/OIP (2).webp" alt="Modern small flat interior">F.png
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="cta-container">
+        <h3>Ready to Find Your Perfect Small Flat?</h3>
+        <p>Join thousands of satisfied tenants who found their ideal home through BashaKhuji. Create your free account today and start your search!</p>
+        <div class="cta-buttons">
+  <a href="index.html" class="cta-btn primary">
+    <i class="fas fa-home"></i> Back to Homepage
+  </a>
+</div>
+      </div>
+    </section>
+  </div>
+
+  
+    <!-- ═══════════════════════════════════════════════════════
+       🔥 FIREBASE CONFIG — এখানে তোমার নিজের config বসাও
+       ═══════════════════════════════════════════════════════ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs, orderBy }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    /* ── তোমার Firebase config এখানে বসাও ── */
+    const firebaseConfig = {
+      apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+      authDomain: "bashakhuji-503d1.firebaseapp.com",
+      projectId: "bashakhuji-503d1",
+      storageBucket: "bashakhuji-503d1.firebasestorage.app",
+      messagingSenderId: "697249288857",
+      appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+    };
+    /* ─────────────────────────────────────── */
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+
+    /* ── Constants ── */
+    const FLAT_SIZE       = "small";   // এই page এর size
+    const CARDS_PER_PAGE  = 7;
+
+    let allProperties     = [];   // Firestore থেকে load হওয়া সব property
+    let filteredProperties = [];
+    let currentPage       = 1;
+
+    /* ══════════════════════════════════════
+       Firestore থেকে data fetch করো
+    ══════════════════════════════════════ */
+    async function fetchProperties() {
+      const container = document.getElementById("propertiesContainer");
+      container.innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#666;">
+          <i class="fas fa-spinner fa-spin fa-2x" style="color:#3f37c9;margin-bottom:15px;display:block;"></i>
+          <p>Property গুলো লোড হচ্ছে...</p>
+        </div>`;
+
+      try {
+        const q = query(
+          collection(db, "properties"),
+          where("status",   "==", "approved"),
+          where("flatSize", "==", FLAT_SIZE),
+          orderBy("createdAt", "desc")
+        );
+
+        const snapshot = await getDocs(q);
+        allProperties = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        filteredProperties = [...allProperties];
+
+        if (allProperties.length === 0) {
+          container.innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#666;">
+              <i class="fas fa-home fa-3x" style="color:#ccc;margin-bottom:15px;display:block;"></i>
+              <h3 style="margin-bottom:10px;">এখন কোনো Small Flat নেই</h3>
+              <p>শীঘ্রই নতুন property যোগ হবে। পরে আবার চেক করো।</p>
+            </div>`;
+          updateResultCount(0);
+          return;
+        }
+
+        renderCards();
+
+      } catch (err) {
+        console.error("Firestore error:", err);
+        container.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#e53e3e;">
+            <i class="fas fa-exclamation-circle fa-3x" style="margin-bottom:15px;display:block;"></i>
+            <h3 style="margin-bottom:10px;">Data লোড করতে সমস্যা হয়েছে</h3>
+            <p>Internet connection চেক করো অথবা Firebase config ঠিক আছে কিনা দেখো।</p>
+            <p style="font-size:13px;color:#999;margin-top:10px;">${err.message}</p>
+          </div>`;
+      }
+    }
+
+    /* ══════════════════════════════════════
+       Property card তৈরি করো
+    ══════════════════════════════════════ */
+    function createCard(p) {
+      const photo    = (p.photos && p.photos.length > 0)
+                        ? p.photos[0]
+                        : "images/default-property.jpg";
+      const location = [p.area, p.district, p.division].filter(Boolean).join(", ");
+      const rent     = Number(p.rent).toLocaleString("en-IN");
+      const rooms    = p.rooms    ? `${p.rooms} Bed`   : "N/A";
+      const baths    = p.bathrooms ? `${p.bathrooms} Bath` : "N/A";
+      const sqft     = p.sqft    ? `${p.sqft} sqft`   : "";
+      const floor    = p.floor   ? `${p.floor} Floor`  : "";
+      const furnish  = p.furnish || "Unfurnished";
+      const furnishColor = furnish === "Fully Furnished"    ? "#0f682a"
+                         : furnish === "Semi Furnished"     ? "#e67e22"
+                         : "#666";
+
+      return `
+        <a href="property-details.html?id=${p.id}" class="property-card">
+          <div class="property-badge">Verified</div>
+          <div class="property-img-container">
+            <img src="${photo}" class="property-img"
+                 onerror="this.src='images/default-property.jpg'" alt="${p.title}">
+          </div>
+          <div class="property-info">
+            <h4>${p.title}</h4>
+            <div class="property-location">
+              <i class="fas fa-map-marker-alt"></i> ${location}
+            </div>
+            <div class="property-features">
+              <div class="feature"><i class="fas fa-bed"></i><span>${rooms}</span></div>
+              <div class="feature"><i class="fas fa-bath"></i><span>${baths}</span></div>
+              ${sqft  ? `<div class="feature"><i class="fas fa-vector-square"></i><span>${sqft}</span></div>` : ""}
+              ${floor ? `<div class="feature"><i class="fas fa-building"></i><span>${floor}</span></div>` : ""}
+            </div>
+            <div class="property-features" style="margin-top:6px;">
+              <div class="feature">
+                <i class="fas fa-couch" style="color:${furnishColor}"></i>
+                <span style="color:${furnishColor};font-weight:500;">${furnish}</span>
+              </div>
+            </div>
+            <div class="property-footer">
+              <div class="price">৳ ${rent} <span>per month</span></div>
+              <span class="view-btn">View Details</span>
+            </div>
+          </div>
+        </a>`;
+    }
+
+    /* ══════════════════════════════════════
+       Cards render করো (pagination সহ)
+    ══════════════════════════════════════ */
+    function renderCards() {
+      const container = document.getElementById("propertiesContainer");
+      const start     = (currentPage - 1) * CARDS_PER_PAGE;
+      const pageItems = filteredProperties.slice(start, start + CARDS_PER_PAGE);
+
+      if (filteredProperties.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#666;">
+            <i class="fas fa-search fa-3x" style="color:#ccc;margin-bottom:15px;display:block;"></i>
+            <h3 style="margin-bottom:10px;">কোনো result পাওয়া যায়নি</h3>
+            <p>Filter পরিবর্তন করে আবার চেষ্টা করো।</p>
+          </div>`;
+      } else {
+        container.innerHTML = pageItems.map(createCard).join("");
+      }
+
+      updateResultCount(filteredProperties.length);
+      setupPagination();
+    }
+
+    /* ══════════════════════════════════════
+       Result count আপডেট করো
+    ══════════════════════════════════════ */
+    function updateResultCount(count) {
+      const el = document.querySelector(".result-count strong");
+      if (el) el.textContent = `${count} small flat${count !== 1 ? "s" : ""}`;
+    }
+
+    /* ══════════════════════════════════════
+       Pagination
+    ══════════════════════════════════════ */
+    function setupPagination() {
+      const pagination = document.querySelector(".pagination");
+      pagination.innerHTML = "";
+      const pageCount = Math.ceil(filteredProperties.length / CARDS_PER_PAGE);
+      if (pageCount <= 1) return;
+
+      if (currentPage > 1)
+        pagination.innerHTML += `<a href="#" onclick="window.__changePage(${currentPage - 1})"><i class="fas fa-chevron-left"></i></a>`;
+
+      for (let i = 1; i <= pageCount; i++)
+        pagination.innerHTML += `<a href="#" onclick="window.__changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</a>`;
+
+      if (currentPage < pageCount)
+        pagination.innerHTML += `<a href="#" onclick="window.__changePage(${currentPage + 1})"><i class="fas fa-chevron-right"></i></a>`;
+    }
+
+    window.__changePage = function(page) {
+      event.preventDefault();
+      currentPage = page;
+      renderCards();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    /* ══════════════════════════════════════
+       Filter apply করো
+    ══════════════════════════════════════ */
+    window.applyFilters = function() {
+      const locationValue = document.getElementById("locationFilter")?.value || "";
+      const budgetValue   = document.getElementById("budgetFilter")?.value   || "";
+      const bedValue      = document.getElementById("bedFilter")?.value       || "";
+
+      filteredProperties = allProperties.filter(p => {
+        const location = [p.area, p.district, p.division].filter(Boolean).join(" ").toLowerCase();
+        const rent     = Number(p.rent);
+        const rooms    = String(p.rooms || "");
+
+        /* Location */
+        if (locationValue && !location.includes(locationValue.toLowerCase())) return false;
+
+        /* Budget */
+        if (budgetValue) {
+          const max = parseInt(budgetValue);
+          if (!isNaN(max) && rent > max) return false;
+        }
+
+        /* Bedrooms */
+        if (bedValue) {
+          if (bedValue === "Studio" && rooms !== "0" && rooms !== "") return false;
+          else if (bedValue !== "Studio" && !rooms.startsWith(bedValue)) return false;
+        }
+
+        return true;
+      });
+
+      currentPage = 1;
+      renderCards();
+    };
+
+    
+
+    /* ══════════════════════════════════════
+       Page load হলেই data fetch করো
+    ══════════════════════════════════════ */
+    fetchProperties();
+  </script>
+</body>
+</html>

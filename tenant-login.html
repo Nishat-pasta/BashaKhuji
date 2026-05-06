@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tenant Login | BashaKhuji</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+    body{
+      min-height:100vh;
+      background:
+      linear-gradient(rgba(120,100,80,.72),rgba(90,70,55,.72)),
+        url("https://images.unsplash.com/photo-1560448204-e02f11c3d0e2");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .login-container{
+      width:370px;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      padding:35px;
+      border-radius:18px;
+      box-shadow:0 25px 60px rgba(0,0,0,.35);
+      text-align:center;
+    }
+
+    .login-container .icon{
+      font-size:46px;
+      color:#5778f0;
+      margin-bottom:10px;
+    }
+
+    h2{margin-bottom:6px}
+    p{font-size:14px;color:#666;margin-bottom:25px}
+
+    .input-box{margin-bottom:18px;text-align:left}
+    label{font-size:14px;font-weight:500}
+
+    .input-wrapper{
+      position:relative;
+    }
+
+    input{
+      width:100%;
+      padding:12px 40px 12px 12px;
+      margin-top:6px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      outline:none;
+    }
+
+    input:focus{border-color:#3f37c9}
+
+    .eye{
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      cursor:pointer;
+      color:#777;
+    }
+
+    .options{
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      margin-bottom:20px;
+    }
+
+    .options a{
+      text-decoration:none;
+      color:#3f37c9;
+      font-weight:500;
+    }
+
+    button{
+  width:100%;
+  padding:12px;
+  background: linear-gradient(135deg, #ff2d78, #ff6eb4);
+  border:none;
+  border-radius:8px;
+  color:#0b0b0b;
+  font-size:16px;
+  cursor:pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(255,45,120,0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 50%;
+  height: 200%;
+  background: rgba(255,255,255,0.25);
+  transform: skewX(-20deg);
+  animation: shine 2.5s infinite;
+}
+
+@keyframes shine {
+  0%   { left: -60%; }
+  100% { left: 130%; }
+}
+
+button:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255,45,120,0.6);
+}
+
+    button:hover{background:#f502d1}
+
+    .signup{
+      margin-top:18px;
+      font-size:14px;
+    }
+
+    .signup a{
+      color:#3f37c9;
+      font-weight:500;
+      text-decoration:none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <i class="fa-solid fa-user icon"></i>
+  <h2>Tenant Login</h2>
+  <p>Find your next home easily</p>
+
+  <form id="loginForm">
+    <div class="input-box">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter email" required>
+    </div>
+
+    <div class="input-box">
+      <label>Password</label>
+      <div class="input-wrapper">
+        <input type="password" id="tenantPass" placeholder="Password" required>
+        <i class="fa-solid fa-eye eye" onclick="togglePass('tenantPass', this)"></i>
+      </div>
+    </div>
+
+    <div class="options">
+      <span></span>
+      <a href="tenant-forgot-password.html">Forgot password?</a>
+    </div>
+
+    <button>Login</button>
+  </form>
+
+  <div class="signup">
+    Don’t have an account? <a href="tenant-signup.html">Sign up</a>
+  </div>
+</div>
+
+<script>
+function togglePass(id, icon){
+  const input = document.getElementById(id);
+  if(input.type === "password"){
+    input.type = "text";
+    icon.classList.replace("fa-eye","fa-eye-slash");
+  }else{
+    input.type = "password";
+    icon.classList.replace("fa-eye-slash","fa-eye");
+  }
+}
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain: "bashakhuji-503d1.firebaseapp.com",
+    projectId: "bashakhuji-503d1",
+    storageBucket: "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const pass  = document.getElementById("tenantPass").value;
+
+    try {
+      // Firebase দিয়ে login করো
+      const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+      const uid = userCredential.user.uid;
+
+      // Firestore থেকে role check করো
+      const userDoc = await getDoc(doc(db, "tenants", uid));
+
+      if (!userDoc.exists() || userDoc.data().role !== "tenant") {
+        alert("❌ আপনি Tenant না। সঠিক portal ব্যবহার করুন।");
+        await auth.signOut();
+        return;
+      }
+
+      // Login সফল → dashboard এ পাঠাও
+      window.location.href = "tenant-dashboard.html";
+
+    } catch (error) {
+      if (error.code === "auth/user-not-found" || error.code === "auth/invalid-credential") {
+        alert("❌ wrong Email / Password !");
+      } else if (error.code === "auth/wrong-password") {
+        alert("❌ wrong Password !");
+      } else if (error.code === "auth/too-many-requests") {
+        alert("❌Try later ");
+      } else {
+        alert("❌ Error: " + error.message);
+      }
+    }
+  });
+</script>
+</body>
+</html>

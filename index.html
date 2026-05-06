@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BashaKhuji | Find Your Perfect Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+/* ===================== */
+/* LOGO + WEBSITE NAME */
+/* ===================== */
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-left: -5px;
+  text-decoration: none;
+}
+
+/* Logo Image */
+.logo-img {
+  height: 80px;
+  display: block;
+}
+
+/* Website Name Text */
+.logo-text {
+  font-size: 25px;
+  font-weight: 700;
+  color: rgb(14, 2, 64);
+}
+/* ========================= */
+/* PROPERTY LIST DROPDOWN */
+/* ========================= */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown > a {
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background: #f1f1f1;
+  min-width: 230px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  padding: 10px 0;
+  z-index: 999;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.dropdown-content a:hover {
+  background: #3f37c9;
+  color: #fff;
+}
+
+
+/* Login Modal */
+.login-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background: linear-gradient(160deg, #eef1ff 0%, #e0e7ff 100%);
+  padding: 35px 30px;
+  border-radius: 20px;
+  width: 350px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(63,55,201,0.2);
+  border: 1px solid rgba(63,55,201,0.15);
+  animation: loginPop 0.35s ease;
+}
+@keyframes loginPop {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.login-logo-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #3f37c9;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  box-shadow: 0 4px 15px rgba(63,55,201,0.25);
+  animation: spinLogo 6s ease-in-out infinite;
+}
+.login-logo-wrap img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+}
+.login-box h3 {
+  margin-bottom: 6px;
+  color: #3f37c9;
+  font-size: 20px;
+}
+.login-tagline {
+  font-size: 12px;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+.login-option {
+  display: block;
+  padding: 13px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  transition: 0.3s;
+}
+.login-option.tenant {
+  background: linear-gradient(135deg, #3f37c9, #6366f1);
+  box-shadow: 0 5px 18px rgba(63,55,201,0.35);
+  color: #0a0a0a;
+}
+.login-option.owner {
+  background: linear-gradient(135deg, #0891b2, #06b6d4);
+  box-shadow: 0 5px 18px rgba(8,145,178,0.35);
+  color: #0a0a0a;
+}
+.login-option.admin {
+  background: linear-gradient(135deg, #de24ad, #a954a1);
+  box-shadow: 0 5px 18px rgba(220,38,38,0.35);
+  color: #fff;
+}
+.login-option {
+  position: relative;
+  overflow: hidden;
+}
+.login-option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: skewX(-20deg);
+  animation: shine 2.5s ease-in-out infinite;
+}
+@keyframes shine {
+  0% { left: -75%; }
+  100% { left: 125%; }
+}
+.login-option:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+}
+.login-option i {
+  margin-right: 8px;
+  color: #fff;
+}
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: color 0.2s;
+  z-index: 10;
+}
+.close-btn:hover {
+  color: #3f37c9;
+}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f7f9fc;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content {
+      flex: 1;
+    }
+
+    /* Navbar */
+     /* Navbar */
+    header {
+      background: white;
+      height: 70px;
+      padding: 0 2%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+    }
+
+    header h1 {
+      color: #3f37c9;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    /* Navbar Menu Container - সব item কে এক লাইনে রাখবে */
+    .icon-menu {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: nowrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #444;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      color: #3f37c9;
+    }
+
+    /* Dropdown positioning */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 35px;
+      left: 0;
+      background: #f1f1f1;
+      min-width: 200px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 10px 0;
+      z-index: 999;
+    }
+
+    /* Profile Circle - Perfect alignment */
+    #adminProfileCircle {
+      background: #ff69b4;
+      color: white;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 15px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      flex-shrink: 0;
+    }
+
+    #adminProfileCircle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(255,105,180,0.5);
+    }
+
+    /* Logo adjustment */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      height: 55px;
+      display: block;
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      color: rgb(14, 2, 64);
+      white-space: nowrap;
+    }
+
+    /* Responsive - যখন স্ক্রিন ছোট হবে */
+    @media (max-width: 900px) {
+      .icon-menu {
+        gap: 12px;
+      }
+      
+      .logo-text {
+        font-size: 18px;
+      }
+      
+      .logo-img {
+        height: 45px;
+      }
+      
+      nav a {
+        font-size: 13px;
+      }
+      
+      #adminProfileCircle {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 750px) {
+      header {
+        padding: 0 1%;
+      }
+      
+      .icon-menu {
+        gap: 8px;
+      }
+      
+      nav a {
+        font-size: 12px;
+      }
+      
+      .logo-text {
+        font-size: 16px;
+      }
+      
+      .logo-img {
+        height: 40px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .dropdown-content {
+        min-width: 160px;
+      }
+      
+      .dropdown-content a {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+    }
+
+
+    /* Hero Section */
+    .hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 8%;
+  color: #fff;
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+}
+
+    .hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+    .hero h2 {
+      font-size: 46px;
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 35px;
+      opacity: 0.9;
+    }
+
+    /* Featured Section */
+    .section {
+      padding: 80px 8%;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h3 {
+      font-size: 32px;
+      color: #222;
+    }
+
+    .houses {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+
+    .house-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s;
+    }
+
+    .house-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .house-card img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+    }
+
+    .house-info {
+      padding: 20px;
+    }
+
+    .house-info h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .house-info p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-weight: 600;
+      color: #3f37c9;
+    }
+
+    /* =============================== */
+/* MOST POPULAR PLACES SECTION */
+/* =============================== */
+
+.popular-section {
+  padding: 80px 8%;
+  background: #f1f3f8;
+}
+
+.popular-title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.popular-title h3 {
+  font-size: 32px;
+  color: #2c3e50;
+}
+
+.popular-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.popular-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+  transition: 0.3s ease;
+  text-decoration: none;
+}
+
+.popular-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.popular-card h4 {
+  font-size: 17px;
+  color: #1f4ed8;
+  margin-bottom: 5px;
+}
+
+.popular-card p {
+  font-size: 14px;
+  color: #6b7280;
+}
+  /* =============================== */
+/* OUR PURPOSE SECTION */
+/* =============================== */
+
+.purpose-section {
+  padding: 90px 8%;
+  background: #f5f7fb;
+}
+
+.purpose-title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.purpose-title h3 {
+  font-size: 34px;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.purpose-title p {
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.purpose-box {
+  background: #ffffff;
+  padding: 50px;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+  line-height: 1.8;
+  font-size: 16px;
+  color: #334155;
+}
+
+.purpose-box strong {
+  color: #3f37c9;
+}
+
+.purpose-box b {
+  color: #1e293b;
+}
+
+/* Why Choose Us */
+    .features {
+      background: #eef1ff;
+    }
+
+    .feature-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+    }
+
+    .feature {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .feature h4 {
+      margin-bottom: 10px;
+      color: #3f37c9;
+    }
+/* ================================= */
+/* FEEDBACK SECTION STYLING */
+/* ================================= */
+
+.feedback-section {
+  padding: 90px 8%;
+  background: #f8fafc;
+}
+
+.feedback-title {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.feedback-title h3 {
+  font-size: 34px;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.feedback-title p {
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+/* Grid layout */
+.feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+/* Individual feedback card */
+.feedback-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  transition: 0.3s ease;
+}
+
+.feedback-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+/* User Name */
+.feedback-card h4 {
+  font-size: 17px;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+/* Feedback Text */
+.feedback-card p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #475569;
+}
+
+/* Optional: Star icon color */
+.feedback-stars {
+  margin-bottom: 12px;
+  color: #facc15;
+}
+
+    /* =========================== */
+    /* PROFESSIONAL FOOTER STYLES */
+    /* =========================== */
+    footer {
+      background: #011239;
+      color: #e2e8f0;
+      padding: 70px 8% 30px;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+
+    .footer-column h4 {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-column h4:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 50px;
+      height: 2px;
+      background: #3f37c9;
+    }
+
+    .footer-column p {
+      line-height: 1.7;
+      color: #94a3b8;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-links a:hover {
+      color: #3f37c9;
+      transform: translateX(5px);
+    }
+
+    .footer-links i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .contact-info {
+      list-style: none;
+    }
+
+    .contact-info li {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      color: #94a3b8;
+    }
+
+    .contact-info i {
+      color: #3f37c9;
+      margin-right: 15px;
+      font-size: 18px;
+      margin-top: 3px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background: #3f37c9;
+      transform: translateY(-3px);
+    }
+
+    .newsletter-form {
+      display: flex;
+      margin-top: 20px;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 4px 0 0 4px;
+      background: #1e293b;
+      color: #e2e8f0;
+      outline: none;
+    }
+
+    .newsletter-form button {
+      padding: 12px 20px;
+      background: #3f37c9;
+      color: white;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .newsletter-form button:hover {
+      background: #2c26a3;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #1e293b;
+      padding-top: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .copyright {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .copyright a {
+      color: #3f37c9;
+      text-decoration: none;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .footer-bottom-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-bottom-links a:hover {
+      color: #3f37c9;
+    }
+
+    .developer-credit {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #64748b;
+      width: 100%;
+      text-align: center;
+      padding-top: 15px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+      
+      .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .newsletter-form {
+        flex-direction: column;
+      }
+      
+      .newsletter-form input,
+      .newsletter-form button {
+        width: 100%;
+        border-radius: 4px;
+        margin-bottom: 10px;
+      }
+    }
+/* === SCROLL REVEAL === */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === CHOOSE FLAT TYPE SECTION — animated bg === */
+.section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #e8f4fd 0%, #d0eaf8 40%, #bde0f5 100%);
+}
+.section::before {
+  content: '';
+  position: absolute;
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, rgba(56,189,248,0.3) 0%, transparent 65%);
+  top: -100px; right: -80px;
+  border-radius: 50%;
+  animation: blob1 10s ease-in-out infinite;
+  pointer-events: none;
+}
+.section::after {
+  content: '';
+  position: absolute;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 65%);
+  bottom: -80px; left: -60px;
+  border-radius: 50%;
+  animation: blob2 12s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes blob1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-40px, 50px) scale(1.1); }
+}
+@keyframes blob2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(40px, -40px) scale(1.08); }
+}
+.section .section-title,
+.section .houses {
+  position: relative;
+  z-index: 2;
+}
+.section .section-title h3 {
+  color: #0c4a6e;
+}
+.house-card {
+  transition: transform 0.35s, box-shadow 0.35s !important;
+}
+.house-card:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 0 22px 48px rgba(56,189,248,0.3) !important;
+}
+
+/* === MOST POPULAR PLACES — animated bg === */
+.popular-section {
+  position: relative !important;
+  overflow: hidden !important;
+  background: linear-gradient(135deg, #0c3547 0%, #0e4d6b 50%, #0b3d59 100%) !important;
+}
+.popular-section::before {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(56,189,248,0.2) 0%, transparent 65%);
+  top: -120px; left: -80px;
+  border-radius: 50%;
+  animation: blob1 9s ease-in-out infinite;
+  pointer-events: none;
+}
+.popular-section::after {
+  content: '';
+  position: absolute;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(20,184,166,0.18) 0%, transparent 65%);
+  bottom: -100px; right: -60px;
+  border-radius: 50%;
+  animation: blob2 11s ease-in-out infinite;
+  pointer-events: none;
+}
+.popular-section .popular-title,
+.popular-section .popular-grid {
+  position: relative;
+  z-index: 2;
+}
+.popular-title h3 {
+  color: #ffffff !important;
+}
+.popular-card {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  backdrop-filter: blur(6px) !important;
+  transition: transform 0.35s, background 0.35s !important;
+}
+.popular-card:hover {
+  transform: translateX(8px) !important;
+  background: rgba(56,189,248,0.18) !important;
+}
+.popular-card h4 {
+  color: #e0f2fe !important;
+}
+.popular-card p {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+/* === OUR PURPOSE — animated bg === */
+.purpose-section {
+  position: relative !important;
+  overflow: hidden !important;
+  background: linear-gradient(160deg, #f0f9ff 0%, #e0f2fe 60%, #bae6fd 100%) !important;
+}
+.purpose-section::before {
+  content: '';
+  position: absolute;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, transparent 65%);
+  top: -100px; right: 5%;
+  border-radius: 50%;
+  animation: blob1 10s ease-in-out infinite;
+  pointer-events: none;
+}
+.purpose-section::after {
+  content: '';
+  position: absolute;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 65%);
+  bottom: -80px; left: 10%;
+  border-radius: 50%;
+  animation: blob2 13s ease-in-out infinite;
+  pointer-events: none;
+}
+.purpose-section .purpose-title,
+.purpose-section .purpose-box {
+  position: relative;
+  z-index: 2;
+}
+.purpose-title h3 {
+  color: #0c4a6e !important;
+}
+.purpose-box {
+  background: rgba(255,255,255,0.78) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255,255,255,0.9) !important;
+  box-shadow: 0 20px 50px rgba(14,116,144,0.15) !important;
+}
+
+/* === WHY CHOOSE — sky blue animated bg === */
+.features {
+  position: relative !important;
+  overflow: hidden !important;
+  background: linear-gradient(160deg, #87ceeb 0%, #7ec8e3 40%, #6ab8d8 100%) !important;
+}
+.features::before {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 65%);
+  top: -120px; left: -80px;
+  border-radius: 50%;
+  animation: blob1 9s ease-in-out infinite;
+  pointer-events: none;
+}
+.features::after {
+  content: '';
+  position: absolute;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(8,145,178,0.3) 0%, transparent 65%);
+  bottom: -100px; right: -60px;
+  border-radius: 50%;
+  animation: blob2 11s ease-in-out infinite;
+  pointer-events: none;
+}
+.features .section-title,
+.features .feature-box {
+  position: relative;
+  z-index: 2;
+}
+.features .section-title h3 {
+  color: #0c2a3f !important;
+}
+.feature {
+  background: rgba(255,255,255,0.35) !important;
+  border: 1px solid rgba(255,255,255,0.6) !important;
+  backdrop-filter: blur(10px) !important;
+  transition: transform 0.35s, background 0.35s !important;
+}
+.feature:hover {
+  transform: translateY(-10px) !important;
+  background: rgba(255,255,255,0.55) !important;
+}
+.feature h4 {
+  color: #0c2a3f !important;
+}
+
+/* === FEEDBACK — animated bg === */
+.feedback-section {
+  position: relative !important;
+  overflow: hidden !important;
+  background: linear-gradient(160deg, #0c3547 0%, #0e4d6b 60%, #0b3d59 100%) !important;
+}
+.feedback-section::before {
+  content: '';
+  position: absolute;
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, rgba(56,189,248,0.2) 0%, transparent 65%);
+  top: -100px; right: 10%;
+  border-radius: 50%;
+  animation: blob1 10s ease-in-out infinite;
+  pointer-events: none;
+}
+.feedback-section::after {
+  content: '';
+  position: absolute;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(20,184,166,0.18) 0%, transparent 65%);
+  bottom: -80px; left: 8%;
+  border-radius: 50%;
+  animation: blob2 12s ease-in-out infinite;
+  pointer-events: none;
+}
+.feedback-section .feedback-title,
+.feedback-section .feedback-grid {
+  position: relative;
+  z-index: 2;
+}
+.feedback-title h3 {
+  color: #ffffff !important;
+}
+.feedback-title p {
+  color: rgba(255,255,255,0.5) !important;
+}
+.feedback-card {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(8px) !important;
+  transition: transform 0.35s, background 0.35s !important;
+}
+.feedback-card:hover {
+  transform: translateY(-8px) !important;
+  background: rgba(255,255,255,0.12) !important;
+}
+.feedback-card h4 {
+  color: #e0f2fe !important;
+}
+.feedback-card p {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+/* Saved Property heart icon */
+.saved-link .fa-heart {
+  color: hotpink !important;
+}
+
+/* Hover  dark pink */
+.saved-link:hover .fa-heart {
+  color: deeppink !important;
+}
+/* === HOW IT WORKS POPUP === */
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup-box {
+  position: relative;
+  background: #fff0f5;
+  border: 2px solid #ff69b4;
+  border-radius: 24px;
+  padding: 40px 35px 35px;
+  width: 420px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(255,105,180,0.3);
+  overflow: hidden;
+}
+.popup-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 24px;
+}
+.popup-content {
+  position: relative;
+  z-index: 2;
+}
+.popup-logo-wrap {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 3px solid #ffb6d9;
+  background: #fff;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(255,20,147,0.4);
+  animation: spinLogo 6s linear infinite;
+  overflow: visible;
+}
+.popup-logo-wrap img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 0;
+}
+@keyframes spinLogo {
+  0%   { transform: rotate(0deg) scale(1); }
+  25%  { transform: rotate(10deg) scale(1.08); }
+  50%  { transform: rotate(0deg) scale(1); }
+  75%  { transform: rotate(-10deg) scale(1.08); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+.popup-box h2 {
+  font-size: 22px;
+  color: #880e4f;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+.popup-steps {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 25px;
+}
+.popup-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: #4a0030;
+}
+.popup-steps li .step-num {
+  background: linear-gradient(135deg, #ff69b4, #ff1493);
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.popup-close-btn {
+  background: linear-gradient(135deg, #ff69b4, #ff1493);
+  color: white;
+  border: none;
+  padding: 12px 35px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 20px rgba(255,20,147,0.4);
+}
+.popup-close-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(255,20,147,0.5);
+}
+/* === FOOTER MOVING LOGO === */
+.footer-moving-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #3f37c9;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  animation: spinLogo 6s ease-in-out infinite;
+  box-shadow: 0 4px 15px rgba(63,55,201,0.3);
+}
+.footer-moving-logo img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+.login-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 20px;
+}
+.login-box > *:not(.login-canvas):not(.close-btn) {
+  position: relative;
+  z-index: 1;
+}
+/* === PAYMENT PARTNER SECTION === */
+.payment-section {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0 60px;
+  background: linear-gradient(135deg, #0c3547 0%, #0e4d6b 50%, #0b3d59 100%);
+}
+.payment-section::before {
+  content: '';
+  position: absolute;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(56,189,248,0.2) 0%, transparent 65%);
+  top: -100px; right: 5%;
+  border-radius: 50%;
+  animation: blob1 10s ease-in-out infinite;
+  pointer-events: none;
+}
+.payment-section::after {
+  content: '';
+  position: absolute;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(20,184,166,0.18) 0%, transparent 65%);
+  bottom: -80px; left: 10%;
+  border-radius: 50%;
+  animation: blob2 13s ease-in-out infinite;
+  pointer-events: none;
+}
+.payment-title {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative; z-index: 2;
+  padding: 0 8%;
+}
+.payment-title h3 {
+  font-size: 32px;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+.payment-title p {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.payment-track-wrapper {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask: linear-gradient(90deg, transparent, white 12%, white 88%, transparent);
+  mask: linear-gradient(90deg, transparent, white 12%, white 88%, transparent);
+}
+.payment-track {
+  display: flex;
+  gap: 18px;
+  width: max-content;
+  animation: payScroll 32s linear infinite;
+  padding: 10px 20px 20px;
+}
+.payment-track:hover { animation-play-state: paused; }
+@keyframes payScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.payment-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 18px 22px;
+  min-width: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.3s, background 0.3s;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.payment-card:hover {
+  transform: translateY(-8px) scale(1.06);
+  background: rgba(56,189,248,0.18);
+}
+.payment-card img {
+  height: 46px;
+  width: auto;
+  max-width: 110px;
+  object-fit: contain;
+  filter: brightness(1.1);
+}
+.payment-card span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e0f2fe;
+}
+.verified-badge {
+  text-align: center;
+  margin-top: 28px;
+  position: relative; z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.verified-badge span {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 8px 22px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e0f2fe;
+  backdrop-filter: blur(6px);
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="main-content">
+    <!-- HOW IT WORKS POPUP -->
+<div class="popup-overlay" id="howItWorksPopup" style="display: none;">
+  <div class="popup-box">
+    <canvas class="popup-canvas" id="popupCanvas"></canvas>
+    <div class="popup-content">
+
+      <div class="popup-logo-wrap">
+        <img src="images/logo.png" alt="BashaKhuji Logo">
+      </div>
+
+      <h2>How BashaKhuji Works?</h2>
+
+      <ul class="popup-steps">
+        <li>
+          <span class="step-num">1</span>
+          <span>Browse thousands of verified rental properties across Bangladesh.</span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span>Filter by location, price, and flat type to find your perfect home.</span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span>Contact the owner directly — no broker, no extra cost!</span>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <span>Move in to your new home safely and hassle-free.</span>
+        </li>
+      </ul>
+
+      <button class="popup-close-btn" onclick="closePopup()">
+        Get Started &rarr;
+      </button>
+
+    </div>
+  </div>
+</div>
+   <header>
+  <a href="index.html" class="logo-container">
+    <img src="images/logo.png" alt="BashaKhuji Logo" class="logo-img">
+    
+    <!-- Website Name Text -->
+    <span class="logo-text">BashaKhuji</span>
+  </a>
+
+      <nav class="icon-menu">
+  <a href="#"><i class="fa-solid fa-house"></i> Home</a>
+  <div class="dropdown">
+    <a href="#" onclick="toggleDropdown(event)">
+      <i class="fa-solid fa-building"></i> Property List 
+      <i class="fa-solid fa-chevron-down"></i>
+    </a>
+    <div class="dropdown-content" id="propertyDropdown">
+      <a href="all-property.html">🏠 All Properties</a>
+      <a href="small-flat.html">🏡 Small Flat</a>
+      <a href="medium-flat.html">🏢 Medium Flat</a>
+      <a href="large-flat.html">🏰 Large Flat</a>
+    </div>
+  </div>
+  <a href="#" id="savedPropertyLink" class="saved-link" onclick="openSavedPropertyModal()">
+    <i class="fa-solid fa-heart"></i> Saved Property
+  </a>
+  <a href="#" id="loginButton" onclick="openLoginModal()"><i class="fa-regular fa-user"></i> Login</a>
+  <a href="admin-dashboard.html" id="adminProfileCircle" style="display:none;"></a>
+</nav>
+    </header>
+<!-- Login Modal -->
+<div id="loginModal" class="login-modal">
+  <div class="login-box">
+    <canvas class="login-canvas" id="loginCanvas"></canvas>
+
+    <div class="login-logo-wrap">
+      <img src="images/logo.png" alt="BashaKhuji Logo">
+    </div>
+
+    <h3>Welcome to BashaKhuji</h3>
+    <p class="login-tagline">Select your account type to continue</p>
+
+    <a href="tenant-login.html" class="login-option tenant">
+      <i class="fa-solid fa-user"></i> I am a Tenant
+    </a>
+
+    <a href="owner-login.html" class="login-option owner">
+      <i class="fa-solid fa-house-user"></i> I am an Owner
+    </a>
+    <a href="admin-login.html" class="login-option admin">
+    <i class="fa-solid fa-shield-halved"></i> I am an Admin
+</a>
+
+    <span class="close-btn" onclick="closeLoginModal()">×</span>
+  </div>
+</div>
+
+    <section class="hero">
+
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline class="hero-video">
+    <source src="images/backgroundvid.mp4" type="video/mp4">
+  </video>
+
+  <div class="hero-content">
+        <h2>Discover Your Ideal <br> Rental Home with Confidence</h2>
+        <p>BashaKhuji is a reliable rental platform designed to help you find verified flats and<br>apartments directly from trusted owners, ensuring a safe and hassle-free renting experience.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h3>Choose Your Flat Type</h3>
+      </div>
+
+      <div class="houses">
+        <a href="small-flat.html" style="text-decoration:none; color:inherit;">
+          <div class="house-card reveal">
+            <img src="images/download-1.jpeg">
+            <div class="house-info">
+              <h4>Small Flat</h4>
+              <p>Ideal for students & small families</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="medium-flat.html" style="text-decoration:none; color:inherit;">
+         <div class="house-card reveal">
+            <img src="images/medium-flat.jpeg">
+            <div class="house-info">
+              <h4>Medium Flat</h4>
+              <p>Comfortable for medium-size families</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="large-flat.html" style="text-decoration:none; color:inherit;">
+          <div class="house-card reveal">
+            <img src="images/large-flat.jpeg">
+            <div class="house-info">
+              <h4>Large Flat</h4>
+              <p>Perfect for large families</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+    <!-- =============================== -->
+<!-- MOST POPULAR PLACES SECTION -->
+<!-- =============================== -->
+
+<section class="popular-section">
+  <div class="popular-title">
+    <h3>Most popular places</h3>
+  </div>
+
+  <div class="popular-grid">
+
+    <a href="#" class="popular-card reveal">
+      <h4>Mirpur, Dhaka</h4>
+      <p>15.1K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Mohammadpur, Dhaka</h4>
+      <p>10.9K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Uttara, Dhaka</h4>
+      <p>5.8K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Khilkhet, Dhaka</h4>
+      <p>5.4K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Badda, Dhaka</h4>
+      <p>5.1K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Vatara, Dhaka</h4>
+      <p>4K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Chashara, Narayanganj</h4>
+      <p>3.8K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Lalbag, Dhaka</h4>
+      <p>3.7K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Dhanmondi, Dhaka</h4>
+      <p>3K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Rampura, Dhaka</h4>
+      <p>2.8K+ properties</p>
+    </a>
+
+    <a href="#" class="popular-card reveal">
+      <h4>Jatrabari, Dhaka</h4>
+      <p>2.7K+ properties</p>
+    </a>
+
+    
+    <a href="#" class="popular-card reveal">
+      <h4>Signboard, Narayanganj</h4>
+      <p>2.6K+ properties</p>
+    </a>
+
+  </div>
+</section>
+
+<!-- =============================== -->
+<!-- OUR PURPOSE SECTION -->
+<!-- =============================== -->
+
+<section class="purpose-section">
+  
+  <div class="purpose-title">
+    <h3>Our Purpose</h3>
+    <p>Main Purpose of Our Website</p>
+  </div>
+
+<div class="purpose-box reveal">
+    <p>
+      At <strong>BashaKhuji</strong>, our mission is to 
+      <b>transform the way Bangladesh rents and manages homes</b>. 
+      We provide a fully digital, transparent, and reliable platform 
+      that seamlessly connects tenants, landlords, and property seekers.
+    </p>
+
+    <br>
+
+    <p>
+      Our all-in-one solution enables users to 
+      <b>search properties</b>, <b>add listings</b>, 
+      connect directly with owners, and explore verified rental opportunities.  
+      By building a <b>broker-free rental marketplace</b>, 
+      we save time, reduce costs, and ensure trust at every step.
+    </p>
+
+    <br>
+
+    <p>
+      Ultimately, <strong>BashaKhuji</strong> makes renting homes in Bangladesh 
+      simple, safe, and accessible for everyone.
+    </p>
+  </div>
+
+</section>
+
+    <section class="section features">
+      <div class="section-title">
+        <h3>Why Choose BashaKhuji?</h3>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature reveal">
+          <h4>Verified Listings</h4>
+          <p>Only trusted and verified house owners.</p>
+        </div>
+        <div class="feature reveal">
+          <h4>No Broker Hassle</h4>
+          <p>Direct contact with owners.</p>
+        </div>
+        <div class="feature reveal">
+          <h4>Simple & Fast Search</h4>
+          <p>Find homes quickly with smart filters.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================================= -->
+<!-- FEEDBACK SECTION START -->
+<!-- ================================= -->
+
+<section class="feedback-section">
+
+  <div class="feedback-title">
+    <h3>Feedback</h3>
+    <p>Our users send us bunch of smiles with our services</p>
+  </div>
+
+  <div class="feedback-grid">
+
+    <!-- Single Feedback Card -->
+    <div class="feedback-card reveal">
+      <div class="feedback-stars">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <h4>Fatama Asmin Shafa</h4>
+      <p>Such a nice app. This app makes it so easy to find a house. It will be a great deal. Thank you.</p>
+    </div>
+
+    <div class="feedback-card reveal">
+      <div class="feedback-stars">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <h4>Ishfaqun Mubashshira</h4>
+      <p>Helpful application for house rental solution. Anyone can easily use this app for property rent.</p>
+    </div>
+
+    <div class="feedback-card reveal">
+      <div class="feedback-stars">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <h4>Mahera Khatun Mushfiqah</h4>
+      <p>Very helpful and user friendly interface. Finding a place in Dhaka city is now much easier.</p>
+    </div>
+
+    <div class="feedback-card reveal">
+      <div class="feedback-stars">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <h4>Israt Jahan Nipu</h4>
+      <p>Best house rent website in Bangladesh. Very effective for Bangladeshi people.</p>
+    </div>
+
+    <div class="feedback-card reveal">
+      <div class="feedback-stars">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <h4>Jasmin Jakir Mim</h4>
+      <p>Best app for Dhaka city. Hopefully this will expand to other cities as well.</p>
+    </div>
+
+    <div class="feedback-card reveal">
+      <div class="feedback-stars">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <h4> Dr. Shafiqur Rahman(Jamat Amir)</h4>
+      <p>Really great app. Easy to use. Home rent are easily available in this app.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- FEEDBACK SECTION END -->
+ <!-- =============================== -->
+<!-- PAYMENT PARTNER SECTION -->
+<!-- =============================== -->
+<section class="payment-section">
+  <div class="payment-title reveal">
+    <h3>Payment Partners</h3>
+    <p>Safe & Secure Payment Methods</p>
+  </div>
+
+  <div class="payment-track-wrapper">
+    <div class="payment-track">
+
+      <!-- bKash -->
+      <div class="payment-card">
+        <img src="images/bkash.png" alt="bKash">
+        <span>bKash</span>
+      </div>
+      <!-- Nagad -->
+      <div class="payment-card">
+        <img src="images/Nagad.png" alt="Nagad">
+        <span>Nagad</span>
+      </div>
+      <!-- Rocket -->
+      <div class="payment-card">
+        <img src="images/Rocket.jpeg" alt="Rocket">
+        <span>Rocket</span>
+      </div>
+      <!-- Upay -->
+      <div class="payment-card">
+        <img src="images/Upay.png" alt="Upay">
+        <span>Upay</span>
+      </div>
+      <!-- VISA -->
+      <div class="payment-card">
+        <img src="images/Visa.png" alt="VISA">
+        <span>VISA</span>
+      </div>
+      <!-- Mastercard -->
+      <div class="payment-card">
+        <img src="images/mastercard.png" alt="Mastercard">
+        <span>Mastercard</span>
+      </div>
+      <!-- Dutch Bangla -->
+      <div class="payment-card">
+        <img src="images/Dutch Bangla.jpeg" alt="DBBL">
+        <span>DBBL</span>
+      </div>
+      <!-- SSLCommerz -->
+      <div class="payment-card">
+        <img src="images/ss.png" alt="SSLCommerz">
+        <span>SSLCommerz</span>
+      </div>
+      <!-- American Express -->
+      <div class="payment-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/320px-American_Express_logo_%282018%29.svg.png" alt="Amex">
+        <span>Amex</span>
+      </div>
+      <!-- Union Pay -->
+      <div class="payment-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UnionPay_logo.svg/320px-UnionPay_logo.svg.png" alt="UnionPay">
+        <span>UnionPay</span>
+      </div>
+
+      <!-- ডুপ্লিকেট set — infinite scroll এর জন্য লাগবে -->
+      <div class="payment-card">
+        <img src="images/bkash.png" alt="bKash">
+        <span>bKash</span>
+      </div>
+      <div class="payment-card">
+        <img src="images/Nagad.png" alt="Nagad">
+        <span>Nagad</span>
+      </div>
+      <div class="payment-card">
+        <img src="images/Rocket.jpeg" alt="Rocket">
+        <span>Rocket</span>
+      </div>
+      <div class="payment-card">
+        <img src="images/Upay.png" alt="Upay">
+        <span>Upay</span>
+      </div>
+      <div class="payment-card">
+        <img src="images/Visa.png" alt="VISA">
+        <span>VISA</span>
+      </div>
+      <div class="payment-card">
+        <img src="images/mastercard.png" alt="Mastercard">
+        <span>Mastercard</span>
+      </div>
+      
+      <div class="payment-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/320px-American_Express_logo_%282018%29.svg.png" alt="Amex">
+        <span>Amex</span>
+      </div>
+      <div class="payment-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UnionPay_logo.svg/320px-UnionPay_logo.svg.png" alt="UnionPay">
+        <span>UnionPay</span>
+      </div>
+      <!-- Dutch Bangla -->
+      <div class="payment-card">
+        <img src="images/Dutch Bangla.jpeg" alt="DBBL">
+        <span>DBBL</span>
+      </div>
+      <!-- SSLCommerz -->
+      <div class="payment-card">
+        <img src="images/ss.png" alt="SSLCommerz">
+        <span>SSLCommerz</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="verified-badge reveal">
+    <span>🔒 All transactions are encrypted & verified by SSLCommerz</span>
+  </div>
+</section>
+
+<!-- ================================= -->
+
+  <!-- PROFESSIONAL FOOTER -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:25px;">
+  <div class="footer-moving-logo" style="margin-bottom:0;">
+    <img src="images/logo.png" alt="BashaKhuji Logo">
+  </div>
+  <h4 style="margin-bottom:0; padding-bottom:0;">About BashaKhuji</h4>
+</div>
+
+        <p>BashaKhuji is Bangladesh's most trusted rental platform connecting verified homeowners with prospective tenants for a safe, transparent, and hassle-free renting experience.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+       <ul class="footer-links">
+          <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+          <li><a href="all-property.html"><i class="fas fa-chevron-right"></i> Browse Properties</a></li>
+          <li><a href="#" onclick="openLoginModal()"><i class="fas fa-chevron-right"></i> List Your Property</a></li>
+          <li><a href="#" onclick="showHowItWorks()"><i class="fas fa-chevron-right"></i> How It Works</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Support</h4>
+     <ul class="footer-links">
+          <li><a href="faq.html"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+          <li><a href="privacy-policy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Contact Us</h4>
+        <ul class="contact-info">
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Head Office</strong>
+              <p>123 Rental Street, Dhaka 1205, Bangladesh</p>
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <div>
+              <strong>Phone</strong>
+              <p>+8801408787701</p>
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-envelope"></i>
+            <div>
+              <strong>Email</strong>
+              <p>sikderafrida@gmail.com</p>
+            </div>
+          </li>
+        </ul>
+        
+       
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="copyright">
+        © 2026 <a href="index.html">BashaKhuji</a>. All rights reserved.
+      </div>
+      
+     <div class="footer-bottom-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      
+      <div class="developer-credit">
+        Developed by <strong>Afrida Sikder & Nishat Anjum</strong>, Dept. of CSE | Designed with  for better renting experiences
+      </div>
+    </div>
+  </footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-nmR9szA415d_qX16fbMX8-lDMa-zrU4",
+    authDomain: "bashakhuji-503d1.firebaseapp.com",
+    projectId: "bashakhuji-503d1",
+    storageBucket: "bashakhuji-503d1.firebasestorage.app",
+    messagingSenderId: "697249288857",
+    appId: "1:697249288857:web:76987e2b2ab10f90005e08"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Global functions
+  window.closePopup = function() {
+    document.getElementById('howItWorksPopup').style.display = 'none';
+  };
+
+  window.showHowItWorks = function() {
+    document.getElementById('howItWorksPopup').style.display = 'flex';
+    startPopupParticles();
+  };
+
+  window.openLoginModal = function() {
+    document.getElementById("loginModal").style.display = "flex";
+    startLoginParticles();
+  };
+
+  window.closeLoginModal = function() {
+    document.getElementById("loginModal").style.display = "none";
+  };
+
+  window.toggleDropdown = function(event) {
+    event.preventDefault();
+    const dropdown = document.getElementById("propertyDropdown");
+    if (dropdown.style.display === "block") {
+      dropdown.style.display = "none";
+    } else {
+      dropdown.style.display = "block";
+    }
+  };
+
+  function startPopupParticles() {
+    const canvas = document.getElementById('popupCanvas');
+    if (!canvas) return;
+    const box = canvas.parentElement;
+    const ctx = canvas.getContext('2d');
+    let W, H, pts = [];
+    function resize() {
+      W = canvas.width = box.offsetWidth;
+      H = canvas.height = box.offsetHeight;
+    }
+    class P {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.r = Math.random() * 2.5 + 1;
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
+        this.a = Math.random() * 0.5 + 0.2;
+        this.c = Math.random() > 0.5 ? '255,20,147' : '199,21,133';
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.c},${this.a})`;
+        ctx.fill();
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+      }
+    }
+    function init() { pts = []; for (let i = 0; i < 50; i++) pts.push(new P()); }
+    function loop() {
+      ctx.clearRect(0, 0, W, H);
+      pts.forEach(p => p.draw());
+      requestAnimationFrame(loop);
+    }
+    resize(); init(); loop();
+  }
+
+  function startLoginParticles() {
+    const canvas = document.getElementById('loginCanvas');
+    if (!canvas) return;
+    const box = canvas.parentElement;
+    const ctx = canvas.getContext('2d');
+    let W, H, pts = [];
+    function resize() {
+      W = canvas.width = box.offsetWidth;
+      H = canvas.height = box.offsetHeight;
+    }
+    class P {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.r = Math.random() * 2 + 0.8;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.a = Math.random() * 0.4 + 0.2;
+        this.c = Math.random() > 0.5 ? '63,55,201' : '99,102,241';
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.c},${this.a})`;
+        ctx.fill();
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+      }
+    }
+    function init() { pts = []; for (let i = 0; i < 40; i++) pts.push(new P()); }
+    function loop() {
+      ctx.clearRect(0, 0, W, H);
+      pts.forEach(p => p.draw());
+      requestAnimationFrame(loop);
+    }
+    resize(); init(); loop();
+  }
+      // Check login status - সব ধরনের user এর জন্য pink circle দেখাবে
+  onAuthStateChanged(auth, async (user) => {
+    const loginButton = document.getElementById('loginButton');
+    const savedLink = document.getElementById('savedPropertyLink');
+    const profileCircle = document.getElementById('adminProfileCircle');
+    const popup = document.getElementById('howItWorksPopup');
+    
+    if (user) {
+      // ✅ কেউ login করলে (Tenant, Owner, Admin যেই হোক)
+      localStorage.setItem('userLoggedIn', 'true');
+      
+      // Popup বন্ধ করো
+      if (popup) popup.style.display = 'none';
+      
+      // Login বাটন লুকাও
+      if (loginButton) loginButton.style.display = 'none';
+      
+      // Saved Property link দেখাও (কিন্তু click করলে check করবে)
+      if (savedLink) savedLink.style.display = 'inline-flex';
+      
+      // 🔴 নামের আদ্যক্ষর বের করো
+      const email = user.email;
+      let initials = 'U'; // U = User
+      
+      try {
+        // আগে check করো admin কিনা
+        const adminsSnap = await getDocs(query(collection(db, "admins"), where("email", "==", email)));
+        if (!adminsSnap.empty) {
+          const adminData = adminsSnap.docs[0].data();
+          const firstName = adminData.firstName || adminData.name || '';
+          const lastName = adminData.lastName || '';
+          if (firstName && lastName) {
+            initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+          } else if (firstName) {
+            initials = firstName.charAt(0).toUpperCase();
+          }
+        } else {
+          // Admin না হলে tenant বা owner check করো
+          const tenantsSnap = await getDocs(query(collection(db, "tenants"), where("email", "==", email)));
+          if (!tenantsSnap.empty) {
+            const tenantData = tenantsSnap.docs[0].data();
+            const firstName = tenantData.firstname || tenantData.firstName || '';
+            const lastName = tenantData.lastname || tenantData.lastName || '';
+            if (firstName && lastName) {
+              initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+            } else if (firstName) {
+              initials = firstName.charAt(0).toUpperCase();
+            } else {
+              initials = 'T'; // Tenant
+            }
+          } else {
+            // Owner
+            const ownersSnap = await getDocs(query(collection(db, "owners"), where("email", "==", email)));
+            if (!ownersSnap.empty) {
+              const ownerData = ownersSnap.docs[0].data();
+              const firstName = ownerData.firstname || ownerData.firstName || ownerData.name || '';
+              const lastName = ownerData.lastname || ownerData.lastName || '';
+              if (firstName && lastName) {
+                initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+              } else if (firstName) {
+                initials = firstName.charAt(0).toUpperCase();
+              } else {
+                initials = 'O'; // Owner
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error getting user name:", error);
+      }
+      
+      // Pink Circle দেখাও এবং initials বসাও
+      if (profileCircle) {
+        profileCircle.textContent = initials;
+        profileCircle.style.display = 'flex';
+        // Admin হলে dashboard নাহলে tenant dashboard
+        profileCircle.href = initials === 'A' ? "admin-dashboard.html" : "tenant-dashboard.html";
+      }
+      
+    } else {
+      // ❌ কেউ login নেই
+      localStorage.removeItem('userLoggedIn');
+      localStorage.removeItem('adminLoggedIn');
+      
+      // Popup দেখাও (শুধু একবার)
+      if (!localStorage.getItem('popupShown')) {
+        if (popup) {
+          popup.style.display = 'flex';
+          startPopupParticles();
+          localStorage.setItem('popupShown', 'true');
+        }
+      }
+      
+      // Login বাটন দেখাও
+      if (loginButton) loginButton.style.display = 'inline-flex';
+      
+      // Saved Property link দেখাও (কিন্তু click করলে login alert দিবে)
+      if (savedLink) savedLink.style.display = 'inline-flex';
+      
+      // Pink Circle লুকাও
+      if (profileCircle) profileCircle.style.display = 'none';
+    }
+  });
+
+  // Click outside to close dropdown
+  window.onclick = function(e) {
+    if (!e.target.closest('.dropdown')) {
+      const dropdown = document.getElementById("propertyDropdown");
+      if (dropdown) dropdown.style.display = "none";
+    }
+  };
+
+  // Particle effects for sections
+  function makeParticles(sectionSelector, c1, c2, count) {
+    const section = document.querySelector(sectionSelector);
+    if (!section) return;
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:0;';
+    section.style.position = 'relative';
+    section.insertBefore(canvas, section.firstChild);
+    const ctx = canvas.getContext('2d');
+    let W, H, pts = [];
+    function resize() {
+      W = canvas.width = section.offsetWidth;
+      H = canvas.height = section.offsetHeight;
+    }
+    class P {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.r = Math.random() * 3 + 1.2;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.a = Math.random() * 0.6 + 0.4;
+        this.c = Math.random() > 0.5 ? c1 : c2;
+      }
+      draw() {
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = `rgba(${this.c},0.8)`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.c},${this.a})`;
+        ctx.fill();
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+      }
+    }
+    function init() { pts = []; for (let i = 0; i < count; i++) pts.push(new P()); }
+    function loop() {
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 80) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(${c1},${0.2 * (1 - d / 130)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      pts.forEach(p => p.draw());
+      requestAnimationFrame(loop);
+    }
+    resize(); init(); loop();
+    window.addEventListener('resize', () => { resize(); init(); });
+  }
+
+  makeParticles('.section', '8,145,178', '99,102,241', 25);
+  makeParticles('.popular-section', '56,189,248', '20,184,166', 30);
+  makeParticles('.purpose-section', '56,189,248', '99,102,241', 20);
+  makeParticles('.features', '255,255,255', '8,145,178', 25);
+  makeParticles('.feedback-section', '56,189,248', '20,184,166', 30);
+  makeParticles('.payment-section', '56,189,248', '20,184,166', 25);
+
+  // Scroll reveal
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+// Saved Property - শুধু Tenant এর জন্য কাজ করবে
+window.openSavedPropertyModal = function() {
+  const user = auth.currentUser;
+  
+  if (!user) {
+    // কেউ login নেই
+    alert("🔐 Please login first to view saved properties!");
+    openLoginModal();
+    return;
+  }
+  
+  // Check করো এই user টি tenant কিনা
+  const email = user.email;
+  getDocs(query(collection(db, "tenants"), where("email", "==", email)))
+    .then((snap) => {
+      if (!snap.empty) {
+        // ✅ Tenant - saved property page এ যাবে
+        window.location.href = "saved-property.html";
+      } else {
+        // ❌ Owner বা Admin - access denied
+        alert("❌ Sorry! Saved Property is only available for Tenants.\nPlease login as a Tenant to use this feature.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("❌ Something went wrong. Please try again.");
+    });
+};
+</script>
+</body>
+</html>
